@@ -20,3 +20,6 @@ HEADERS  += qscintillaeditor.h
 FORMS    += qscintillaeditor.ui
 
 LIBS += -lScintillaEdit
+
+RESOURCES += \
+    qtscitntillaeditor.qrc
