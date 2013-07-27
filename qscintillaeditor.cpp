@@ -16,6 +16,9 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
 
     edit = new ScintillaEdit(this);
     setCentralWidget(edit);
+
+    QObject::connect(edit, SIGNAL(savePointChanged(bool)), this,
+        SLOT(savePointChanged(bool)));
 }
 
 QScintillaEditor::~QScintillaEditor() {
@@ -56,6 +59,10 @@ void QScintillaEditor::on_actionOpen_triggered()
             fileInfo.setFile(fileName);
         }
     }
+}
+
+void QScintillaEditor::savePointChanged(bool dirty) {
+    ui->actionSave->setEnabled(dirty);
 }
 
 bool QScintillaEditor::checkModifiedAndSave() {

@@ -23,6 +23,8 @@ private slots:
 
     void on_actionOpen_triggered();
 
+    void savePointChanged(bool dirty);
+
 private:
     bool checkModifiedAndSave();
     bool saveFile();

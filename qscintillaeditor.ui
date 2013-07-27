@@ -111,6 +111,9 @@
    </property>
   </action>
   <action name="actionSave">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="qtscitntillaeditor.qrc">
      <normaloff>:/icons/icons/16x16/document-save.png</normaloff>:/icons/icons/16x16/document-save.png</iconset>
