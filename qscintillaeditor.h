@@ -17,11 +17,13 @@ class QScintillaEditor : public QMainWindow
 public:
     explicit QScintillaEditor(QWidget *parent = 0);
     ~QScintillaEditor();
-    
+
 private slots:
     void on_actionNew_triggered();
 
     void on_actionOpen_triggered();
+
+    void on_actionSave_triggered();
 
     void savePointChanged(bool dirty);
 

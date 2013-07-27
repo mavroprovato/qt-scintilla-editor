@@ -61,6 +61,11 @@ void QScintillaEditor::on_actionOpen_triggered()
     }
 }
 
+void QScintillaEditor::on_actionSave_triggered()
+{
+    saveFile();
+}
+
 void QScintillaEditor::savePointChanged(bool dirty) {
     ui->actionSave->setEnabled(dirty);
 }
@@ -130,4 +135,3 @@ bool QScintillaEditor::saveFile() {
 
     return true;
 }
-
