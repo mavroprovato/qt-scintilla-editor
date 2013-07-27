@@ -164,6 +164,9 @@
    </property>
   </action>
   <action name="actionUndo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="qtscitntillaeditor.qrc">
      <normaloff>:/icons/icons/16x16/edit-undo.png</normaloff>:/icons/icons/16x16/edit-undo.png</iconset>

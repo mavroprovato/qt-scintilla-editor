@@ -19,6 +19,7 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
 
     QObject::connect(edit, SIGNAL(savePointChanged(bool)), this,
         SLOT(savePointChanged(bool)));
+    QObject::connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
 }
 
 QScintillaEditor::~QScintillaEditor() {
@@ -35,8 +36,7 @@ void QScintillaEditor::on_actionNew_triggered() {
     }
 }
 
-void QScintillaEditor::on_actionOpen_triggered()
-{
+void QScintillaEditor::on_actionOpen_triggered() {
     if (checkModifiedAndSave()) {
         // Display the open file dialog
         QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
@@ -76,8 +76,31 @@ void QScintillaEditor::on_actionExit_triggered() {
     qApp->quit();
 }
 
+void QScintillaEditor::on_actionUndo_triggered() {
+    edit->undo();
+}
+
+void QScintillaEditor::on_actionCut_triggered() {
+    edit->cut();
+}
+
+void QScintillaEditor::on_actionCopy_triggered() {
+    edit->copy();
+}
+
+void QScintillaEditor::on_actionPaste_triggered() {
+    edit->paste();
+}
+
 void QScintillaEditor::savePointChanged(bool dirty) {
     ui->actionSave->setEnabled(dirty);
+    ui->actionUndo->setEnabled(dirty);
+}
+
+void QScintillaEditor::updateUi() {
+    ui->actionCut->setEnabled(!edit->selectionEmpty());
+    ui->actionCopy->setEnabled(!edit->selectionEmpty());
+    ui->actionDelete->setEnabled(!edit->selectionEmpty());
 }
 
 bool QScintillaEditor::checkModifiedAndSave() {
