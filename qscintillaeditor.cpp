@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QTextStream>
 #include <QMessageBox>
 
@@ -90,6 +91,20 @@ void QScintillaEditor::on_actionCopy_triggered() {
 
 void QScintillaEditor::on_actionPaste_triggered() {
     edit->paste();
+}
+
+void QScintillaEditor::on_actionGoTo_triggered() {
+    int lineCount = edit->lineCount();
+    bool ok;
+    int line = QInputDialog::getInt(this, tr("Line number"), tr("Go to line"),
+        1, 1, lineCount + 1, 1, &ok);
+    if (ok) {
+        edit->gotoLine(line - 1);
+    }
+}
+
+void QScintillaEditor::on_actionSelectAll_triggered() {
+    edit->selectAll();
 }
 
 void QScintillaEditor::savePointChanged(bool dirty) {
@@ -181,3 +196,4 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
+

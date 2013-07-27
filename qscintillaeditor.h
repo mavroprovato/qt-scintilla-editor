@@ -32,6 +32,10 @@ private slots:
     void savePointChanged(bool dirty);
     void updateUi();
 
+    void on_actionGoTo_triggered();
+
+    void on_actionSelectAll_triggered();
+
 private:
     bool checkModifiedAndSave();
     bool saveFile(const QString& fileName = "");
