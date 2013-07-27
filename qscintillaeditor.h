@@ -1,7 +1,10 @@
 #ifndef QSCINTILLAEDITOR_H
 #define QSCINTILLAEDITOR_H
 
+#include <QFileInfo>
 #include <QMainWindow>
+
+class ScintillaEdit;
 
 namespace Ui {
 class QScintillaEditor;
@@ -15,8 +18,16 @@ public:
     explicit QScintillaEditor(QWidget *parent = 0);
     ~QScintillaEditor();
     
+private slots:
+    void on_actionNew_triggered();
+
 private:
+    bool saveFile();
+
     Ui::QScintillaEditor *ui;
+    ScintillaEdit *edit;
+    bool nameSet;
+    QFileInfo fileInfo;
 };
 
 #endif // QSCINTILLAEDITOR_H
