@@ -23,9 +23,45 @@ QScintillaEditor::~QScintillaEditor() {
 }
 
 void QScintillaEditor::on_actionNew_triggered() {
+    if (checkModifiedAndSave()) {
+        // Clear the file name and the editor
+        edit->clearAll();
+        edit->setSavePoint();
+        nameSet = false;
+        fileInfo.setFile("");
+    }
+}
+
+void QScintillaEditor::on_actionOpen_triggered()
+{
+    if (checkModifiedAndSave()) {
+        // Display the open file dialog
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
+        if (!fileName.isEmpty()) {
+            // Save the file
+            QFile file(fileName);
+            if (!file.open(QIODevice::ReadOnly)) {
+                QMessageBox::critical(this,  QApplication::applicationName(),
+                    tr("The file cannot be opened."));
+                return;
+            }
+            QTextStream in(&file);
+            QString content = in.readAll();
+            edit->setText(content.toAscii());
+            file.close();
+
+            // File saved succesfully
+            edit->setSavePoint();
+            nameSet = true;
+            fileInfo.setFile(fileName);
+        }
+    }
+}
+
+bool QScintillaEditor::checkModifiedAndSave() {
     // If the file has been modified, promt the user to save the changes
     if (edit->modify()) {
-        // Display the message box
+        // Ask the user if the file should be saved
         QString message = QString(tr("File %1 has been modified"))
                 .arg(nameSet ? tr("Untitled") : fileInfo.fileName());
         QMessageBox msgBox;
@@ -40,26 +76,19 @@ void QScintillaEditor::on_actionNew_triggered() {
         switch (ret) {
         case QMessageBox::Save:
             // Try to save the file
-            if (!saveFile()) {
-                // If not saved, do not clear
-                return;
-            }
-            break;
+            return saveFile();
         case QMessageBox::Discard:
-            break;
+            return true;
         case QMessageBox::Cancel:
             // User canceled, do not clear
-            return;
+            return false;
         default:
             // Should never be reached
             break;
         }
     }
-    // Clear the file name and the editor
-    edit->clearAll();
-    edit->setSavePoint();
-    nameSet = false;
-    fileInfo.setFile("");
+
+    return true;
 }
 
 bool QScintillaEditor::saveFile() {
@@ -94,3 +123,4 @@ bool QScintillaEditor::saveFile() {
 
     return true;
 }
+
