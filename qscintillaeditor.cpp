@@ -66,6 +66,14 @@ void QScintillaEditor::on_actionSave_triggered()
     saveFile();
 }
 
+void QScintillaEditor::on_actionSaveAs_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
+    if (!fileName.isEmpty()) {
+        saveFile(fileName);
+    }
+}
+
 void QScintillaEditor::savePointChanged(bool dirty) {
     ui->actionSave->setEnabled(dirty);
 }
@@ -103,35 +111,42 @@ bool QScintillaEditor::checkModifiedAndSave() {
     return true;
 }
 
-bool QScintillaEditor::saveFile() {
+bool QScintillaEditor::saveFile(const QString &fileName) {
     // Get a file name if there is none
-    if (!nameSet) {
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
-        if (fileName.isEmpty()) {
+    QString newFileName;
+    if (!fileName.isEmpty()) {
+        newFileName = fileName;
+    } else if (nameSet) {
+        newFileName = fileInfo.filePath();
+    } else {
+        QString selectedFileName = QFileDialog::getSaveFileName(this,
+            tr("Save File"));
+        if (selectedFileName.isEmpty()) {
             return false;
         }
-        fileInfo.setFile(fileName);
-        nameSet = true;
+        newFileName = selectedFileName;
     }
 
     // Save the file
-    QFile file(fileInfo.filePath());
+    QFile file(newFileName);
     if (!file.open(QIODevice::WriteOnly)) {
         // Cannot write file, display an error message
         QMessageBox::critical(this, QApplication::applicationName(),
             tr("The file cannot be saved"));
         return false;
-    } else {
-        // Save the text to a file.
-        QTextStream stream(&file);
-        QByteArray content = edit->getText(edit->textLength() + 1);
-        stream << QString::fromAscii(content);
-        stream.flush();
-        file.close();
-
-        // Set a savepoint
-        edit->setSavePoint();
     }
+
+    // Save the text to a file.
+    QTextStream stream(&file);
+    QByteArray content = edit->getText(edit->textLength() + 1);
+    stream << QString::fromAscii(content);
+    stream.flush();
+    file.close();
+
+    // File saved
+    edit->setSavePoint();
+    fileInfo.setFile(newFileName);
+    nameSet = true;
 
     return true;
 }

@@ -20,16 +20,14 @@ public:
 
 private slots:
     void on_actionNew_triggered();
-
     void on_actionOpen_triggered();
-
     void on_actionSave_triggered();
-
+    void on_actionSaveAs_triggered();
     void savePointChanged(bool dirty);
 
 private:
     bool checkModifiedAndSave();
-    bool saveFile();
+    bool saveFile(const QString& fileName = "");
 
     Ui::QScintillaEditor *ui;
     ScintillaEdit *edit;
