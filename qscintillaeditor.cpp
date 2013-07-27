@@ -61,17 +61,19 @@ void QScintillaEditor::on_actionOpen_triggered()
     }
 }
 
-void QScintillaEditor::on_actionSave_triggered()
-{
+void QScintillaEditor::on_actionSave_triggered() {
     saveFile();
 }
 
-void QScintillaEditor::on_actionSaveAs_triggered()
-{
+void QScintillaEditor::on_actionSaveAs_triggered() {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
     if (!fileName.isEmpty()) {
         saveFile(fileName);
     }
+}
+
+void QScintillaEditor::on_actionExit_triggered() {
+    qApp->quit();
 }
 
 void QScintillaEditor::savePointChanged(bool dirty) {
@@ -149,4 +151,10 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
     nameSet = true;
 
     return true;
+}
+
+void QScintillaEditor::closeEvent(QCloseEvent *event) {
+    if (!checkModifiedAndSave()) {
+        event->ignore();
+    }
 }

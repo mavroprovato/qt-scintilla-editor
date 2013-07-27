@@ -1,6 +1,7 @@
 #ifndef QSCINTILLAEDITOR_H
 #define QSCINTILLAEDITOR_H
 
+#include <QCloseEvent>
 #include <QFileInfo>
 #include <QMainWindow>
 
@@ -23,11 +24,13 @@ private slots:
     void on_actionOpen_triggered();
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
+    void on_actionExit_triggered();
     void savePointChanged(bool dirty);
 
 private:
     bool checkModifiedAndSave();
     bool saveFile(const QString& fileName = "");
+    void closeEvent(QCloseEvent* event);
 
     Ui::QScintillaEditor *ui;
     ScintillaEdit *edit;
