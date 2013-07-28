@@ -1,6 +1,5 @@
 #include <ScintillaEdit.h>
 
-#include <QApplication>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QTextStream>
@@ -62,7 +61,7 @@ void QScintillaEditor::on_actionOpen_triggered() {
             // Save the file
             QFile file(fileName);
             if (!file.open(QIODevice::ReadOnly)) {
-                QMessageBox::critical(this,  QApplication::applicationName(),
+                QMessageBox::critical(this, tr("Open File Error"),
                     tr("The file cannot be opened."));
                 return;
             }
@@ -299,7 +298,7 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
     QFile file(newFileName);
     if (!file.open(QIODevice::WriteOnly)) {
         // Cannot write file, display an error message
-        QMessageBox::critical(this, QApplication::applicationName(),
+        QMessageBox::critical(this, tr("Save File Error"),
             tr("The file cannot be saved"));
         return false;
     }

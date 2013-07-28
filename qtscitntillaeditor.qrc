@@ -17,5 +17,6 @@
         <file>icons/16x16/help-about.png</file>
         <file>icons/16x16/edit-redo.png</file>
         <file>icons/16x16/view-fullscreen.png</file>
+        <file>icons/16x16/accessories-text-editor.png</file>
     </qresource>
 </RCC>

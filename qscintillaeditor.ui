@@ -14,7 +14,11 @@
    <enum>Qt::NoContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>QScintillaEditor</string>
+   <string>Editor</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qtscitntillaeditor.qrc">
+    <normaloff>:/icons/icons/16x16/accessories-text-editor.png</normaloff>:/icons/icons/16x16/accessories-text-editor.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
