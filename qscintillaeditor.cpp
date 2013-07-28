@@ -17,7 +17,8 @@
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QScintillaEditor),
-    nameSet(false) {
+    nameSet(false),
+    wasMaximized(false) {
     ui->setupUi(this);
 
     edit = new ScintillaEdit(this);
@@ -173,6 +174,21 @@ void QScintillaEditor::on_actionToolBar_triggered() {
     ui->mainToolBar->setVisible(ui->actionToolBar->isChecked());
 }
 
+/**
+ * Called when the view fullscreen action is triggered.
+ */
+void QScintillaEditor::on_actionFullscreen_triggered() {
+    if (isFullScreen()) {
+        if (wasMaximized) {
+            showMaximized();
+        } else {
+            showNormal();
+        }
+    } else {
+        wasMaximized = isMaximized();
+        showFullScreen();
+    }
+}
 /**
  * Called when the word wrap action is triggered.
  */

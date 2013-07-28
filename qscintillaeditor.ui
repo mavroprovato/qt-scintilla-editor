@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>340</height>
+    <width>600</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="contextMenuPolicy">
@@ -22,13 +22,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>524</width>
+     <width>600</width>
      <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
@@ -42,7 +42,7 @@
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Edit</string>
+     <string>&amp;Edit</string>
     </property>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
@@ -61,28 +61,30 @@
    </widget>
    <widget class="QMenu" name="menuFormat">
     <property name="title">
-     <string>Format</string>
+     <string>&amp;Tools</string>
     </property>
     <addaction name="actionWordWrap"/>
     <addaction name="actionFont"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
+    <addaction name="actionFullscreen"/>
+    <addaction name="separator"/>
     <addaction name="actionToolBar"/>
     <addaction name="actionStatusBar"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
-   <addaction name="menuFormat"/>
    <addaction name="menuView"/>
+   <addaction name="menuFormat"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -237,9 +239,6 @@
    <property name="text">
     <string>Delete</string>
    </property>
-   <property name="shortcut">
-    <string>Del</string>
-   </property>
   </action>
   <action name="actionFind">
    <property name="icon">
@@ -350,6 +349,21 @@
    </property>
    <property name="text">
     <string>Tool Bar</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="qtscitntillaeditor.qrc">
+     <normaloff>:/icons/icons/16x16/view-fullscreen.png</normaloff>:/icons/icons/16x16/view-fullscreen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
    </property>
   </action>
  </widget>
