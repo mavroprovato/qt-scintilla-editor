@@ -18,6 +18,8 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     edit = new ScintillaEdit(this);
     setCentralWidget(edit);
 
+    setUpEditor();
+
     QObject::connect(edit, SIGNAL(savePointChanged(bool)), this,
         SLOT(savePointChanged(bool)));
     QObject::connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
@@ -51,7 +53,7 @@ void QScintillaEditor::on_actionOpen_triggered() {
             }
             QTextStream in(&file);
             QString content = in.readAll();
-            edit->setText(content.toAscii());
+            edit->setText(content.toUtf8());
             file.close();
 
             // File saved succesfully
@@ -126,6 +128,10 @@ void QScintillaEditor::updateUi() {
     ui->actionDelete->setEnabled(!edit->selectionEmpty());
 }
 
+void QScintillaEditor::setUpEditor() {
+    edit->setCodePage(SC_CP_UTF8);
+}
+
 bool QScintillaEditor::checkModifiedAndSave() {
     // If the file has been modified, promt the user to save the changes
     if (edit->modify()) {
@@ -187,7 +193,7 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
     // Save the text to a file.
     QTextStream stream(&file);
     QByteArray content = edit->getText(edit->textLength() + 1);
-    stream << QString::fromAscii(content);
+    stream << QString::fromUtf8(content);
     stream.flush();
     file.close();
 

@@ -38,6 +38,7 @@ private slots:
     void updateUi();
 
 private:
+    void setUpEditor();
     bool checkModifiedAndSave();
     bool saveFile(const QString& fileName = "");
     void closeEvent(QCloseEvent* event);
