@@ -204,7 +204,18 @@ void QScintillaEditor::updateUi() {
  * Sets up the initial settings for the editor.
  */
 void QScintillaEditor::setUpEditor() {
+    // Use Unicode code page
     edit->setCodePage(SC_CP_UTF8);
+    // Do not display any margin
+    edit->setMarginWidthN(1, 0);
+    // Track the scroll width
+    edit->setScrollWidth(1);
+    edit->setScrollWidthTracking(true);
+    // Set a monospaced font
+    QFont font("Monospace");
+    font.setStyleHint(QFont::TypeWriter);
+    edit->styleSetFont(STYLE_DEFAULT, font.family().toAscii());
+    edit->styleSetSize(STYLE_DEFAULT, 10);
 }
 
 /**
