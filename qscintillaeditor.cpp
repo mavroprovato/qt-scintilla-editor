@@ -107,6 +107,10 @@ void QScintillaEditor::on_actionSelectAll_triggered() {
     edit->selectAll();
 }
 
+void QScintillaEditor::on_actionWordWrap_triggered() {
+    edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
+}
+
 void QScintillaEditor::savePointChanged(bool dirty) {
     ui->actionSave->setEnabled(dirty);
     ui->actionUndo->setEnabled(dirty);
@@ -196,4 +200,3 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
-

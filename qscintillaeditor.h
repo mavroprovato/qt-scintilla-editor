@@ -25,16 +25,16 @@ private slots:
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
     void on_actionExit_triggered();
-    void on_actionUndo_triggered();    
+    void on_actionUndo_triggered();
     void on_actionCut_triggered();
     void on_actionCopy_triggered();
     void on_actionPaste_triggered();
+    void on_actionGoTo_triggered();
+    void on_actionSelectAll_triggered();
+    void on_actionWordWrap_triggered();
+
     void savePointChanged(bool dirty);
     void updateUi();
-
-    void on_actionGoTo_triggered();
-
-    void on_actionSelectAll_triggered();
 
 private:
     bool checkModifiedAndSave();
