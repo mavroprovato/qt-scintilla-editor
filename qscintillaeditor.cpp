@@ -9,6 +9,11 @@
 #include "qscintillaeditor.h"
 #include "ui_qscintillaeditor.h"
 
+/**
+ * Constructor for the editor.
+ *
+ * @param parent The parent widget for the editor.
+ */
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QScintillaEditor),
@@ -25,10 +30,16 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QObject::connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
 }
 
+/**
+ * Destructor for the editor.
+ */
 QScintillaEditor::~QScintillaEditor() {
     delete ui;
 }
 
+/**
+ * Called when the New file action is triggered.
+ */
 void QScintillaEditor::on_actionNew_triggered() {
     if (checkModifiedAndSave()) {
         // Clear the file name and the editor
@@ -39,6 +50,9 @@ void QScintillaEditor::on_actionNew_triggered() {
     }
 }
 
+/**
+ * Called when the Open action is triggered.
+ */
 void QScintillaEditor::on_actionOpen_triggered() {
     if (checkModifiedAndSave()) {
         // Display the open file dialog
@@ -64,10 +78,16 @@ void QScintillaEditor::on_actionOpen_triggered() {
     }
 }
 
+/**
+ * Called when the save action is triggered.
+ */
 void QScintillaEditor::on_actionSave_triggered() {
     saveFile();
 }
 
+/**
+ * Called when the save as action is triggered.
+ */
 void QScintillaEditor::on_actionSaveAs_triggered() {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
     if (!fileName.isEmpty()) {
@@ -75,26 +95,44 @@ void QScintillaEditor::on_actionSaveAs_triggered() {
     }
 }
 
+/**
+ * Called when the exit action is triggered.
+ */
 void QScintillaEditor::on_actionExit_triggered() {
     qApp->quit();
 }
 
+/**
+ * Called when the undo action is triggered.
+ */
 void QScintillaEditor::on_actionUndo_triggered() {
     edit->undo();
 }
 
+/**
+ * Called when the cut action is triggered.
+ */
 void QScintillaEditor::on_actionCut_triggered() {
     edit->cut();
 }
 
+/**
+ * Called when the copy action is triggered.
+ */
 void QScintillaEditor::on_actionCopy_triggered() {
     edit->copy();
 }
 
+/**
+ * Called when the paste action is triggered.
+ */
 void QScintillaEditor::on_actionPaste_triggered() {
     edit->paste();
 }
 
+/**
+ * Called when the go to action is triggered.
+ */
 void QScintillaEditor::on_actionGoTo_triggered() {
     int lineCount = edit->lineCount();
     bool ok;
@@ -105,33 +143,60 @@ void QScintillaEditor::on_actionGoTo_triggered() {
     }
 }
 
+/**
+ * Called when the select all action is triggered.
+ */
 void QScintillaEditor::on_actionSelectAll_triggered() {
     edit->selectAll();
 }
 
+/**
+ * Called when the view status bar action is triggered.
+ */
 void QScintillaEditor::on_actionStatusBar_triggered() {
     ui->statusBar->setVisible(ui->actionStatusBar->isChecked());
 }
 
+/**
+ * Called when the word wrap action is triggered.
+ */
 void QScintillaEditor::on_actionWordWrap_triggered() {
     edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
 }
 
+/**
+ * Triggered when the save point is changed.
+ *
+ * @param dirty true if a save point is reached, false otherwise.
+ */
 void QScintillaEditor::savePointChanged(bool dirty) {
     ui->actionSave->setEnabled(dirty);
     ui->actionUndo->setEnabled(dirty);
 }
 
+/**
+ * Either the text or styling of the document has changed or the selection range
+ * or scroll position has changed.
+ */
 void QScintillaEditor::updateUi() {
     ui->actionCut->setEnabled(!edit->selectionEmpty());
     ui->actionCopy->setEnabled(!edit->selectionEmpty());
     ui->actionDelete->setEnabled(!edit->selectionEmpty());
 }
 
+/**
+ * Sets up the initial settings for the editor.
+ */
 void QScintillaEditor::setUpEditor() {
     edit->setCodePage(SC_CP_UTF8);
 }
 
+/**
+ * Checks if the current editor is modified and saves it if necessary.
+ *
+ * @return true if the file was saved or if the user did not want to save the
+ * file, false otherwise.
+ */
 bool QScintillaEditor::checkModifiedAndSave() {
     // If the file has been modified, promt the user to save the changes
     if (edit->modify()) {
@@ -165,6 +230,12 @@ bool QScintillaEditor::checkModifiedAndSave() {
     return true;
 }
 
+/**
+ * Saves the file.
+ *
+ * @param fileName The file name under which to save the file.
+ * @return true if the file was saved, false otherwise.
+ */
 bool QScintillaEditor::saveFile(const QString &fileName) {
     // Get a file name if there is none
     QString newFileName;
@@ -205,9 +276,13 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
     return true;
 }
 
+/**
+ * Called when the user tries to close the application.
+ *
+ * @param event The close event.
+ */
 void QScintillaEditor::closeEvent(QCloseEvent *event) {
     if (!checkModifiedAndSave()) {
         event->ignore();
     }
 }
-
