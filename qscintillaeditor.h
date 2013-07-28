@@ -32,6 +32,7 @@ private slots:
     void on_actionGoTo_triggered();
     void on_actionSelectAll_triggered();
     void on_actionWordWrap_triggered();
+    void on_actionStatusBar_triggered();
 
     void savePointChanged(bool dirty);
     void updateUi();

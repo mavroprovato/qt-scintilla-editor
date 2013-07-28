@@ -107,6 +107,10 @@ void QScintillaEditor::on_actionSelectAll_triggered() {
     edit->selectAll();
 }
 
+void QScintillaEditor::on_actionStatusBar_triggered() {
+    ui->statusBar->setVisible(ui->actionStatusBar->isChecked());
+}
+
 void QScintillaEditor::on_actionWordWrap_triggered() {
     edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
 }
@@ -200,3 +204,4 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
+
