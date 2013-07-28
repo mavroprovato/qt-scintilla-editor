@@ -107,6 +107,15 @@ void QScintillaEditor::on_actionExit_triggered() {
  */
 void QScintillaEditor::on_actionUndo_triggered() {
     edit->undo();
+    ui->actionRedo->setEnabled(edit->canRedo());
+}
+
+/**
+ * Called when the redo action is triggered.
+ */
+void QScintillaEditor::on_actionRedo_triggered() {
+    edit->redo();
+    ui->actionRedo->setEnabled(edit->canRedo());
 }
 
 /**
@@ -155,6 +164,13 @@ void QScintillaEditor::on_actionSelectAll_triggered() {
  */
 void QScintillaEditor::on_actionStatusBar_triggered() {
     ui->statusBar->setVisible(ui->actionStatusBar->isChecked());
+}
+
+/**
+ * Called when the view tool bar action is triggered.
+ */
+void QScintillaEditor::on_actionToolBar_triggered() {
+    ui->mainToolBar->setVisible(ui->actionToolBar->isChecked());
 }
 
 /**

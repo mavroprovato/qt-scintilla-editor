@@ -37,6 +37,10 @@ private slots:
     void savePointChanged(bool dirty);
     void updateUi();
 
+    void on_actionRedo_triggered();
+
+    void on_actionToolBar_triggered();
+
 private:
     void setUpEditor();
     bool checkModifiedAndSave();

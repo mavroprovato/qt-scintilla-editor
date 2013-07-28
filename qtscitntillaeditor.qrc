@@ -15,5 +15,6 @@
         <file>icons/16x16/edit-select-all.png</file>
         <file>icons/16x16/edit-undo.png</file>
         <file>icons/16x16/help-about.png</file>
+        <file>icons/16x16/edit-redo.png</file>
     </qresource>
 </RCC>
