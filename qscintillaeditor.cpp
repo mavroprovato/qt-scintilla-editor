@@ -1,6 +1,9 @@
 #include <ScintillaEdit.h>
 
+#include <QtGlobal>
+
 #include <QFileDialog>
+#include <QFontDatabase>
 #include <QInputDialog>
 #include <QTextStream>
 #include <QMessageBox>
@@ -227,9 +230,23 @@ void QScintillaEditor::setUpEditor() {
     edit->setScrollWidth(1);
     edit->setScrollWidthTracking(true);
     // Set a monospaced font
-    QFont font("Monospace");
-    font.setStyleHint(QFont::TypeWriter);
-    edit->styleSetFont(STYLE_DEFAULT, font.family().toAscii());
+    QFontDatabase fontDb;
+#ifdef Q_OS_WIN
+    if (fontDb.families(QFontDatabase::Any).contains("Consolas")) {
+        edit->styleSetFont(STYLE_DEFAULT, "Consolas");
+    } else {
+        edit->styleSetFont(STYLE_DEFAULT, "Courier New");
+    }
+#elif Q_OS_MAC
+    if (fontDb.families(QFontDatabase::Any).contains("Menlo")) {
+        edit->styleSetFont(STYLE_DEFAULT, "Menlo");
+    } else {
+        edit->styleSetFont(STYLE_DEFAULT, "Monaco");
+    }
+#else
+    edit->styleSetFont(STYLE_DEFAULT, "Monospace");
+#endif
+
     edit->styleSetSize(STYLE_DEFAULT, 10);
 }
 
