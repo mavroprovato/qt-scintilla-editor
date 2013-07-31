@@ -32,14 +32,14 @@ private slots:
     void on_actionPaste_triggered();
     void on_actionGoTo_triggered();
     void on_actionSelectAll_triggered();
-    void on_actionWordWrap_triggered();
     void on_actionToolBar_triggered();
     void on_actionStatusBar_triggered();
+    void on_actionFullscreen_triggered();
+    void on_actionWordWrap_triggered();    
+    void on_actionFont_triggered();
 
     void savePointChanged(bool dirty);
     void updateUi();
-
-    void on_actionFullscreen_triggered();
 
 private:
     void setUpEditor();

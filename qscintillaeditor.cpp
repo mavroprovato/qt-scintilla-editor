@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include <QFontDatabase>
+#include <QFontDialog>
 #include <QInputDialog>
 #include <QTextStream>
 #include <QMessageBox>
@@ -191,11 +192,34 @@ void QScintillaEditor::on_actionFullscreen_triggered() {
         showFullScreen();
     }
 }
+
 /**
  * Called when the word wrap action is triggered.
  */
 void QScintillaEditor::on_actionWordWrap_triggered() {
     edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
+}
+
+/**
+ * Called when the word wrap action is triggered.
+ */
+void QScintillaEditor::on_actionFont_triggered() {
+    // Read the current font
+    QString family = edit->styleFont(STYLE_DEFAULT);
+    int pointSize = edit->styleSize(STYLE_DEFAULT);
+    bool bold = edit->styleBold(STYLE_DEFAULT);
+    bool italic = edit->styleItalic(STYLE_DEFAULT);
+    QFont initial(family, pointSize,
+        bold ? QFont::Bold : QFont::Normal, italic);
+    // Show the font dialog
+    bool ok;
+    QFont font = QFontDialog::getFont(&ok, initial);
+    if (ok) {
+        edit->styleSetFont(STYLE_DEFAULT, font.family().toLatin1());
+        edit->styleSetSize(STYLE_DEFAULT, font.pointSize());
+        edit->styleSetBold(STYLE_DEFAULT, font.bold());
+        edit->styleSetItalic(STYLE_DEFAULT, font.italic());
+    }
 }
 
 /**
@@ -215,7 +239,6 @@ void QScintillaEditor::savePointChanged(bool dirty) {
 void QScintillaEditor::updateUi() {
     ui->actionCut->setEnabled(!edit->selectionEmpty());
     ui->actionCopy->setEnabled(!edit->selectionEmpty());
-    ui->actionDelete->setEnabled(!edit->selectionEmpty());
 }
 
 /**

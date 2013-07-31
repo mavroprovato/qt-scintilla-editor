@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>750</width>
     <height>700</height>
    </rect>
   </property>
@@ -26,8 +26,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
-     <height>18</height>
+     <width>750</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -54,7 +54,6 @@
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
-    <addaction name="actionDelete"/>
     <addaction name="separator"/>
     <addaction name="actionFind"/>
     <addaction name="actionFindNext"/>
@@ -235,15 +234,6 @@
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="actionDelete">
-   <property name="icon">
-    <iconset resource="qtscitntillaeditor.qrc">
-     <normaloff>:/icons/icons/16x16/edit-delete.png</normaloff>:/icons/icons/16x16/edit-delete.png</iconset>
-   </property>
-   <property name="text">
-    <string>Delete</string>
-   </property>
-  </action>
   <action name="actionFind">
    <property name="icon">
     <iconset resource="qtscitntillaeditor.qrc">
@@ -305,6 +295,10 @@
    </property>
   </action>
   <action name="actionFont">
+   <property name="icon">
+    <iconset resource="qtscitntillaeditor.qrc">
+     <normaloff>:/icons/icons/16x16/preferences-desktop-font.png</normaloff>:/icons/icons/16x16/preferences-desktop-font.png</iconset>
+   </property>
    <property name="text">
     <string>Font...</string>
    </property>
