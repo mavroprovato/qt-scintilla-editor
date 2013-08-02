@@ -42,7 +42,7 @@
     <addaction name="actionPageSetup"/>
     <addaction name="actionPrint"/>
     <addaction name="separator"/>
-    <addaction name="actionExit"/>
+    <addaction name="actionClose"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -174,16 +174,16 @@
     <string>Page Setup...</string>
    </property>
   </action>
-  <action name="actionExit">
+  <action name="actionClose">
    <property name="icon">
     <iconset resource="qtscitntillaeditor.qrc">
-     <normaloff>:/icons/icons/16x16/application-exit.png</normaloff>:/icons/icons/16x16/application-exit.png</iconset>
+     <normaloff>:/icons/icons/16x16/document-close.png</normaloff>:/icons/icons/16x16/document-close.png</iconset>
    </property>
    <property name="text">
-    <string>Exit</string>
+    <string>Close</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+Q</string>
+   <property name="toolTip">
+    <string>Close</string>
    </property>
   </action>
   <action name="actionUndo">

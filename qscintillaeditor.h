@@ -50,9 +50,9 @@ private slots:
     void on_actionSaveAs_triggered();
 
     /**
-     * Called when the Exit action is triggered.
+     * Called when the Close action is triggered.
      */
-    void on_actionExit_triggered();
+    void on_actionClose_triggered();
 
     /**
      * Called when the Undo action is triggered.

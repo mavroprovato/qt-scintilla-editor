@@ -32,9 +32,8 @@ QScintillaEditor::~QScintillaEditor() {
 }
 
 void QScintillaEditor::on_actionNew_triggered() {
-    if (checkModifiedAndSave()) {
-        edit->clear();
-    }
+    QScintillaEditor *w = new QScintillaEditor;
+    w->show();
 }
 
 void QScintillaEditor::on_actionOpen_triggered() {
@@ -61,8 +60,8 @@ void QScintillaEditor::on_actionSaveAs_triggered() {
     }
 }
 
-void QScintillaEditor::on_actionExit_triggered() {
-    qApp->quit();
+void QScintillaEditor::on_actionClose_triggered() {
+    close();
 }
 
 void QScintillaEditor::on_actionUndo_triggered() {
@@ -233,6 +232,7 @@ bool QScintillaEditor::checkModifiedAndSave() {
             // Try to save the file
             return saveFile();
         case QMessageBox::Discard:
+            // Discard the file contents
             return true;
         case QMessageBox::Cancel:
             // User canceled, do not clear
