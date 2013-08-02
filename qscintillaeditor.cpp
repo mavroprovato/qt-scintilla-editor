@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 
+#include "findreplacedialog.h"
 #include "qscintillaeditor.h"
 #include "ui_qscintillaeditor.h"
 
@@ -21,7 +22,8 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QScintillaEditor),
     nameSet(false),
-    wasMaximized(false) {
+    wasMaximized(false),
+    findDlg(0) {
     ui->setupUi(this);
 
     edit = new ScintillaEdit(this);
@@ -29,9 +31,9 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
 
     setUpEditor();
 
-    QObject::connect(edit, SIGNAL(savePointChanged(bool)), this,
+    connect(edit, SIGNAL(savePointChanged(bool)), this,
         SLOT(savePointChanged(bool)));
-    QObject::connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
+    connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
 }
 
 /**
@@ -144,6 +146,28 @@ void QScintillaEditor::on_actionPaste_triggered() {
 }
 
 /**
+ * Called when the find action is triggered.
+ */
+void QScintillaEditor::on_actionFind_triggered() {
+    if (!findDlg) {
+        findDlg = new FindReplaceDialog(this);
+        connect(findDlg, SIGNAL(findPressed()), this, SLOT(find()));
+    }
+    findDlg->setType(FindReplaceDialog::Find);
+
+    findDlg->show();
+    findDlg->raise();
+    findDlg->activateWindow();
+}
+
+/**
+ * Called when the find next action is triggered.
+ */
+void QScintillaEditor::on_actionFindNext_triggered() {
+    find();
+}
+
+/**
  * Called when the go to action is triggered.
  */
 void QScintillaEditor::on_actionGoTo_triggered() {
@@ -219,6 +243,51 @@ void QScintillaEditor::on_actionFont_triggered() {
         edit->styleSetSize(STYLE_DEFAULT, font.pointSize());
         edit->styleSetBold(STYLE_DEFAULT, font.bold());
         edit->styleSetItalic(STYLE_DEFAULT, font.italic());
+    }
+}
+
+/**
+ * Called when the user searches for text.
+ */
+void QScintillaEditor::find() {
+    QString findText = findDlg->findText();
+    if (!findText.isEmpty()) {
+        // Set the search flags
+        int flags = 0;
+        if (findDlg->matchCase()) {
+            flags |= SCFIND_MATCHCASE;
+        }
+        if (findDlg->wholeWord()) {
+            flags |= SCFIND_WHOLEWORD;
+        }
+        if (findDlg->regularExpression()) {
+            flags |= SCFIND_REGEXP;
+        }
+        edit->setSearchFlags(flags);
+        // Perform the search
+        bool forward = findDlg->directionForward();
+        edit->setTargetStart(forward ? edit->currentPos() :
+                                       edit->currentPos() - 1);
+        edit->setTargetEnd(forward ? edit->length() : 0);
+        QByteArray findArray = findText.toUtf8();
+        int findPos = edit->searchInTarget(findArray.length(), findArray);
+        // If the search should wrap, perform the search again.
+        bool searchWrapped = false;
+        if (findPos == -1 && findDlg->wrapSearch()) {
+            edit->setTargetStart(forward ? 0 : edit->length());
+            edit->setTargetEnd(forward ? edit->currentPos() :
+                                         edit->currentPos() - 1);
+            findPos = edit->searchInTarget(findArray.length(), findArray);
+            searchWrapped = true;
+        }
+        if (findPos == -1) {
+            ui->statusBar->showMessage(tr("The text was not found."));
+        } else {
+            edit->setSel(edit->targetStart(), edit->targetEnd());
+            edit->scrollRange(edit->targetStart(), edit->targetEnd());
+            ui->statusBar->showMessage(searchWrapped ? tr("Search wrapped") :
+                                                       tr(""));
+        }
     }
 }
 

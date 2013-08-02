@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>391</width>
-    <height>166</height>
+    <height>145</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -73,8 +73,15 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="matchWordCheckBox">
+         <property name="text">
+          <string>Match whole word only</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1">
-        <widget class="QCheckBox" name="wraSearchCheckBox">
+        <widget class="QCheckBox" name="wrapSearchCheckBox">
          <property name="text">
           <string>Wrap search</string>
          </property>
@@ -83,31 +90,10 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="matchWordCheckBox">
-         <property name="text">
-          <string>Match whole word only</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QCheckBox" name="incrementalCheckBox">
-         <property name="text">
-          <string>Incremental</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
+       <item row="2" column="1">
         <widget class="QCheckBox" name="regularExpressionCheckBox">
          <property name="text">
           <string>Regular expression</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QCheckBox" name="inSelectionCheckBox">
-         <property name="text">
-          <string>In selection</string>
          </property>
         </widget>
        </item>
@@ -134,6 +120,9 @@
       <widget class="QPushButton" name="findPushButton">
        <property name="text">
         <string>Find</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
