@@ -19,15 +19,6 @@ void FindReplaceDialog::setType(Type type) {
     ui->replaceAllPushButton->setVisible(type == FindReplace);
 }
 
-void FindReplaceDialog::on_findPushButton_clicked() {
-    findPressed();
-    hide();
-}
-
-void FindReplaceDialog::on_cancelButton_clicked() {
-    hide();
-}
-
 QString FindReplaceDialog::findText() const {
     return ui->findLindEdit->text();
 }
@@ -54,4 +45,18 @@ bool FindReplaceDialog::regularExpression() const {
 
 bool FindReplaceDialog::wrapSearch() const {
     return ui->wrapSearchCheckBox->isChecked();
+}
+
+void FindReplaceDialog::showEvent(QShowEvent *e) {
+    QDialog::showEvent(e);
+    ui->findLindEdit->setFocus(Qt::ActiveWindowFocusReason);
+}
+
+void FindReplaceDialog::on_findPushButton_clicked() {
+    findPressed();
+    hide();
+}
+
+void FindReplaceDialog::on_cancelButton_clicked() {
+    hide();
 }

@@ -101,6 +101,9 @@ signals:
      */
     void findPressed();
 
+protected:
+    virtual void showEvent(QShowEvent *e);
+
 private slots:
     /**
      * Called when the find button is clicked.
