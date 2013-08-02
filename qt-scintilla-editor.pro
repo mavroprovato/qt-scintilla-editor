@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         qscintillaeditor.cpp \
-    findreplacedialog.cpp
+    findreplacedialog.cpp \
+    buffer.cpp
 
 HEADERS  += qscintillaeditor.h \
-    findreplacedialog.h
+    findreplacedialog.h \
+    buffer.h
 
 FORMS    += qscintillaeditor.ui \
     findreplacedialog.ui

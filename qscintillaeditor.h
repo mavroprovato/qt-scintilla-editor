@@ -2,10 +2,9 @@
 #define QSCINTILLAEDITOR_H
 
 #include <QCloseEvent>
-#include <QFileInfo>
 #include <QMainWindow>
 
-class ScintillaEdit;
+class Buffer;
 class FindReplaceDialog;
 
 namespace Ui {
@@ -144,10 +143,6 @@ private slots:
     void updateUi();
 
 private:
-    /**
-     * Sets up the initial settings for the editor.
-     */
-    void setUpEditor();
 
     /**
      * Checks if the current editor is modified and saves it if necessary.
@@ -176,13 +171,7 @@ private:
     Ui::QScintillaEditor *ui;
 
     /** The editor control. */
-    ScintillaEdit *edit;
-
-    /** true if the file name has been set. */
-    bool nameSet;
-
-    /** Contains the file information, if the file has been set. */
-    QFileInfo fileInfo;
+    Buffer *edit;
 
     /** true if the window was maximized before foing full screen. */
     bool wasMaximized;

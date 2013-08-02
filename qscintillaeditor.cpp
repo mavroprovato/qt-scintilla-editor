@@ -3,12 +3,11 @@
 #include <QtGlobal>
 
 #include <QFileDialog>
-#include <QFontDatabase>
 #include <QFontDialog>
 #include <QInputDialog>
-#include <QTextStream>
 #include <QMessageBox>
 
+#include "buffer.h"
 #include "findreplacedialog.h"
 #include "qscintillaeditor.h"
 #include "ui_qscintillaeditor.h"
@@ -16,15 +15,12 @@
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QScintillaEditor),
-    nameSet(false),
     wasMaximized(false),
     findDlg(0) {
     ui->setupUi(this);
 
-    edit = new ScintillaEdit(this);
+    edit = new Buffer(parent);
     setCentralWidget(edit);
-
-    setUpEditor();
 
     connect(edit, SIGNAL(savePointChanged(bool)), this,
         SLOT(savePointChanged(bool)));
@@ -37,11 +33,7 @@ QScintillaEditor::~QScintillaEditor() {
 
 void QScintillaEditor::on_actionNew_triggered() {
     if (checkModifiedAndSave()) {
-        // Clear the file name and the editor
-        edit->clearAll();
-        edit->setSavePoint();
-        nameSet = false;
-        fileInfo.setFile("");
+        edit->clear();
     }
 }
 
@@ -50,22 +42,10 @@ void QScintillaEditor::on_actionOpen_triggered() {
         // Display the open file dialog
         QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
         if (!fileName.isEmpty()) {
-            // Save the file
-            QFile file(fileName);
-            if (!file.open(QIODevice::ReadOnly)) {
+            if (!edit->open(fileName)) {
                 QMessageBox::critical(this, tr("Open File Error"),
                     tr("The file cannot be opened."));
-                return;
             }
-            QTextStream in(&file);
-            QString content = in.readAll();
-            edit->setText(content.toUtf8());
-            file.close();
-
-            // File saved succesfully
-            edit->setSavePoint();
-            nameSet = true;
-            fileInfo.setFile(fileName);
         }
     }
 }
@@ -233,44 +213,15 @@ void QScintillaEditor::updateUi() {
     ui->actionCopy->setEnabled(!edit->selectionEmpty());
 }
 
-void QScintillaEditor::setUpEditor() {
-    // Use Unicode code page
-    edit->setCodePage(SC_CP_UTF8);
-    // Do not display any margin
-    edit->setMarginWidthN(1, 0);
-    // Track the scroll width
-    edit->setScrollWidth(1);
-    edit->setScrollWidthTracking(true);
-    // Set a monospaced font
-    QFontDatabase fontDb;
-#ifdef Q_OS_WIN
-    if (fontDb.families(QFontDatabase::Any).contains("Consolas")) {
-        edit->styleSetFont(STYLE_DEFAULT, "Consolas");
-    } else {
-        edit->styleSetFont(STYLE_DEFAULT, "Courier New");
-    }
-#elif Q_OS_MAC
-    if (fontDb.families(QFontDatabase::Any).contains("Menlo")) {
-        edit->styleSetFont(STYLE_DEFAULT, "Menlo");
-    } else {
-        edit->styleSetFont(STYLE_DEFAULT, "Monaco");
-    }
-#else
-    edit->styleSetFont(STYLE_DEFAULT, "Monospace");
-#endif
-
-    edit->styleSetSize(STYLE_DEFAULT, 10);
-}
-
 bool QScintillaEditor::checkModifiedAndSave() {
     // If the file has been modified, promt the user to save the changes
     if (edit->modify()) {
         // Ask the user if the file should be saved
-        QString message = QString(tr("File %1 has been modified"))
-                .arg(nameSet ? tr("Untitled") : fileInfo.fileName());
+        QString message = QString(tr("File '%1' has been modified"))
+                .arg(edit->displayName());
         QMessageBox msgBox;
         msgBox.setText(message);
-        msgBox.setInformativeText("Do you want to save your changes?");
+        msgBox.setInformativeText(tr("Do you want to save your changes?"));
         msgBox.setIcon(QMessageBox::Information);
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
             QMessageBox::Cancel);
@@ -298,39 +249,27 @@ bool QScintillaEditor::checkModifiedAndSave() {
 bool QScintillaEditor::saveFile(const QString &fileName) {
     // Get a file name if there is none
     QString newFileName;
-    if (!fileName.isEmpty()) {
+    if (!fileName.isEmpty()) { // Save with the provided file name.
         newFileName = fileName;
-    } else if (nameSet) {
-        newFileName = fileInfo.filePath();
     } else {
-        QString selectedFileName = QFileDialog::getSaveFileName(this,
-            tr("Save File"));
-        if (selectedFileName.isEmpty()) {
-            return false;
+        newFileName = edit->filePath();
+
+        if (newFileName.isEmpty()) {
+            QString selectedFileName = QFileDialog::getSaveFileName(this,
+                tr("Save File"));
+            if (selectedFileName.isEmpty()) {
+                return false;
+            }
+            newFileName = selectedFileName;
         }
-        newFileName = selectedFileName;
     }
 
-    // Save the file
-    QFile file(newFileName);
-    if (!file.open(QIODevice::WriteOnly)) {
+    if (!edit->save(newFileName)) {
         // Cannot write file, display an error message
         QMessageBox::critical(this, tr("Save File Error"),
             tr("The file cannot be saved"));
         return false;
     }
-
-    // Save the text to a file.
-    QTextStream stream(&file);
-    QByteArray content = edit->getText(edit->textLength() + 1);
-    stream << QString::fromUtf8(content);
-    stream.flush();
-    file.close();
-
-    // File saved
-    edit->setSavePoint();
-    fileInfo.setFile(newFileName);
-    nameSet = true;
 
     return true;
 }
