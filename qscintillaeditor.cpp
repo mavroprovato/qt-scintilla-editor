@@ -159,6 +159,14 @@ void QScintillaEditor::on_actionResetZoom_triggered() {
     ui->actionZoomIn->setEnabled(true);
 }
 
+void QScintillaEditor::on_actionWhitespace_triggered() {
+    if (edit->viewWS() == SCWS_INVISIBLE) {
+        edit->setViewWS(SCWS_VISIBLEALWAYS);
+    } else {
+        edit->setViewWS(SCWS_INVISIBLE);
+    }
+}
+
 void QScintillaEditor::on_actionWordWrap_triggered() {
     edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
 }

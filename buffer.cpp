@@ -1,4 +1,5 @@
 #include "buffer.h"
+#include "util.h"
 
 #include <QFontDatabase>
 #include <QTextStream>
@@ -31,6 +32,9 @@ Buffer::Buffer(QWidget *parent) :
 #endif
     // Set font size.
     styleSetSize(STYLE_DEFAULT, 10);
+    // View whitespace
+    setViewWS(SCWS_VISIBLEALWAYS);
+    setWhitespaceFore(true, convertColor(Qt::lightGray));
 }
 
 Buffer::~Buffer() {

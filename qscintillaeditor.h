@@ -157,6 +157,8 @@ private slots:
      */
     void updateUi();
 
+    void on_actionWhitespace_triggered();
+
 private:
 
     /**

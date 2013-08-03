@@ -87,6 +87,7 @@
     <addaction name="actionStatusBar"/>
     <addaction name="separator"/>
     <addaction name="menuZoom"/>
+    <addaction name="actionWhitespace"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -411,6 +412,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+0</string>
+   </property>
+  </action>
+  <action name="actionWhitespace">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Whitespace</string>
    </property>
   </action>
  </widget>
