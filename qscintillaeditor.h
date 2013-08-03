@@ -130,6 +130,11 @@ private slots:
     void on_actionResetZoom_triggered();
 
     /**
+     * Called when the View whitespace action is triggered.
+     */
+    void on_actionWhitespace_triggered();
+
+    /**
      * Called when the Word wrap action is triggered.
      */
     void on_actionWordWrap_triggered();
@@ -156,10 +161,12 @@ private slots:
      * or the selection range or scroll position has changed.
      */
     void updateUi();
-
-    void on_actionWhitespace_triggered();
-
 private:
+
+    /**
+     * Sets up the actions for the window.
+     */
+    void setUpActions();
 
     /**
      * Checks if the current editor is modified and saves it if necessary.
@@ -176,6 +183,11 @@ private:
      * @return true if the file was saved, false otherwise.
      */
     bool saveFile(const QString& fileName = "");
+
+    /**
+     * Initializes the find dialog.
+     */
+    void initFindDialog();
 
     /**
      * Called when the user tries to close the application.

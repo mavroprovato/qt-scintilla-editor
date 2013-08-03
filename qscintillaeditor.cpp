@@ -9,6 +9,7 @@
 
 #include "buffer.h"
 #include "findreplacedialog.h"
+#include "icondb.h"
 #include "qscintillaeditor.h"
 #include "ui_qscintillaeditor.h"
 
@@ -17,7 +18,11 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     ui(new Ui::QScintillaEditor),
     wasMaximized(false),
     findDlg(0) {
+
     ui->setupUi(this);
+    IconDb* iconDb = IconDb::instance();
+    setWindowIcon(iconDb->getIcon(IconDb::Application));
+    setUpActions();
 
     edit = new Buffer(parent);
     setCentralWidget(edit);
@@ -87,10 +92,7 @@ void QScintillaEditor::on_actionPaste_triggered() {
 }
 
 void QScintillaEditor::on_actionFind_triggered() {
-    if (!findDlg) {
-        findDlg = new FindReplaceDialog(this);
-        connect(findDlg, SIGNAL(findPressed()), this, SLOT(find()));
-    }
+    initFindDialog();
     findDlg->setType(FindReplaceDialog::Find);
 
     findDlg->show();
@@ -99,6 +101,7 @@ void QScintillaEditor::on_actionFind_triggered() {
 }
 
 void QScintillaEditor::on_actionFindNext_triggered() {
+    initFindDialog();
     find();
 }
 
@@ -242,6 +245,29 @@ void QScintillaEditor::updateUi() {
     ui->actionCopy->setEnabled(!edit->selectionEmpty());
 }
 
+void QScintillaEditor::setUpActions() {
+    IconDb* iconDb = IconDb::instance();
+    ui->actionNew->setIcon(iconDb->getIcon(IconDb::New));
+    ui->actionOpen->setIcon(iconDb->getIcon(IconDb::Open));
+    ui->actionSave->setIcon(iconDb->getIcon(IconDb::Save));
+    ui->actionSaveAs->setIcon(iconDb->getIcon(IconDb::SaveAs));
+    ui->actionPrint->setIcon(iconDb->getIcon(IconDb::Print));
+    ui->actionClose->setIcon(iconDb->getIcon(IconDb::Close));
+    ui->actionUndo->setIcon(iconDb->getIcon(IconDb::Undo));
+    ui->actionRedo->setIcon(iconDb->getIcon(IconDb::Redo));
+    ui->actionCut->setIcon(iconDb->getIcon(IconDb::Cut));
+    ui->actionCopy->setIcon(iconDb->getIcon(IconDb::Copy));
+    ui->actionPaste->setIcon(iconDb->getIcon(IconDb::Paste));
+    ui->actionFind->setIcon(iconDb->getIcon(IconDb::Find));
+    ui->actionReplace->setIcon(iconDb->getIcon(IconDb::Replace));
+    ui->actionFullscreen->setIcon(iconDb->getIcon(IconDb::Fullscreen));
+    ui->actionZoomIn->setIcon(iconDb->getIcon(IconDb::ZoomIn));
+    ui->actionZoomOut->setIcon(iconDb->getIcon(IconDb::ZoomOut));
+    ui->actionResetZoom->setIcon(iconDb->getIcon(IconDb::ZoomReset));
+    ui->actionFont->setIcon(iconDb->getIcon(IconDb::Font));
+    ui->actionAbout->setIcon(iconDb->getIcon(IconDb::About));
+}
+
 bool QScintillaEditor::checkModifiedAndSave() {
     // If the file has been modified, promt the user to save the changes
     if (edit->modify()) {
@@ -302,6 +328,13 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
     }
 
     return true;
+}
+
+void QScintillaEditor::initFindDialog() {
+    if (!findDlg) {
+        findDlg = new FindReplaceDialog(this);
+        connect(findDlg, SIGNAL(findPressed()), this, SLOT(find()));
+    }
 }
 
 void QScintillaEditor::closeEvent(QCloseEvent *event) {
