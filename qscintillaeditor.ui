@@ -73,10 +73,20 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <widget class="QMenu" name="menuZoom">
+     <property name="title">
+      <string>Zoom</string>
+     </property>
+     <addaction name="actionZoomIn"/>
+     <addaction name="actionZoomOut"/>
+     <addaction name="actionResetZoom"/>
+    </widget>
     <addaction name="actionFullscreen"/>
     <addaction name="separator"/>
     <addaction name="actionToolBar"/>
     <addaction name="actionStatusBar"/>
+    <addaction name="separator"/>
+    <addaction name="menuZoom"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -365,6 +375,42 @@
    </property>
    <property name="shortcut">
     <string>F11</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="icon">
+    <iconset resource="qtscitntillaeditor.qrc">
+     <normaloff>:/icons/icons/16x16/zoom-in.png</normaloff>:/icons/icons/16x16/zoom-in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="icon">
+    <iconset resource="qtscitntillaeditor.qrc">
+     <normaloff>:/icons/icons/16x16/zoom-out.png</normaloff>:/icons/icons/16x16/zoom-out.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionResetZoom">
+   <property name="icon">
+    <iconset resource="qtscitntillaeditor.qrc">
+     <normaloff>:/icons/icons/16x16/zoom-original.png</normaloff>:/icons/icons/16x16/zoom-original.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reset Zoom</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
    </property>
   </action>
  </widget>

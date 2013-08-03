@@ -115,6 +115,21 @@ private slots:
     void on_actionFullscreen_triggered();
 
     /**
+     * Called when the Zoom in action is triggered.
+     */
+    void on_actionZoomIn_triggered();
+
+    /**
+     * Called when the Zoom out action is triggered.
+     */
+    void on_actionZoomOut_triggered();
+
+    /**
+     * Called when the Reset zoom action is triggered.
+     */
+    void on_actionResetZoom_triggered();
+
+    /**
      * Called when the Word wrap action is triggered.
      */
     void on_actionWordWrap_triggered();

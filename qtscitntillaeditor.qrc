@@ -20,5 +20,8 @@
         <file>icons/16x16/accessories-text-editor.png</file>
         <file>icons/16x16/preferences-desktop-font.png</file>
         <file>icons/16x16/document-close.png</file>
+        <file>icons/16x16/zoom-in.png</file>
+        <file>icons/16x16/zoom-original.png</file>
+        <file>icons/16x16/zoom-out.png</file>
     </qresource>
 </RCC>

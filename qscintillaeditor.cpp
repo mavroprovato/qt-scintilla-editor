@@ -137,6 +137,28 @@ void QScintillaEditor::on_actionFullscreen_triggered() {
     }
 }
 
+void QScintillaEditor::on_actionZoomIn_triggered() {
+    edit->zoomIn();
+    if (edit->zoom() == 20) {
+        ui->actionZoomIn->setEnabled(false);
+    }
+    ui->actionZoomOut->setEnabled(true);
+}
+
+void QScintillaEditor::on_actionZoomOut_triggered() {
+    edit->zoomOut();
+    if (edit->zoom() == -10) {
+        ui->actionZoomOut->setEnabled(false);
+    }
+    ui->actionZoomIn->setEnabled(true);
+}
+
+void QScintillaEditor::on_actionResetZoom_triggered() {
+    edit->setZoom(0);
+    ui->actionZoomOut->setEnabled(true);
+    ui->actionZoomIn->setEnabled(true);
+}
+
 void QScintillaEditor::on_actionWordWrap_triggered() {
     edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
 }
