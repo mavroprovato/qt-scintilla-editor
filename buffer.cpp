@@ -88,7 +88,7 @@ bool Buffer::save(const QString &fileName) {
 }
 
 QString Buffer::displayName() {
-    return fileInfo.fileName().isNull() ? tr("Untitled") : fileInfo.fileName();
+    return fileInfo.fileName().isEmpty() ? tr("Untitled") : fileInfo.fileName();
 }
 
 QString Buffer::filePath() {
