@@ -11,10 +11,18 @@ namespace Ui {
 class QScintillaEditor;
 }
 
-class QScintillaEditor : public QMainWindow
-{
+/**
+ * A structure to hold the parameters of the last search.
+ */
+struct FindParams {
+    QString findText;
+    int flags;
+    bool wrap;
+};
+
+class QScintillaEditor : public QMainWindow {
     Q_OBJECT
-    
+
 public:
     /**
      * Constructor for the editor.
@@ -146,8 +154,14 @@ private slots:
 
     /**
      * Called when the user searches for text.
+     *
+     * @param findText The text to search for.
+     * @param flags The search flags.
+     * @param forward true if the search must be performed towards the end of
+     * the document.
+     * @param wrap true if the search should wrap.
      */
-    void find();
+    void find(const QString& findText, int flags, bool forward, bool wrap);
 
     /**
      * Triggered when the save point is changed.
@@ -161,12 +175,16 @@ private slots:
      * or the selection range or scroll position has changed.
      */
     void updateUi();
+    void on_actionFindPrevious_triggered();
+
 private:
 
     /**
      * Sets up the actions for the window.
      */
     void setUpActions();
+
+    void setTitle();
 
     /**
      * Checks if the current editor is modified and saves it if necessary.
@@ -207,6 +225,9 @@ private:
 
     /** The find/replace dialog. */
     FindReplaceDialog *findDlg;
+
+    /** The last find parameters. */
+    FindParams lastFindParams;
 };
 
 #endif // QSCINTILLAEDITOR_H

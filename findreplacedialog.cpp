@@ -1,3 +1,5 @@
+#include <ScintillaEdit.h>
+
 #include "findreplacedialog.h"
 #include "ui_findreplacedialog.h"
 
@@ -19,42 +21,27 @@ void FindReplaceDialog::setType(Type type) {
     ui->replaceAllPushButton->setVisible(type == FindReplace);
 }
 
-QString FindReplaceDialog::findText() const {
-    return ui->findLindEdit->text();
-}
-
-QString FindReplaceDialog::replaceText() const {
-    return ui->replaceLineEdit->text();
-}
-
-bool FindReplaceDialog::directionForward() const {
-    return ui->forwardRadioButton->isChecked();
-}
-
-bool FindReplaceDialog::matchCase() const {
-    return ui->matchCaseCheckBox->isChecked();
-}
-
-bool FindReplaceDialog::wholeWord() const {
-    return ui->matchWordCheckBox->isChecked();
-}
-
-bool FindReplaceDialog::regularExpression() const {
-    return ui->regularExpressionCheckBox->isChecked();
-}
-
-bool FindReplaceDialog::wrapSearch() const {
-    return ui->wrapSearchCheckBox->isChecked();
-}
-
 void FindReplaceDialog::showEvent(QShowEvent *e) {
     QDialog::showEvent(e);
     ui->findLindEdit->setFocus(Qt::ActiveWindowFocusReason);
 }
 
 void FindReplaceDialog::on_findPushButton_clicked() {
-    findPressed();
-    hide();
+    // Set the search flags
+    int flags = 0;
+    if (ui->matchCaseCheckBox->isChecked()) {
+        flags |= SCFIND_MATCHCASE;
+    }
+    if (ui->matchWordCheckBox->isChecked()) {
+        flags |= SCFIND_WHOLEWORD;
+    }
+    if (ui->regularExpressionCheckBox->isChecked()) {
+        flags |= SCFIND_REGEXP;
+    }
+    // Emit the signal
+    emit find(ui->findLindEdit->text(), flags,
+        ui->forwardRadioButton->isChecked(),
+        ui->wrapSearchCheckBox->isChecked());
 }
 
 void FindReplaceDialog::on_cancelButton_clicked() {

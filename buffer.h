@@ -44,16 +44,10 @@ public:
      * @return The path of the file, or a null string if the buffer has not been
      * saved yet.
      */
-    QString filePath();
+    QFileInfo getFileInfo();
 
-    /**
-     * Returns the display name of the buffer.
-     *
-     * @return The display name of the buffer.
-     */
-    QString displayName();
 signals:
-    
+
 public slots:
 
 private:

@@ -60,8 +60,8 @@ bool Buffer::open(const QString &fileName) {
     file.close();
 
     // File saved succesfully
-    setSavePoint();
     fileInfo.setFile(fileName);
+    setSavePoint();
 
     return true;
 }
@@ -81,16 +81,12 @@ bool Buffer::save(const QString &fileName) {
     file.close();
 
     // File saved
-    setSavePoint();
     fileInfo.setFile(fileName);
+    setSavePoint();
 
     return true;
 }
 
-QString Buffer::displayName() {
-    return fileInfo.fileName().isEmpty() ? tr("Untitled") : fileInfo.fileName();
-}
-
-QString Buffer::filePath() {
-    return fileInfo.filePath();
+QFileInfo Buffer::getFileInfo() {
+    return fileInfo;
 }

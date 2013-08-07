@@ -26,6 +26,7 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
 
     edit = new Buffer(parent);
     setCentralWidget(edit);
+    setTitle();
 
     connect(edit, SIGNAL(savePointChanged(bool)), this,
         SLOT(savePointChanged(bool)));
@@ -101,8 +102,17 @@ void QScintillaEditor::on_actionFind_triggered() {
 }
 
 void QScintillaEditor::on_actionFindNext_triggered() {
-    initFindDialog();
-    find();
+    if (!lastFindParams.findText.isEmpty()) {
+        find(lastFindParams.findText, lastFindParams.flags, true,
+            lastFindParams.wrap);
+    }
+}
+
+void QScintillaEditor::on_actionFindPrevious_triggered() {
+    if (!lastFindParams.findText.isEmpty()) {
+        find(lastFindParams.findText, lastFindParams.flags, false,
+            lastFindParams.wrap);
+    }
 }
 
 void QScintillaEditor::on_actionGoTo_triggered() {
@@ -193,23 +203,11 @@ void QScintillaEditor::on_actionFont_triggered() {
     }
 }
 
-void QScintillaEditor::find() {
-    QString findText = findDlg->findText();
+void QScintillaEditor::find(const QString& findText, int flags, bool forward,
+        bool wrap) {
     if (!findText.isEmpty()) {
-        // Set the search flags
-        int flags = 0;
-        if (findDlg->matchCase()) {
-            flags |= SCFIND_MATCHCASE;
-        }
-        if (findDlg->wholeWord()) {
-            flags |= SCFIND_WHOLEWORD;
-        }
-        if (findDlg->regularExpression()) {
-            flags |= SCFIND_REGEXP;
-        }
         edit->setSearchFlags(flags);
         // Perform the search
-        bool forward = findDlg->directionForward();
         edit->setTargetStart(forward ? edit->currentPos() :
                                        edit->currentPos() - 1);
         edit->setTargetEnd(forward ? edit->length() : 0);
@@ -217,7 +215,7 @@ void QScintillaEditor::find() {
         int findPos = edit->searchInTarget(findArray.length(), findArray);
         // If the search should wrap, perform the search again.
         bool searchWrapped = false;
-        if (findPos == -1 && findDlg->wrapSearch()) {
+        if (findPos == -1 && wrap) {
             edit->setTargetStart(forward ? 0 : edit->length());
             edit->setTargetEnd(forward ? edit->currentPos() :
                                          edit->currentPos() - 1);
@@ -229,15 +227,20 @@ void QScintillaEditor::find() {
         } else {
             edit->setSel(edit->targetStart(), edit->targetEnd());
             edit->scrollRange(edit->targetStart(), edit->targetEnd());
-            ui->statusBar->showMessage(searchWrapped ? tr("Search wrapped") :
+            ui->statusBar->showMessage(searchWrapped ? tr("Search wrapped.") :
                                                        tr(""));
         }
+        // Save the last search parameters
+        lastFindParams.findText = findText;
+        lastFindParams.flags = flags;
+        lastFindParams.wrap = wrap;
     }
 }
 
 void QScintillaEditor::savePointChanged(bool dirty) {
     ui->actionSave->setEnabled(dirty);
     ui->actionUndo->setEnabled(dirty);
+    setTitle();
 }
 
 void QScintillaEditor::updateUi() {
@@ -268,12 +271,23 @@ void QScintillaEditor::setUpActions() {
     ui->actionAbout->setIcon(iconDb->getIcon(IconDb::About));
 }
 
+void QScintillaEditor::setTitle() {
+    QFileInfo fileInfo = edit->getFileInfo();
+    QString name = fileInfo.fileName().isEmpty() ? tr("Untitled") :
+                                                   fileInfo.fileName();
+    QString title = QString("%1 - %2").arg(name).arg(qApp->applicationName())
+        .append(edit->modify() ? " *" : "");
+    setWindowTitle(title);
+}
+
 bool QScintillaEditor::checkModifiedAndSave() {
     // If the file has been modified, promt the user to save the changes
     if (edit->modify()) {
         // Ask the user if the file should be saved
+        QFileInfo fileInfo = edit->getFileInfo();
         QString message = QString(tr("File '%1' has been modified"))
-                .arg(edit->displayName());
+                .arg(fileInfo.filePath().isEmpty() ? tr("Untitled") :
+                                                     fileInfo.fileName());
         QMessageBox msgBox;
         msgBox.setText(message);
         msgBox.setInformativeText(tr("Do you want to save your changes?"));
@@ -308,7 +322,7 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
     if (!fileName.isEmpty()) { // Save with the provided file name.
         newFileName = fileName;
     } else {
-        newFileName = edit->filePath();
+        newFileName = edit->getFileInfo().filePath();
 
         if (newFileName.isEmpty()) {
             QString selectedFileName = QFileDialog::getSaveFileName(this,
@@ -333,7 +347,8 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
 void QScintillaEditor::initFindDialog() {
     if (!findDlg) {
         findDlg = new FindReplaceDialog(this);
-        connect(findDlg, SIGNAL(findPressed()), this, SLOT(find()));
+        connect(findDlg, SIGNAL(find(const QString&, int, bool, bool)), this,
+            SLOT(find(const QString&, int, bool, bool)));
     }
 }
 

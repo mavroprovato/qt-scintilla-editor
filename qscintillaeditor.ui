@@ -13,9 +13,6 @@
   <property name="contextMenuPolicy">
    <enum>Qt::NoContextMenu</enum>
   </property>
-  <property name="windowTitle">
-   <string>Editor</string>
-  </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -53,6 +50,7 @@
     <addaction name="separator"/>
     <addaction name="actionFind"/>
     <addaction name="actionFindNext"/>
+    <addaction name="actionFindPrevious"/>
     <addaction name="actionReplace"/>
     <addaction name="actionGoTo"/>
     <addaction name="separator"/>
@@ -339,6 +337,14 @@
    </property>
    <property name="text">
     <string>Whitespace</string>
+   </property>
+  </action>
+  <action name="actionFindPrevious">
+   <property name="text">
+    <string>Find Previous</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F3</string>
    </property>
   </action>
  </widget>

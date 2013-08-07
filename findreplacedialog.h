@@ -7,8 +7,7 @@ namespace Ui {
 class FindReplaceDialog;
 }
 
-class FindReplaceDialog : public QDialog
-{
+class FindReplaceDialog : public QDialog {
     Q_OBJECT
     
 public:
@@ -40,68 +39,26 @@ public:
      */
     void setType(Type type);
 
-    /**
-     * Returns the text to find.
-     *
-     * @return The text to find.
-     */
-    QString findText() const;
-
-    /**
-     * Returns the text to replace the matched text with.
-     *
-     * @return The text to replace the matched text with.
-     */
-    QString replaceText() const;
-
-    /**
-     * Returns true if the search should be performed towards the end of the
-     * document.
-     *
-     * @return true if the search should be performed towards the end of the
-     * document.
-     */
-    bool directionForward() const;
-
-    /**
-     * Returns true if the search should be case sensitive.
-     *
-     * @return  true if the search should be case sensitive.
-     */
-    bool matchCase() const;
-
-    /**
-     * Retruns true if the whole word should be matched.
-     *
-     * @return true if the whole word should be matched.
-     */
-    bool wholeWord() const;
-
-    /**
-     * Returns true if the search string should be considered as a regular
-     * expression.
-     *
-     * @return true if the search string should be considered as a regular
-     * expression.
-     */
-    bool regularExpression() const;
-
-    /**
-     * Returns true if the search should wrap around the start or the end of the
-     * document.
-     *
-     * @return true if the search should wrap around the start or the end of the
-     * document.
-     */
-    bool wrapSearch() const;
-
 signals:
     /**
      * This signal is emitted when the find button is pressed.
+     *
+     * @param findText The text to search for.
+     * @param flags The search flags.
+     * @param forward true if the search must be performed towards the end of
+     * the document.
+     * @param wrap true if the search should wrap.
      */
-    void findPressed();
+    void find(const QString& findText, int flags, bool forward, bool wrap);
 
 protected:
+
+    /**
+     * Overriden, in order to make sure that the find line edit always takes
+     * focus when the dialog is shown.
+     *
+     * @param e The show event.
+     */
     virtual void showEvent(QShowEvent *e);
 
 private slots:
