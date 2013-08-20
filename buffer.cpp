@@ -61,6 +61,7 @@ bool Buffer::open(const QString &fileName) {
 
     // File saved succesfully
     fileInfo.setFile(fileName);
+    emptyUndoBuffer();
     setSavePoint();
 
     return true;
