@@ -27,7 +27,31 @@ void FindReplaceDialog::showEvent(QShowEvent *e) {
 }
 
 void FindReplaceDialog::on_findPushButton_clicked() {
-    // Set the search flags
+    QString findText = ui->findLindEdit->text();
+    if (!findText.isEmpty()) {
+        // Emit the signal
+        emit find(findText, searchFlags(),
+            ui->forwardRadioButton->isChecked(),
+            ui->wrapSearchCheckBox->isChecked());
+    }
+}
+
+void FindReplaceDialog::on_replacePushButton_clicked() {
+    QString findText = ui->findLindEdit->text();
+    QString replaceText = ui->replaceLineEdit->text();
+    if (!replaceText.isEmpty()) {
+        // Emit the signal
+        emit replace(findText, replaceText, searchFlags(),
+            ui->forwardRadioButton->isChecked(),
+            ui->wrapSearchCheckBox->isChecked());
+    }
+}
+
+void FindReplaceDialog::on_cancelButton_clicked() {
+    hide();
+}
+
+int FindReplaceDialog::searchFlags() {
     int flags = 0;
     if (ui->matchCaseCheckBox->isChecked()) {
         flags |= SCFIND_MATCHCASE;
@@ -38,12 +62,5 @@ void FindReplaceDialog::on_findPushButton_clicked() {
     if (ui->regularExpressionCheckBox->isChecked()) {
         flags |= SCFIND_REGEXP;
     }
-    // Emit the signal
-    emit find(ui->findLindEdit->text(), flags,
-        ui->forwardRadioButton->isChecked(),
-        ui->wrapSearchCheckBox->isChecked());
-}
-
-void FindReplaceDialog::on_cancelButton_clicked() {
-    hide();
+    return flags;
 }

@@ -28,7 +28,7 @@ HEADERS  += qscintillaeditor.h \
 FORMS    += qscintillaeditor.ui \
     findreplacedialog.ui
 
-LIBS += -lScintillaEdit3
+LIBS += -lScintillaEdit
 
 RESOURCES += \
     qtscitntillaeditor.qrc

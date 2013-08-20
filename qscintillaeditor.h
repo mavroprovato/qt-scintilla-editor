@@ -98,6 +98,16 @@ private slots:
     void on_actionFindNext_triggered();
 
     /**
+     * Called when the Find previous action is triggered.
+     */
+    void on_actionFindPrevious_triggered();
+
+    /**
+     * Called when the replace action is triggered.
+     */
+    void on_actionReplace_triggered();
+
+    /**
      * Called when the Go to action is triggered.
      */
     void on_actionGoTo_triggered();
@@ -164,6 +174,19 @@ private slots:
     void find(const QString& findText, int flags, bool forward, bool wrap);
 
     /**
+     * Called when the user wants to replace the found text.
+     *
+     * @param findText The text to search for.
+     * @param replaceText The text to replace the found text with.
+     * @param flags The search flags.
+     * @param forward true if the search must be performed towards the end of
+     * the document.
+     * @param wrap true if the search should wrap.
+     */
+    void replace(const QString& findText, const QString& replaceText, int flags,
+        bool forward, bool wrap);
+
+    /**
      * Triggered when the save point is changed.
      *
      * @param dirty true if a save point is reached, false otherwise.
@@ -175,10 +198,8 @@ private slots:
      * or the selection range or scroll position has changed.
      */
     void updateUi();
-    void on_actionFindPrevious_triggered();
 
 private:
-
     /**
      * Sets up the actions for the window.
      */

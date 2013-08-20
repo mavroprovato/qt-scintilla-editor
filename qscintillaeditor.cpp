@@ -115,6 +115,15 @@ void QScintillaEditor::on_actionFindPrevious_triggered() {
     }
 }
 
+void QScintillaEditor::on_actionReplace_triggered() {
+    initFindDialog();
+    findDlg->setType(FindReplaceDialog::FindReplace);
+
+    findDlg->show();
+    findDlg->raise();
+    findDlg->activateWindow();
+}
+
 void QScintillaEditor::on_actionGoTo_triggered() {
     int lineCount = edit->lineCount();
     bool ok;
@@ -237,6 +246,23 @@ void QScintillaEditor::find(const QString& findText, int flags, bool forward,
     }
 }
 
+void QScintillaEditor::replace(const QString& findText,
+        const QString& replaceText, int flags, bool forward, bool wrap) {
+    // Only replace if there is selected text
+    if (edit->selectionStart() != edit->selectionEnd()) {
+        QByteArray replaceArray = replaceText.toUtf8();
+        edit->replaceTarget(replaceArray.length(), replaceArray);
+        // If searching forward, move the caret after the replacement text
+        if (forward) {
+            edit->setAnchor(edit->currentPos() + replaceText.length());
+            edit->setCurrentPos(edit->currentPos() + replaceText.length());
+        }
+    }
+
+    // Search again to select the next match
+    find(findText, flags, forward, wrap);
+}
+
 void QScintillaEditor::savePointChanged(bool dirty) {
     ui->actionSave->setEnabled(dirty);
     ui->actionUndo->setEnabled(dirty);
@@ -349,11 +375,14 @@ void QScintillaEditor::initFindDialog() {
         findDlg = new FindReplaceDialog(this);
         connect(findDlg, SIGNAL(find(const QString&, int, bool, bool)), this,
             SLOT(find(const QString&, int, bool, bool)));
+        connect(findDlg, SIGNAL(replace(const QString&, const QString&, int, bool, bool)),
+            this, SLOT(replace(const QString&, const QString&, int, bool, bool)));
     }
 }
 
 void QScintillaEditor::closeEvent(QCloseEvent *event) {
     if (!checkModifiedAndSave()) {
+        // If the user canceled any dialog, do not exit the application
         event->ignore();
     }
 }

@@ -51,8 +51,20 @@ signals:
      */
     void find(const QString& findText, int flags, bool forward, bool wrap);
 
-protected:
+    /**
+     * This signal is emitted when the replace button is pressed.
+     *
+     * @param findText The text to search for.
+     * @param replaceText The text to replace the matched text with.
+     * @param flags The search flags.
+     * @param forward true if the search must be performed towards the end of
+     * the document.
+     * @param wrap true if the search should wrap.
+     */
+    void replace(const QString& findText, const QString& replaceText, int flags,
+        bool forward, bool wrap);
 
+protected:
     /**
      * Overriden, in order to make sure that the find line edit always takes
      * focus when the dialog is shown.
@@ -68,11 +80,24 @@ private slots:
     void on_findPushButton_clicked();
 
     /**
+     * Called when the replace button is clicked.
+     */
+    void on_replacePushButton_clicked();
+
+    /**
      * Called when the cancel button is clicked.
      */
     void on_cancelButton_clicked();
 
 private:
+    /**
+     * Returns the search flags.
+     *
+     * @return The search flags.
+     */
+    int searchFlags();
+
+    /** The dialog UI. */
     Ui::FindReplaceDialog *ui;
 };
 
