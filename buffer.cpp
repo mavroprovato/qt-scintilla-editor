@@ -91,3 +91,31 @@ bool Buffer::save(const QString &fileName) {
 QFileInfo Buffer::getFileInfo() {
     return fileInfo;
 }
+
+bool Buffer::find(const QString& findText, int flags, bool forward,
+                  bool wrap, bool *searchWrapped) {
+    if (findText.isEmpty()) {
+        return false;
+    }
+    *searchWrapped = false;
+    // Perform the search
+    setSearchFlags(flags);
+    setTargetStart(forward ? currentPos() : currentPos() - 1);
+    setTargetEnd(forward ? length() : 0);
+    QByteArray findArray = findText.toUtf8();
+    int findPos = searchInTarget(findArray.length(), findArray);
+    // If the search should wrap, perform the search again.
+    if (findPos == -1 && wrap) {
+        setTargetStart(forward ? 0 : length());
+        setTargetEnd(forward ? currentPos() : currentPos() - 1);
+        findPos = searchInTarget(findArray.length(), findArray);
+        if (searchWrapped != NULL) {
+            *searchWrapped = true;
+        }
+    }
+    if (findPos != -1)  {
+        setSel(targetStart(), targetEnd());
+        scrollRange(targetStart(), targetEnd());
+    }
+    return findPos != -1;
+}

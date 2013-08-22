@@ -187,6 +187,16 @@ private slots:
         bool forward, bool wrap);
 
     /**
+     * Called when the user wants to replace all occurences of the text.
+     *
+     * @param findText The text to search for.
+     * @param replaceText The text to replace the found text with.
+     * @param flags The search flags.
+     */
+    void replaceAll(const QString& findText, const QString& replaceText,
+        int flags);
+
+    /**
      * Triggered when the save point is changed.
      *
      * @param dirty true if a save point is reached, false otherwise.
@@ -205,6 +215,9 @@ private:
      */
     void setUpActions();
 
+    /**
+     * Sets the window title.
+     */
     void setTitle();
 
     /**

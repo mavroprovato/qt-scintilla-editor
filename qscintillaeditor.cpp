@@ -214,36 +214,20 @@ void QScintillaEditor::on_actionFont_triggered() {
 
 void QScintillaEditor::find(const QString& findText, int flags, bool forward,
         bool wrap) {
-    if (!findText.isEmpty()) {
-        edit->setSearchFlags(flags);
-        // Perform the search
-        edit->setTargetStart(forward ? edit->currentPos() :
-                                       edit->currentPos() - 1);
-        edit->setTargetEnd(forward ? edit->length() : 0);
-        QByteArray findArray = findText.toUtf8();
-        int findPos = edit->searchInTarget(findArray.length(), findArray);
-        // If the search should wrap, perform the search again.
-        bool searchWrapped = false;
-        if (findPos == -1 && wrap) {
-            edit->setTargetStart(forward ? 0 : edit->length());
-            edit->setTargetEnd(forward ? edit->currentPos() :
-                                         edit->currentPos() - 1);
-            findPos = edit->searchInTarget(findArray.length(), findArray);
-            searchWrapped = true;
-        }
-        if (findPos == -1) {
-            ui->statusBar->showMessage(tr("The text was not found."));
-        } else {
-            edit->setSel(edit->targetStart(), edit->targetEnd());
-            edit->scrollRange(edit->targetStart(), edit->targetEnd());
-            ui->statusBar->showMessage(searchWrapped ? tr("Search wrapped.") :
-                                                       tr(""));
-        }
-        // Save the last search parameters
-        lastFindParams.findText = findText;
-        lastFindParams.flags = flags;
-        lastFindParams.wrap = wrap;
+    bool searchWrapped;
+    bool found = edit->find(findText, flags, forward, wrap, &searchWrapped);
+    if (found) {
+        ui->statusBar->showMessage(searchWrapped ? tr("Search wrapped.") :
+                                                   tr(""));
+    } else {
+        ui->statusBar->showMessage(tr("The text was not found."));
     }
+
+    // Save the last search parameters
+    lastFindParams.findText = findText;
+    lastFindParams.flags = flags;
+    lastFindParams.wrap = wrap;
+
 }
 
 void QScintillaEditor::replace(const QString& findText,
@@ -261,6 +245,14 @@ void QScintillaEditor::replace(const QString& findText,
 
     // Search again to select the next match
     find(findText, flags, forward, wrap);
+}
+
+void QScintillaEditor::replaceAll(const QString& findText,
+        const QString& replaceText, int flags) {
+    while (edit->find(findText, flags, true, true, NULL)) {
+        QByteArray replaceArray = replaceText.toUtf8();
+        edit->replaceTarget(replaceArray.length(), replaceArray);
+    }
 }
 
 void QScintillaEditor::savePointChanged(bool dirty) {
@@ -377,6 +369,8 @@ void QScintillaEditor::initFindDialog() {
             SLOT(find(const QString&, int, bool, bool)));
         connect(findDlg, SIGNAL(replace(const QString&, const QString&, int, bool, bool)),
             this, SLOT(replace(const QString&, const QString&, int, bool, bool)));
+        connect(findDlg, SIGNAL(replaceAll(const QString&, const QString&, int)),
+            this, SLOT(replaceAll(const QString&, const QString&, int)));
     }
 }
 

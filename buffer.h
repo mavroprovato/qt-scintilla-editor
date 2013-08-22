@@ -46,6 +46,19 @@ public:
      */
     QFileInfo getFileInfo();
 
+    /**
+     * Finds the occurance of the provided text and selects the match.
+     *
+     * @param findText The text to find.
+     * @param flags The search flags.
+     * @param forward If true, perform the search with forward direction.
+     * @param wrap If true, wrap the search.
+     * @param searchWrapped Input parameter, which is set to true if the search
+     * is wrapped.
+     * @return true if a match was found.
+     */
+    bool find(const QString& findText, int flags, bool forward, bool wrap,
+        bool *searchWrapped);
 signals:
 
 public slots:

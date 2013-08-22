@@ -47,6 +47,16 @@ void FindReplaceDialog::on_replacePushButton_clicked() {
     }
 }
 
+
+void FindReplaceDialog::on_replaceAllPushButton_clicked() {
+    QString findText = ui->findLindEdit->text();
+    QString replaceText = ui->replaceLineEdit->text();
+    if (!replaceText.isEmpty()) {
+        // Emit the signal
+        emit replaceAll(findText, replaceText, searchFlags());
+    }
+}
+
 void FindReplaceDialog::on_cancelButton_clicked() {
     hide();
 }

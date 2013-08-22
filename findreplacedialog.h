@@ -64,6 +64,16 @@ signals:
     void replace(const QString& findText, const QString& replaceText, int flags,
         bool forward, bool wrap);
 
+    /**
+     * This signal is emitted when the replace all button is pressed.
+     *
+     * @param findText The text to search for.
+     * @param replaceText The text to replace the matched text with.
+     * @param flags The search flags.
+     */
+    void replaceAll(const QString& findText, const QString& replaceText,
+        int flags);
+
 protected:
     /**
      * Overriden, in order to make sure that the find line edit always takes
@@ -83,6 +93,11 @@ private slots:
      * Called when the replace button is clicked.
      */
     void on_replacePushButton_clicked();
+
+    /**
+     * Called when the replace all button is clicked.
+     */
+    void on_replaceAllPushButton_clicked();
 
     /**
      * Called when the cancel button is clicked.
