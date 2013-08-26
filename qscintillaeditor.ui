@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>750</width>
-     <height>21</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -82,6 +82,7 @@
     <addaction name="separator"/>
     <addaction name="menuZoom"/>
     <addaction name="actionWhitespace"/>
+    <addaction name="actionLineNumbers"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -345,6 +346,17 @@
    </property>
    <property name="shortcut">
     <string>Shift+F3</string>
+   </property>
+  </action>
+  <action name="actionLineNumbers">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Line Numbers</string>
    </property>
   </action>
  </widget>

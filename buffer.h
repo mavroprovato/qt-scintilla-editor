@@ -6,8 +6,7 @@
 #include <QFileInfo>
 #include <QWidget>
 
-class Buffer : public ScintillaEdit
-{
+class Buffer : public ScintillaEdit {
     Q_OBJECT
 public:
     explicit Buffer(QWidget *parent = 0);
@@ -59,9 +58,30 @@ public:
      */
     bool find(const QString& findText, int flags, bool forward, bool wrap,
         bool *searchWrapped);
+
+    /**
+     * Returns true if the line numbers are shown.
+     *
+     * @return true if the line numbers are shown.
+     */
+    bool showLineNumbers();
+
+    /**
+     * Shows or hides the line numbers.
+     *
+     * @param show if true, show the line numbers.
+     */
+    void setShowLineNumbers(bool show);
 signals:
 
 public slots:
+
+    /**
+     * Called when lines are added to the buffer.
+     *
+     * @param linesAdded The number of lines added.
+     */
+    void onLinesAdded(int linesAdded);
 
 private:
     /** Contains the file information, if the file has been set. */

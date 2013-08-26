@@ -153,6 +153,11 @@ private slots:
     void on_actionWhitespace_triggered();
 
     /**
+     * Called when the View line numbers action is triggered.
+     */
+    void on_actionLineNumbers_triggered();
+
+    /**
      * Called when the Word wrap action is triggered.
      */
     void on_actionWordWrap_triggered();

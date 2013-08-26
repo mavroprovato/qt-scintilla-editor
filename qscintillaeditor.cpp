@@ -189,6 +189,11 @@ void QScintillaEditor::on_actionWhitespace_triggered() {
     }
 }
 
+
+void QScintillaEditor::on_actionLineNumbers_triggered() {
+    edit->setShowLineNumbers(ui->actionLineNumbers->isChecked());
+}
+
 void QScintillaEditor::on_actionWordWrap_triggered() {
     edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
 }
@@ -380,3 +385,4 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
+

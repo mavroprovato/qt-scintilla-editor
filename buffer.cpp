@@ -4,12 +4,12 @@
 #include <QFontDatabase>
 #include <QTextStream>
 
+#include <cmath>
+
 Buffer::Buffer(QWidget *parent) :
         ScintillaEdit(parent) {
     // Use Unicode code page
     setCodePage(SC_CP_UTF8);
-    // Do not display any margin
-    setMarginWidthN(1, 0);
     // Track the scroll width
     setScrollWidth(1);
     setScrollWidthTracking(true);
@@ -35,6 +35,12 @@ Buffer::Buffer(QWidget *parent) :
     // View whitespace
     setViewWS(SCWS_VISIBLEALWAYS);
     setWhitespaceFore(true, convertColor(Qt::lightGray));
+
+    // Setup the margins
+    setShowLineNumbers(true);
+    setMarginWidthN(1, 0);
+
+    connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
 }
 
 Buffer::~Buffer() {
@@ -92,6 +98,21 @@ QFileInfo Buffer::getFileInfo() {
     return fileInfo;
 }
 
+bool Buffer::showLineNumbers() {
+    return marginWidthN(0) != 0;
+}
+
+void Buffer::setShowLineNumbers(bool show) {
+    if (show) {
+        int width = ((int) std::log10(lineCount())) + 1;
+        QString text;
+        text.fill('9', width).prepend('_');
+        setMarginWidthN(0, textWidth(STYLE_LINENUMBER, text.toLatin1()));
+    } else {
+        setMarginWidthN(0, 0);
+    }
+}
+
 bool Buffer::find(const QString& findText, int flags, bool forward,
                   bool wrap, bool *searchWrapped) {
     if (findText.isEmpty()) {
@@ -118,4 +139,10 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
         scrollRange(targetStart(), targetEnd());
     }
     return findPos != -1;
+}
+
+void Buffer::onLinesAdded(int) {
+    if (showLineNumbers()) {
+        setShowLineNumbers(true);
+    }
 }
