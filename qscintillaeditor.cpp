@@ -147,7 +147,7 @@ void QScintillaEditor::on_actionStatusBar_triggered() {
 }
 
 void QScintillaEditor::on_actionFullscreen_triggered() {
-    if (isFullScreen()) {
+    if (ui->actionFullscreen->isChecked()) {
         if (wasMaximized) {
             showMaximized();
         } else {
@@ -182,7 +182,7 @@ void QScintillaEditor::on_actionResetZoom_triggered() {
 }
 
 void QScintillaEditor::on_actionWhitespace_triggered() {
-    if (edit->viewWS() == SCWS_INVISIBLE) {
+    if (ui->actionWhitespace->isChecked()) {
         edit->setViewWS(SCWS_VISIBLEALWAYS);
     } else {
         edit->setViewWS(SCWS_INVISIBLE);
