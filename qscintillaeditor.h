@@ -214,6 +214,8 @@ private slots:
      */
     void updateUi();
 
+    void on_actionLongLineIndicator_triggered();
+
 private:
     /**
      * Sets up the actions for the window.

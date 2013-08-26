@@ -35,6 +35,9 @@ Buffer::Buffer(QWidget *parent) :
     // View whitespace
     setViewWS(SCWS_VISIBLEALWAYS);
     setWhitespaceFore(true, convertColor(Qt::lightGray));
+    // Set long line indicator
+    setEdgeMode(EDGE_LINE);
+    setEdgeColumn(80);
 
     // Setup the margins
     setShowLineNumbers(true);

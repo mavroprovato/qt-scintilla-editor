@@ -189,6 +189,13 @@ void QScintillaEditor::on_actionWhitespace_triggered() {
     }
 }
 
+void QScintillaEditor::on_actionLongLineIndicator_triggered() {
+    if (ui->actionLongLineIndicator->isChecked()) {
+        edit->setEdgeMode(EDGE_LINE);
+    } else {
+        edit->setEdgeMode(EDGE_NONE);
+    }
+}
 
 void QScintillaEditor::on_actionLineNumbers_triggered() {
     edit->setShowLineNumbers(ui->actionLineNumbers->isChecked());
@@ -385,4 +392,3 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
-

@@ -83,6 +83,7 @@
     <addaction name="menuZoom"/>
     <addaction name="actionWhitespace"/>
     <addaction name="actionLineNumbers"/>
+    <addaction name="actionLongLineIndicator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -357,6 +358,17 @@
    </property>
    <property name="text">
     <string>Line Numbers</string>
+   </property>
+  </action>
+  <action name="actionLongLineIndicator">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Long Line Indicator</string>
    </property>
   </action>
  </widget>
