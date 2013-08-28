@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QInputDialog>
+#include <QLabel>
 #include <QMessageBox>
 
 #include "buffer.h"
@@ -26,6 +27,7 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
 
     edit = new Buffer(parent);
     setCentralWidget(edit);
+    setUpStatusBar();
     setTitle();
 
     connect(edit, SIGNAL(savePointChanged(bool)), this,
@@ -229,10 +231,9 @@ void QScintillaEditor::find(const QString& findText, int flags, bool forward,
     bool searchWrapped;
     bool found = edit->find(findText, flags, forward, wrap, &searchWrapped);
     if (found) {
-        ui->statusBar->showMessage(searchWrapped ? tr("Search wrapped.") :
-                                                   tr(""));
+        messageLabel->setText(searchWrapped ? tr("Search wrapped.") : tr(""));
     } else {
-        ui->statusBar->showMessage(tr("The text was not found."));
+        messageLabel->setText(tr("The text was not found."));
     }
 
     // Save the last search parameters
@@ -274,8 +275,13 @@ void QScintillaEditor::savePointChanged(bool dirty) {
 }
 
 void QScintillaEditor::updateUi() {
+    // Set the actions that depend on the buffer state
     ui->actionCut->setEnabled(!edit->selectionEmpty());
     ui->actionCopy->setEnabled(!edit->selectionEmpty());
+    // Set the postition indicator
+    int position = edit->currentPos();
+    positionLabel->setText(QString(tr("Line %1, Col %2").arg(
+        edit->lineFromPosition(position) + 1).arg(edit->column(position) + 1)));
 }
 
 void QScintillaEditor::setUpActions() {
@@ -299,6 +305,13 @@ void QScintillaEditor::setUpActions() {
     ui->actionResetZoom->setIcon(iconDb->getIcon(IconDb::ZoomReset));
     ui->actionFont->setIcon(iconDb->getIcon(IconDb::Font));
     ui->actionAbout->setIcon(iconDb->getIcon(IconDb::About));
+}
+
+void QScintillaEditor::setUpStatusBar() {
+    messageLabel = new QLabel(this);
+    positionLabel = new QLabel(this);
+    statusBar()->addPermanentWidget(messageLabel, 1);
+    statusBar()->addPermanentWidget(positionLabel);
 }
 
 void QScintillaEditor::setTitle() {

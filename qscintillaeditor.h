@@ -6,6 +6,7 @@
 
 class Buffer;
 class FindReplaceDialog;
+class QLabel;
 
 namespace Ui {
 class QScintillaEditor;
@@ -153,6 +154,11 @@ private slots:
     void on_actionWhitespace_triggered();
 
     /**
+     * Called when the action to show/hide the long line indicator is triggered.
+     */
+    void on_actionLongLineIndicator_triggered();
+
+    /**
      * Called when the View line numbers action is triggered.
      */
     void on_actionLineNumbers_triggered();
@@ -214,13 +220,16 @@ private slots:
      */
     void updateUi();
 
-    void on_actionLongLineIndicator_triggered();
-
 private:
     /**
      * Sets up the actions for the window.
      */
     void setUpActions();
+
+    /**
+     * Set up the status bar.
+     */
+    void setUpStatusBar();
 
     /**
      * Sets the window title.
@@ -260,6 +269,12 @@ private:
 
     /** The editor control. */
     Buffer *edit;
+
+    /** The status bar label that displays messages */
+    QLabel *messageLabel;
+
+    /** The status bar label that displays the current position */
+    QLabel *positionLabel;
 
     /** true if the window was maximized before foing full screen. */
     bool wasMaximized;
