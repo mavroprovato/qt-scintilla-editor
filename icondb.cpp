@@ -54,6 +54,11 @@ IconDb::IconDb() {
     iconMap[Close] = icon;
 
     icon = QIcon();
+    icon.addFile(":/icons/icons/16x16/application-exit.png", QSize(16, 16));
+    icon.addFile(":/icons/icons/22x22/application-exit.png", QSize(22, 22));
+    iconMap[Quit] = icon;
+
+    icon = QIcon();
     icon.addFile(":/icons/icons/16x16/edit-undo.png", QSize(16, 16));
     icon.addFile(":/icons/icons/22x22/edit-undo.png", QSize(22, 22));
     iconMap[Undo] = icon;

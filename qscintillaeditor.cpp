@@ -30,9 +30,9 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
 
     edit = new Buffer(parent);
     setCentralWidget(edit);
+    setTitle();
     setUpMenuBar();
     setUpStatusBar();
-    setTitle();
 
     connect(edit, SIGNAL(savePointChanged(bool)), this,
         SLOT(savePointChanged(bool)));
@@ -75,6 +75,10 @@ void QScintillaEditor::on_actionSaveAs_triggered() {
 }
 
 void QScintillaEditor::on_actionClose_triggered() {
+    edit->clear();
+}
+
+void QScintillaEditor::on_actionQuit_triggered() {
     close();
 }
 
@@ -314,6 +318,7 @@ void QScintillaEditor::setUpActions() {
     ui->actionSaveAs->setIcon(iconDb->getIcon(IconDb::SaveAs));
     ui->actionPrint->setIcon(iconDb->getIcon(IconDb::Print));
     ui->actionClose->setIcon(iconDb->getIcon(IconDb::Close));
+    ui->actionQuit->setIcon(iconDb->getIcon(IconDb::Quit));
     ui->actionUndo->setIcon(iconDb->getIcon(IconDb::Undo));
     ui->actionRedo->setIcon(iconDb->getIcon(IconDb::Redo));
     ui->actionCut->setIcon(iconDb->getIcon(IconDb::Cut));
@@ -456,4 +461,3 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
-

@@ -36,6 +36,7 @@
     <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -376,6 +377,11 @@
    </property>
    <property name="text">
     <string>Long Line Indicator</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>

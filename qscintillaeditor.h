@@ -65,6 +65,11 @@ private slots:
     void on_actionClose_triggered();
 
     /**
+     * Called when the Quit action is triggered.
+     */
+    void on_actionQuit_triggered();
+
+    /**
      * Called when the Undo action is triggered.
      */
     void on_actionUndo_triggered();
@@ -180,6 +185,11 @@ private slots:
     void on_changeEncoding_triggered();
 
     /**
+     * Called when the About action is triggered.
+     */
+    void on_actionAbout_triggered();
+
+    /**
      * Called when the user searches for text.
      *
      * @param findText The text to search for.
@@ -227,7 +237,6 @@ private slots:
     void updateUi();
 
     void onEncodingChanged(const QByteArray& encoding);
-    void on_actionAbout_triggered();
 
 private:
     /**
