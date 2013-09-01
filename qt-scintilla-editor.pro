@@ -17,16 +17,20 @@ SOURCES += main.cpp\
     findreplacedialog.cpp \
     buffer.cpp \
     util.cpp \
-    icondb.cpp
+    icondb.cpp \
+    aboutdialog.cpp
 
 HEADERS  += qscintillaeditor.h \
     findreplacedialog.h \
     buffer.h \
     util.h \
-    icondb.h
+    icondb.h \
+    aboutdialog.h \
+    version.h
 
 FORMS    += qscintillaeditor.ui \
-    findreplacedialog.ui
+    findreplacedialog.ui \
+    aboutdialog.ui
 
 LIBS += -lScintillaEdit
 

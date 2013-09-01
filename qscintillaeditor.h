@@ -4,6 +4,7 @@
 #include <QCloseEvent>
 #include <QMainWindow>
 
+class AboutDialog;
 class Buffer;
 class FindReplaceDialog;
 class QLabel;
@@ -226,6 +227,8 @@ private slots:
     void updateUi();
 
     void onEncodingChanged(const QByteArray& encoding);
+    void on_actionAbout_triggered();
+
 private:
     /**
      * Sets up the actions for the window.
@@ -298,6 +301,9 @@ private:
 
     /** The last find parameters. */
     FindParams lastFindParams;
+
+    /** The about dialog. */
+    AboutDialog *aboutDlg;
 };
 
 #endif // QSCINTILLAEDITOR_H

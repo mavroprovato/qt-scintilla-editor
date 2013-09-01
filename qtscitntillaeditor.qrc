@@ -48,5 +48,7 @@
         <file>icons/22x22/zoom-original.png</file>
         <file>icons/22x22/zoom-out.png</file>
         <file>icons/22x22/help-about.png</file>
+        <file>icons/16x16/dialog-close.png</file>
+        <file>icons/22x22/dialog-close.png</file>
     </qresource>
 </RCC>

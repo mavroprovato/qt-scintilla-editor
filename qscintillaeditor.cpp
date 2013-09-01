@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QMessageBox>
 
+#include "aboutdialog.h"
 #include "buffer.h"
 #include "findreplacedialog.h"
 #include "icondb.h"
@@ -20,7 +21,7 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QScintillaEditor),
     wasMaximized(false),
-    findDlg(0) {
+    findDlg(0), aboutDlg(0) {
 
     ui->setupUi(this);
     IconDb* iconDb = IconDb::instance();
@@ -236,6 +237,13 @@ void QScintillaEditor::on_changeEncoding_triggered() {
     edit->setEncoding(action->data().toByteArray());
 }
 
+void QScintillaEditor::on_actionAbout_triggered() {
+    if (!aboutDlg) {
+        aboutDlg = new AboutDialog(this);
+    }
+    aboutDlg->exec();
+}
+
 void QScintillaEditor::find(const QString& findText, int flags, bool forward,
         bool wrap) {
     bool searchWrapped;
@@ -448,3 +456,4 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
+
