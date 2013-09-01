@@ -7,7 +7,7 @@
 #include <cmath>
 
 Buffer::Buffer(QWidget *parent) :
-        ScintillaEdit(parent) {
+        ScintillaEdit(parent), m_encoding("UTF-8") {
     // Use Unicode code page
     setCodePage(SC_CP_UTF8);
     // Track the scroll width
@@ -54,7 +54,7 @@ void Buffer::clear() {
     // Clear the file name and the editor
     clearAll();
     setSavePoint();
-    fileInfo.setFile("");
+    m_fileInfo.setFile("");
 }
 
 bool Buffer::open(const QString &fileName) {
@@ -63,13 +63,14 @@ bool Buffer::open(const QString &fileName) {
     if (!file.open(QIODevice::ReadOnly)) {
         return false;
     }
-    QTextStream in(&file);
-    QString content = in.readAll();
+    QTextStream input(&file);
+    input.setCodec(m_encoding);
+    QString content = input.readAll();
     setText(content.toUtf8());
     file.close();
 
     // File saved succesfully
-    fileInfo.setFile(fileName);
+    m_fileInfo.setFile(fileName);
     emptyUndoBuffer();
     setSavePoint();
 
@@ -84,21 +85,33 @@ bool Buffer::save(const QString &fileName) {
     }
 
     // Save the text to a file.
-    QTextStream stream(&file);
+    QTextStream output(&file);
     QByteArray content = getText(textLength() + 1);
-    stream << QString::fromUtf8(content);
-    stream.flush();
+    output.setCodec(m_encoding);
+    output << QString::fromUtf8(content);
+    output.flush();
     file.close();
 
     // File saved
-    fileInfo.setFile(fileName);
+    m_fileInfo.setFile(fileName);
     setSavePoint();
 
     return true;
 }
 
-QFileInfo Buffer::getFileInfo() {
-    return fileInfo;
+QFileInfo Buffer::fileInfo() const {
+    return m_fileInfo;
+}
+
+QByteArray Buffer::encoding() const {
+    return m_encoding;
+}
+
+void Buffer::setEncoding(const QByteArray& encoding) {
+    if (m_encoding != encoding) {
+        m_encoding = encoding;
+        emit encodingChanged(encoding);
+    }
 }
 
 bool Buffer::showLineNumbers() {

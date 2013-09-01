@@ -2,6 +2,7 @@
 
 #include <QtGlobal>
 
+#include <QDebug>
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QInputDialog>
@@ -13,6 +14,7 @@
 #include "icondb.h"
 #include "qscintillaeditor.h"
 #include "ui_qscintillaeditor.h"
+#include "util.h"
 
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent),
@@ -27,12 +29,15 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
 
     edit = new Buffer(parent);
     setCentralWidget(edit);
+    setUpMenuBar();
     setUpStatusBar();
     setTitle();
 
     connect(edit, SIGNAL(savePointChanged(bool)), this,
         SLOT(savePointChanged(bool)));
     connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
+    connect(edit, SIGNAL(encodingChanged(QByteArray)), this,
+        SLOT(onEncodingChanged(QByteArray)));
 }
 
 QScintillaEditor::~QScintillaEditor() {
@@ -226,6 +231,11 @@ void QScintillaEditor::on_actionFont_triggered() {
     }
 }
 
+void QScintillaEditor::on_changeEncoding_triggered() {
+    QAction *action = qobject_cast<QAction*>(sender());
+    edit->setEncoding(action->data().toByteArray());
+}
+
 void QScintillaEditor::find(const QString& findText, int flags, bool forward,
         bool wrap) {
     bool searchWrapped;
@@ -284,6 +294,10 @@ void QScintillaEditor::updateUi() {
         edit->lineFromPosition(position) + 1).arg(edit->column(position) + 1)));
 }
 
+void QScintillaEditor::onEncodingChanged(const QByteArray& encoding) {
+    encodingLabel->setText(encoding);
+}
+
 void QScintillaEditor::setUpActions() {
     IconDb* iconDb = IconDb::instance();
     ui->actionNew->setIcon(iconDb->getIcon(IconDb::New));
@@ -307,15 +321,44 @@ void QScintillaEditor::setUpActions() {
     ui->actionAbout->setIcon(iconDb->getIcon(IconDb::About));
 }
 
+void QScintillaEditor::setUpMenuBar() {
+    // Add a menu for each encoding category
+    QMenu* encodingCategories[] = {
+        new QMenu(tr("West European"), this),
+        new QMenu(tr("East European"), this),
+        new QMenu(tr("East Asian"), this),
+        new QMenu(tr("South Asian"), this),
+        new QMenu(tr("Middle Eastern"), this),
+        new QMenu(tr("Unicode"), this),
+    };
+    for (size_t i = 0; i < sizeof(encodingCategories) / sizeof(QAction*); i++) {
+        ui->menuEncoding->addMenu(encodingCategories[i]);
+    }
+    // Add a menu for each encoding
+    for (size_t i = 0; i < G_ENCODING_COUNT; i++) {
+        Encoding encoding = G_AVAILABLE_ENCODINGS[i];
+        QString text = QString("%1 (%2)").arg(encoding.language,
+            encoding.displayName);
+        QAction* action = new QAction(text, this);
+        action->setData(encoding.name);
+        encodingCategories[encoding.category]->addAction(action);
+        connect(action, SIGNAL(triggered()), this,
+            SLOT(on_changeEncoding_triggered()));
+    }
+}
+
 void QScintillaEditor::setUpStatusBar() {
     messageLabel = new QLabel(this);
+    encodingLabel = new QLabel(edit->encoding(), this);
     positionLabel = new QLabel(this);
+
     statusBar()->addPermanentWidget(messageLabel, 1);
+    statusBar()->addPermanentWidget(encodingLabel);
     statusBar()->addPermanentWidget(positionLabel);
 }
 
 void QScintillaEditor::setTitle() {
-    QFileInfo fileInfo = edit->getFileInfo();
+    QFileInfo fileInfo = edit->fileInfo();
     QString name = fileInfo.fileName().isEmpty() ? tr("Untitled") :
                                                    fileInfo.fileName();
     QString title = QString("%1 - %2").arg(name).arg(qApp->applicationName())
@@ -327,7 +370,7 @@ bool QScintillaEditor::checkModifiedAndSave() {
     // If the file has been modified, promt the user to save the changes
     if (edit->modify()) {
         // Ask the user if the file should be saved
-        QFileInfo fileInfo = edit->getFileInfo();
+        QFileInfo fileInfo = edit->fileInfo();
         QString message = QString(tr("File '%1' has been modified"))
                 .arg(fileInfo.filePath().isEmpty() ? tr("Untitled") :
                                                      fileInfo.fileName());
@@ -365,7 +408,7 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
     if (!fileName.isEmpty()) { // Save with the provided file name.
         newFileName = fileName;
     } else {
-        newFileName = edit->getFileInfo().filePath();
+        newFileName = edit->fileInfo().filePath();
 
         if (newFileName.isEmpty()) {
             QString selectedFileName = QFileDialog::getSaveFileName(this,

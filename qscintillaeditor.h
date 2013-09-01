@@ -174,6 +174,11 @@ private slots:
     void on_actionFont_triggered();
 
     /**
+     * Called when the Change encoding action is triggered.
+     */
+    void on_changeEncoding_triggered();
+
+    /**
      * Called when the user searches for text.
      *
      * @param findText The text to search for.
@@ -220,11 +225,17 @@ private slots:
      */
     void updateUi();
 
+    void onEncodingChanged(const QByteArray& encoding);
 private:
     /**
      * Sets up the actions for the window.
      */
     void setUpActions();
+
+    /**
+     * Set up the menu bar.
+     */
+    void setUpMenuBar();
 
     /**
      * Set up the status bar.
@@ -272,6 +283,9 @@ private:
 
     /** The status bar label that displays messages */
     QLabel *messageLabel;
+
+    /** The status bar label that displays the current encoding */
+    QLabel *encodingLabel;
 
     /** The status bar label that displays the current position */
     QLabel *positionLabel;

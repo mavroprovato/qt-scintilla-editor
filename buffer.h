@@ -8,6 +8,9 @@
 
 class Buffer : public ScintillaEdit {
     Q_OBJECT
+
+    Q_PROPERTY(QFileInfo fileInfo READ fileInfo NOTIFY fileInfoChanged)
+    Q_PROPERTY(QByteArray encoding READ encoding WRITE setEncoding NOTIFY encodingChanged)
 public:
     explicit Buffer(QWidget *parent = 0);
 
@@ -43,7 +46,11 @@ public:
      * @return The path of the file, or a null string if the buffer has not been
      * saved yet.
      */
-    QFileInfo getFileInfo();
+    QFileInfo fileInfo() const;
+
+    QByteArray encoding() const;
+
+    void setEncoding(const QByteArray& encoding);
 
     /**
      * Finds the occurance of the provided text and selects the match.
@@ -74,6 +81,9 @@ public:
     void setShowLineNumbers(bool show);
 signals:
 
+    void fileInfoChanged(const QFileInfo& fileInfo);
+
+    void encodingChanged(const QByteArray& encoding);
 public slots:
 
     /**
@@ -84,8 +94,9 @@ public slots:
     void onLinesAdded(int linesAdded);
 
 private:
-    /** Contains the file information, if the file has been set. */
-    QFileInfo fileInfo;
+    QFileInfo m_fileInfo;
+
+    QByteArray m_encoding;
 };
 
 #endif // BUFFER_H
