@@ -238,7 +238,7 @@ void QScintillaEditor::on_actionFont_triggered() {
     }
 }
 
-void QScintillaEditor::on_changeEncoding_triggered() {
+void QScintillaEditor::changeEncoding_triggered() {
     QAction *action = qobject_cast<QAction*>(sender());
     edit->setEncoding(action->data().toByteArray());
 }
@@ -377,7 +377,7 @@ void QScintillaEditor::setUpMenuBar() {
         action->setData(encoding.name);
         encodingCategories[encoding.category]->addAction(action);
         connect(action, SIGNAL(triggered()), this,
-            SLOT(on_changeEncoding_triggered()));
+            SLOT(changeEncoding_triggered()));
     }
 }
 

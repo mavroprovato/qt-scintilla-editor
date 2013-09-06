@@ -184,7 +184,7 @@ private slots:
     /**
      * Called when the Change encoding action is triggered.
      */
-    void on_changeEncoding_triggered();
+    void changeEncoding_triggered();
 
     /**
      * Called when the About action is triggered.
@@ -238,6 +238,11 @@ private slots:
      */
     void updateUi();
 
+    /**
+     * Called when the encoding of the buffer has changed.
+     *
+     * @param encoding The new encoding.
+     */
     void onEncodingChanged(const QByteArray& encoding);
 
     /**
