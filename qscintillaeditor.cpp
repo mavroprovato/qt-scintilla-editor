@@ -47,6 +47,15 @@ QScintillaEditor::~QScintillaEditor() {
     delete ui;
 }
 
+void QScintillaEditor::openFile(const QString& fileName) {
+    if (checkModifiedAndSave()) {
+        if (!edit->open(fileName)) {
+            QMessageBox::critical(this, tr("Open File Error"),
+                tr("The file cannot be opened."));
+        }
+    }
+}
+
 void QScintillaEditor::on_actionNew_triggered() {
     QScintillaEditor *w = new QScintillaEditor;
     w->show();

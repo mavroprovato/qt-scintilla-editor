@@ -40,6 +40,8 @@ public:
      */
     ~QScintillaEditor();
 
+    void openFile(const QString& fileName);
+
 private slots:
     /**
      * Called when the New file action is triggered.

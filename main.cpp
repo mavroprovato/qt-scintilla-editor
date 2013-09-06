@@ -4,7 +4,7 @@
 #include <QApplication>
 
 /**
- * The main application version.
+ * The application entry point.
  *
  * @param argc The argument count.
  * @param argv The arguments.
@@ -16,9 +16,20 @@ int main(int argc, char *argv[]) {
     a.setApplicationName(APPLICATION_NAME);
     a.setApplicationVersion(APPLICATION_VERSION);
 
-    // Create and show the main window.
-    QScintillaEditor w;
-    w.show();
-    
+    // Check the command line arguments
+    bool fileOpened = false;
+    for (int i = 1; i < argc; i++) {
+        QScintillaEditor *w = new QScintillaEditor;
+        w->show();
+        w->openFile(argv[i]);
+        fileOpened = true;
+    }
+
+    // If no window has been opened, open one.
+    if (!fileOpened) {
+        QScintillaEditor *w = new QScintillaEditor;
+        w->show();
+    }
+
     return a.exec();
 }
