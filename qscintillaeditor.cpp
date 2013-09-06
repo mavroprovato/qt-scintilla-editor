@@ -49,9 +49,45 @@ QScintillaEditor::~QScintillaEditor() {
 
 void QScintillaEditor::openFile(const QString& fileName) {
     if (checkModifiedAndSave()) {
-        if (!edit->open(fileName)) {
-            QMessageBox::critical(this, tr("Open File Error"),
-                tr("The file cannot be opened."));
+        QString openFileName;
+        if (fileName.isEmpty()) {
+            // Display the open file dialog
+            openFileName = QFileDialog::getOpenFileName(this, tr("Open File"));
+        }
+        else {
+            openFileName = fileName;
+        }
+        if (!openFileName.isEmpty()) {
+            // Offer to create the file if it does not exist.
+            QFileInfo fileInfo(openFileName);
+            if (!fileInfo.exists()) {
+                QString message(tr("File '%1' does not exist").arg(
+                        fileInfo.absoluteFilePath()));
+                QMessageBox msgBox;
+                msgBox.setText(message);
+                msgBox.setInformativeText(tr("Do you want to create it?"));
+                msgBox.setIcon(QMessageBox::Information);
+                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+                msgBox.setDefaultButton(QMessageBox::Yes);
+                if (msgBox.exec() == QMessageBox::Yes) {
+                    QFile file(openFileName);
+                    if (!file.open(QIODevice::WriteOnly)) {
+                        QString message(tr("File '%1' cannot be created").arg(
+                                fileInfo.absoluteFilePath()));
+                        QMessageBox::critical(this, tr("Create File Error"),
+                            message);
+                        return;
+                    }
+                    file.close();
+                } else {
+                    return;
+                }
+            }
+            if (!edit->open(openFileName)) {
+                QString message(tr("File '%1' cannot be opened").arg(
+                        fileInfo.absoluteFilePath()));
+                QMessageBox::critical(this, tr("Open File Error"), message);
+            }
         }
     }
 }
@@ -62,16 +98,7 @@ void QScintillaEditor::on_actionNew_triggered() {
 }
 
 void QScintillaEditor::on_actionOpen_triggered() {
-    if (checkModifiedAndSave()) {
-        // Display the open file dialog
-        QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"));
-        if (!fileName.isEmpty()) {
-            if (!edit->open(fileName)) {
-                QMessageBox::critical(this, tr("Open File Error"),
-                    tr("The file cannot be opened."));
-            }
-        }
-    }
+    openFile("");
 }
 
 void QScintillaEditor::on_actionSave_triggered() {
