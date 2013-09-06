@@ -2,7 +2,9 @@
 #define QSCINTILLAEDITOR_H
 
 #include <QCloseEvent>
+#include <QList>
 #include <QMainWindow>
+#include <QUrl>
 
 class AboutDialog;
 class Buffer;
@@ -238,6 +240,12 @@ private slots:
 
     void onEncodingChanged(const QByteArray& encoding);
 
+    /**
+     * Triggered when URL are dropped in the editor.
+     *
+     * @param uls The list of URLs that were dropped.
+     */
+    void onUrlsDropped(const QList<QUrl>& uls);
 private:
     /**
      * Sets up the actions for the window.

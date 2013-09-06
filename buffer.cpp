@@ -1,8 +1,11 @@
 #include "buffer.h"
 #include "util.h"
 
+#include <QDebug>
+#include <QDropEvent>
 #include <QFontDatabase>
 #include <QTextStream>
+#include <QUrl>
 
 #include <cmath>
 
@@ -162,3 +165,14 @@ void Buffer::onLinesAdded(int) {
         setShowLineNumbers(true);
     }
 }
+
+void Buffer::dropEvent(QDropEvent *event) {
+    if (event->mimeData()->hasUrls()) {
+        // If the user is dropping URLs, emit a signal
+        QList<QUrl> urls = event->mimeData()->urls();
+        emit urlsDropped(urls);
+    } else {
+        // Do the default action
+        ScintillaEditBase::dropEvent(event);
+    }
+ }

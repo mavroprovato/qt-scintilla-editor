@@ -24,12 +24,12 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     findDlg(0), aboutDlg(0) {
 
     ui->setupUi(this);
+    edit = new Buffer(parent);
+    setCentralWidget(edit);
+
     IconDb* iconDb = IconDb::instance();
     setWindowIcon(iconDb->getIcon(IconDb::Application));
     setUpActions();
-
-    edit = new Buffer(parent);
-    setCentralWidget(edit);
     setTitle();
     setUpMenuBar();
     setUpStatusBar();
@@ -39,6 +39,8 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
     connect(edit, SIGNAL(encodingChanged(QByteArray)), this,
         SLOT(onEncodingChanged(QByteArray)));
+    connect(edit, SIGNAL(urlsDropped(QList<QUrl>)), this,
+        SLOT(onUrlsDropped(QList<QUrl>)));
 }
 
 QScintillaEditor::~QScintillaEditor() {
@@ -308,6 +310,25 @@ void QScintillaEditor::updateUi() {
 
 void QScintillaEditor::onEncodingChanged(const QByteArray& encoding) {
     encodingLabel->setText(encoding);
+}
+
+void QScintillaEditor::onUrlsDropped(const QList<QUrl>& urls) {
+    for (int i = 0; i < urls.size(); ++i) {
+        QUrl url = urls.at(i);
+        if (url.isLocalFile()) {
+            if (i == 0) {
+                // Reuse the same window for the first file
+                if (checkModifiedAndSave()) {
+                    edit->open(url.toLocalFile());
+                }
+            } else {
+                // For multiple files, open a new window
+                QScintillaEditor *w = new QScintillaEditor;
+                w->show();
+                w->edit->open(url.toLocalFile());
+            }
+        }
+    }
 }
 
 void QScintillaEditor::setUpActions() {

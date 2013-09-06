@@ -4,6 +4,8 @@
 #include <ScintillaEdit.h>
 
 #include <QFileInfo>
+#include <QList>
+#include <QUrl>
 #include <QWidget>
 
 class Buffer : public ScintillaEdit {
@@ -12,6 +14,11 @@ class Buffer : public ScintillaEdit {
     Q_PROPERTY(QFileInfo fileInfo READ fileInfo NOTIFY fileInfoChanged)
     Q_PROPERTY(QByteArray encoding READ encoding WRITE setEncoding NOTIFY encodingChanged)
 public:
+    /**
+     * Creates the buffer.
+     *
+     * @param parent The parent window.
+     */
     explicit Buffer(QWidget *parent = 0);
 
     /**
@@ -48,8 +55,18 @@ public:
      */
     QFileInfo fileInfo() const;
 
+    /**
+     * Returns the encoding for the buffer.
+     *
+     * @return The encoding for the buffer.
+     */
     QByteArray encoding() const;
 
+    /**
+     * Sets the encoding for the buffer.
+     *
+     * @param encoding The new encoding for the buffer.
+     */
     void setEncoding(const QByteArray& encoding);
 
     /**
@@ -79,13 +96,38 @@ public:
      * @param show if true, show the line numbers.
      */
     void setShowLineNumbers(bool show);
-signals:
 
+    /**
+     * Overriden in order to customize the default implementation in the case
+     * when urls are dropped into the editor.
+     *
+     * @param event The drop event.
+     */
+    virtual void dropEvent(QDropEvent *event);
+
+signals:
+    /**
+     * Emitted when the underlying file for this buffer is changed.
+     *
+     * @param fileInfo The new file information.
+     */
     void fileInfoChanged(const QFileInfo& fileInfo);
 
+    /**
+     * Called when the encoding for the buffer has changed.
+     *
+     * @param encoding The new character encoding.
+     */
     void encodingChanged(const QByteArray& encoding);
-public slots:
 
+    /**
+     * Called when a list of URLs have been dropped into the editor.
+     *
+     * @param encoding The new character encoding.
+     */
+    void urlsDropped(const QList<QUrl>& urls);
+
+public slots:
     /**
      * Called when lines are added to the buffer.
      *
@@ -94,8 +136,10 @@ public slots:
     void onLinesAdded(int linesAdded);
 
 private:
+    /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;
 
+    /** The encofding for the buffer. */
     QByteArray m_encoding;
 };
 
