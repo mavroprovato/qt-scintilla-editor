@@ -41,6 +41,11 @@ public:
      */
     ~QScintillaEditor();
 
+    /**
+     * Open a file with the provided file name.
+     *
+     * @param fileName The file name.
+     */
     void openFile(const QString& fileName);
 
 private slots:
@@ -53,6 +58,11 @@ private slots:
      * Called when the Open action is triggered.
      */
     void on_actionOpen_triggered();
+
+    /**
+     * Called when the Reopen action is triggered.
+     */
+    void on_actionReopen_triggered();
 
     /**
      * Called when the Reopen with encoding action is triggered.
@@ -266,6 +276,7 @@ private slots:
      * @param uls The list of URLs that were dropped.
      */
     void onUrlsDropped(const QList<QUrl>& uls);
+
 private:
     /**
      * Sets up the actions for the window.
@@ -277,6 +288,13 @@ private:
      */
     void setUpMenuBar();
 
+    /**
+     * Sets up the encoding menu.
+     *
+     * @param parent The parent menu to which the menus and actions will be
+     * added.
+     * @param slot The slot to call when an action is triggered.
+     */
     void setUpEncodingMenu(QMenu *parent, const char* slot);
 
     /**

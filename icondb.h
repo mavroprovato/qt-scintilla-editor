@@ -13,9 +13,9 @@ public:
      * Enumeration of all the application icons.
      */
     enum Icon {
-        Application, New, Open, Save, SaveAs, Print, Close, Quit, Undo, Redo,
-        Cut, Copy, Paste, Find, Replace, Fullscreen, ZoomIn, ZoomOut, ZoomReset,
-        Font, About
+        Application, New, Open, Reopen, Save, SaveAs, Print, Close, Quit, Undo,
+        Redo, Cut, Copy, Paste, Find, Replace, Fullscreen, ZoomIn, ZoomOut,
+        ZoomReset, Font, About
     };
 
     /**

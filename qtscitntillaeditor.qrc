@@ -50,5 +50,7 @@
         <file>icons/22x22/help-about.png</file>
         <file>icons/16x16/dialog-close.png</file>
         <file>icons/22x22/dialog-close.png</file>
+        <file>icons/16x16/view-refresh.png</file>
+        <file>icons/22x22/view-refresh.png</file>
     </qresource>
 </RCC>

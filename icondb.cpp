@@ -34,6 +34,11 @@ IconDb::IconDb() {
     iconMap[Open] = icon;
 
     icon = QIcon();
+    icon.addFile(":/icons/icons/16x16/view-refresh.png", QSize(16, 16));
+    icon.addFile(":/icons/icons/22x22/view-refresh.png", QSize(22, 22));
+    iconMap[Reopen] = icon;
+
+    icon = QIcon();
     icon.addFile(":/icons/icons/16x16/document-save.png", QSize(16, 16));
     icon.addFile(":/icons/icons/22x22/document-save.png", QSize(22, 22));
     iconMap[Save] = icon;

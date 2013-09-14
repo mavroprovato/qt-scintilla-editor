@@ -37,6 +37,7 @@
     </widget>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionReopen"/>
     <addaction name="menuReopenWithEncoding"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
@@ -391,6 +392,17 @@
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionReopen">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Reopen</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>

@@ -103,6 +103,10 @@ void QScintillaEditor::on_actionOpen_triggered() {
     openFile("");
 }
 
+void QScintillaEditor::on_actionReopen_triggered() {
+    openFile(edit->fileInfo().absoluteFilePath());
+}
+
 void QScintillaEditor::reopenWithEncoding_triggered() {
     changeEncoding_triggered();
     openFile(edit->fileInfo().absoluteFilePath());
@@ -352,6 +356,7 @@ void QScintillaEditor::updateUi() {
 }
 
 void QScintillaEditor::onFileInfoChanged(const QFileInfo& fileInfo) {
+    ui->actionReopen->setEnabled(!fileInfo.fileName().isEmpty());
     ui->menuReopenWithEncoding->setEnabled(!fileInfo.fileName().isEmpty());
 }
 
@@ -388,6 +393,7 @@ void QScintillaEditor::setUpActions() {
     IconDb* iconDb = IconDb::instance();
     ui->actionNew->setIcon(iconDb->getIcon(IconDb::New));
     ui->actionOpen->setIcon(iconDb->getIcon(IconDb::Open));
+    ui->actionReopen->setIcon(iconDb->getIcon(IconDb::Reopen));
     ui->actionSave->setIcon(iconDb->getIcon(IconDb::Save));
     ui->actionSaveAs->setIcon(iconDb->getIcon(IconDb::SaveAs));
     ui->actionPrint->setIcon(iconDb->getIcon(IconDb::Print));
