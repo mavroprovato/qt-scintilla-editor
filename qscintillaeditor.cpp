@@ -345,7 +345,13 @@ void QScintillaEditor::updateUi() {
 }
 
 void QScintillaEditor::onEncodingChanged(const QByteArray& encoding) {
-    encodingLabel->setText(encoding);
+    // Find the display name
+    for (size_t i = 0; i < G_ENCODING_COUNT; i++) {
+        if (G_AVAILABLE_ENCODINGS[i].name == encoding) {
+            encodingLabel->setText(G_AVAILABLE_ENCODINGS[i].displayName);
+            break;
+        }
+    }
 }
 
 void QScintillaEditor::onUrlsDropped(const QList<QUrl>& urls) {
