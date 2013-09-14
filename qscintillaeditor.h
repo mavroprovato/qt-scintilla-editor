@@ -200,6 +200,11 @@ private slots:
     void on_actionWordWrap_triggered();
 
     /**
+     * Called when the View end of line action is triggered.
+     */
+    void on_actionEndOfLine_triggered();
+
+    /**
      * Called when the Select font action is triggered.
      */
     void on_actionFont_triggered();
@@ -208,6 +213,21 @@ private slots:
      * Called when the Change encoding action is triggered.
      */
     void changeEncoding_triggered();
+
+    /**
+     * Called when the Windows line ending action is triggered.
+     */
+    void on_actionEndOfLineWindows_triggered();
+
+    /**
+     * Called when the Unix line ending action is triggered.
+     */
+    void on_actionEndOfLineUnix_triggered();
+
+    /**
+     * Called when the Macintosh line ending action is triggered.
+     */
+    void on_actionEndOfLineMacintosh_triggered();
 
     /**
      * Called when the About action is triggered.

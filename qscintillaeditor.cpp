@@ -266,6 +266,10 @@ void QScintillaEditor::on_actionLongLineIndicator_triggered() {
     }
 }
 
+void QScintillaEditor::on_actionEndOfLine_triggered() {
+    edit->setViewEOL(ui->actionEndOfLine->isChecked());
+}
+
 void QScintillaEditor::on_actionLineNumbers_triggered() {
     edit->setShowLineNumbers(ui->actionLineNumbers->isChecked());
 }
@@ -298,6 +302,21 @@ void QScintillaEditor::changeEncoding_triggered() {
     edit->setEncoding(action->data().toByteArray());
 }
 
+void QScintillaEditor::on_actionEndOfLineWindows_triggered() {
+    edit->setEOLMode(SC_EOL_CRLF);
+    edit->convertEOLs(SC_EOL_CRLF);
+}
+
+void QScintillaEditor::on_actionEndOfLineUnix_triggered() {
+    edit->setEOLMode(SC_EOL_LF);
+    edit->convertEOLs(SC_EOL_LF);
+}
+
+void QScintillaEditor::on_actionEndOfLineMacintosh_triggered() {
+    edit->setEOLMode(SC_EOL_CR);
+    edit->convertEOLs(SC_EOL_CR);
+}
+
 void QScintillaEditor::on_actionAbout_triggered() {
     if (!aboutDlg) {
         aboutDlg = new AboutDialog(this);
@@ -319,7 +338,6 @@ void QScintillaEditor::find(const QString& findText, int flags, bool forward,
     lastFindParams.findText = findText;
     lastFindParams.flags = flags;
     lastFindParams.wrap = wrap;
-
 }
 
 void QScintillaEditor::replace(const QString& findText,
@@ -426,6 +444,16 @@ void QScintillaEditor::setUpMenuBar() {
     setUpEncodingMenu(ui->menuEncoding, SLOT(changeEncoding_triggered()));
     setUpEncodingMenu(ui->menuReopenWithEncoding,
         SLOT(reopenWithEncoding_triggered()));
+
+    QActionGroup* group = new QActionGroup(this);
+    ui->actionEndOfLineWindows->setActionGroup(group);
+    ui->actionEndOfLineUnix->setActionGroup(group);
+    ui->actionEndOfLineMacintosh->setActionGroup(group);
+    #ifdef Q_OS_WIN
+        ui->actionEndOfLineWindows->setChecked(true);
+    #else
+        ui->actionEndOfLineUnix->setChecked(true);
+    #endif
 }
 
 void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {

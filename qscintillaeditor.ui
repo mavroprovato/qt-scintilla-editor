@@ -76,10 +76,19 @@
       <string>Encoding</string>
      </property>
     </widget>
+    <widget class="QMenu" name="menuEndOfLine">
+     <property name="title">
+      <string>End of Line</string>
+     </property>
+     <addaction name="actionEndOfLineWindows"/>
+     <addaction name="actionEndOfLineUnix"/>
+     <addaction name="actionEndOfLineMacintosh"/>
+    </widget>
     <addaction name="actionWordWrap"/>
     <addaction name="actionFont"/>
     <addaction name="separator"/>
     <addaction name="menuEncoding"/>
+    <addaction name="menuEndOfLine"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -99,10 +108,13 @@
     <addaction name="actionStatusBar"/>
     <addaction name="separator"/>
     <addaction name="menuZoom"/>
+    <addaction name="separator"/>
     <addaction name="actionWhitespace"/>
     <addaction name="actionIndentationGuides"/>
+    <addaction name="separator"/>
     <addaction name="actionLineNumbers"/>
     <addaction name="actionLongLineIndicator"/>
+    <addaction name="actionEndOfLine"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -415,6 +427,38 @@
    </property>
    <property name="text">
     <string>Indentation Guides</string>
+   </property>
+  </action>
+  <action name="actionEndOfLineWindows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Windows</string>
+   </property>
+  </action>
+  <action name="actionEndOfLineUnix">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Unix</string>
+   </property>
+  </action>
+  <action name="actionEndOfLineMacintosh">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Macintosh</string>
+   </property>
+  </action>
+  <action name="actionEndOfLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>End of Line</string>
    </property>
   </action>
  </widget>
