@@ -56,8 +56,8 @@ Buffer::~Buffer() {
 void Buffer::clear() {
     // Clear the file name and the editor
     clearAll();
+    setFileInfo(QFileInfo(""));
     setSavePoint();
-    m_fileInfo.setFile("");
 }
 
 bool Buffer::open(const QString &fileName) {
@@ -73,7 +73,7 @@ bool Buffer::open(const QString &fileName) {
     file.close();
 
     // File saved succesfully
-    m_fileInfo.setFile(fileName);
+    setFileInfo(QFileInfo(fileName));
     emptyUndoBuffer();
     setSavePoint();
 
@@ -96,7 +96,7 @@ bool Buffer::save(const QString &fileName) {
     file.close();
 
     // File saved
-    m_fileInfo.setFile(fileName);
+    setFileInfo(QFileInfo(fileName));
     setSavePoint();
 
     return true;
@@ -176,3 +176,10 @@ void Buffer::dropEvent(QDropEvent *event) {
         ScintillaEditBase::dropEvent(event);
     }
  }
+
+void Buffer::setFileInfo(const QFileInfo& fileInfo) {
+    if (m_fileInfo != fileInfo) {
+        m_fileInfo = fileInfo;
+        emit fileInfoChanged(fileInfo);
+    }
+}

@@ -136,6 +136,13 @@ public slots:
     void onLinesAdded(int linesAdded);
 
 private:
+    /**
+     * Sets the file information of the underlying info.
+     *
+     * @param fileInfo The new file information.
+     */
+    void setFileInfo(const QFileInfo& fileInfo);
+
     /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;
 

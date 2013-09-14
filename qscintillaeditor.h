@@ -2,6 +2,7 @@
 #define QSCINTILLAEDITOR_H
 
 #include <QCloseEvent>
+#include <QFileInfo>
 #include <QList>
 #include <QMainWindow>
 #include <QUrl>
@@ -52,6 +53,11 @@ private slots:
      * Called when the Open action is triggered.
      */
     void on_actionOpen_triggered();
+
+    /**
+     * Called when the Reopen with encoding action is triggered.
+     */
+    void reopenWithEncoding_triggered();
 
     /**
      * Called when the Save action is triggered.
@@ -241,6 +247,13 @@ private slots:
     void updateUi();
 
     /**
+     * Triggered when the opened file in the editor has changed.
+     *
+     * @param fileInfo The new file information.
+     */
+    void onFileInfoChanged(const QFileInfo& fileInfo);
+
+    /**
      * Called when the encoding of the buffer has changed.
      *
      * @param encoding The new encoding.
@@ -263,6 +276,8 @@ private:
      * Set up the menu bar.
      */
     void setUpMenuBar();
+
+    void setUpEncodingMenu(QMenu *parent, const char* slot);
 
     /**
      * Set up the status bar.

@@ -37,6 +37,8 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     connect(edit, SIGNAL(savePointChanged(bool)), this,
         SLOT(savePointChanged(bool)));
     connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
+    connect(edit, SIGNAL(fileInfoChanged(QFileInfo)), this,
+        SLOT(onFileInfoChanged(QFileInfo)));
     connect(edit, SIGNAL(encodingChanged(QByteArray)), this,
         SLOT(onEncodingChanged(QByteArray)));
     connect(edit, SIGNAL(urlsDropped(QList<QUrl>)), this,
@@ -99,6 +101,11 @@ void QScintillaEditor::on_actionNew_triggered() {
 
 void QScintillaEditor::on_actionOpen_triggered() {
     openFile("");
+}
+
+void QScintillaEditor::reopenWithEncoding_triggered() {
+    changeEncoding_triggered();
+    openFile(edit->fileInfo().absoluteFilePath());
 }
 
 void QScintillaEditor::on_actionSave_triggered() {
@@ -344,6 +351,10 @@ void QScintillaEditor::updateUi() {
         edit->lineFromPosition(position) + 1).arg(edit->column(position) + 1)));
 }
 
+void QScintillaEditor::onFileInfoChanged(const QFileInfo& fileInfo) {
+    ui->menuReopenWithEncoding->setEnabled(!fileInfo.fileName().isEmpty());
+}
+
 void QScintillaEditor::onEncodingChanged(const QByteArray& encoding) {
     // Find the display name
     for (size_t i = 0; i < G_ENCODING_COUNT; i++) {
@@ -398,6 +409,12 @@ void QScintillaEditor::setUpActions() {
 }
 
 void QScintillaEditor::setUpMenuBar() {
+    setUpEncodingMenu(ui->menuEncoding, SLOT(changeEncoding_triggered()));
+    setUpEncodingMenu(ui->menuReopenWithEncoding,
+        SLOT(reopenWithEncoding_triggered()));
+}
+
+void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
     // Add a menu for each encoding category
     QMenu* encodingCategories[] = {
         new QMenu(tr("West European"), this),
@@ -407,9 +424,6 @@ void QScintillaEditor::setUpMenuBar() {
         new QMenu(tr("Middle Eastern"), this),
         new QMenu(tr("Unicode"), this),
     };
-    for (size_t i = 0; i < sizeof(encodingCategories) / sizeof(QAction*); i++) {
-        ui->menuEncoding->addMenu(encodingCategories[i]);
-    }
     // Add a menu for each encoding
     for (size_t i = 0; i < G_ENCODING_COUNT; i++) {
         Encoding encoding = G_AVAILABLE_ENCODINGS[i];
@@ -418,8 +432,11 @@ void QScintillaEditor::setUpMenuBar() {
         QAction* action = new QAction(text, this);
         action->setData(encoding.name);
         encodingCategories[encoding.category]->addAction(action);
-        connect(action, SIGNAL(triggered()), this,
-            SLOT(changeEncoding_triggered()));
+        connect(action, SIGNAL(triggered()), this, slot);
+    }
+
+    for (size_t i = 0; i < sizeof(encodingCategories) / sizeof(QMenu*); i++) {
+        parent->addMenu(encodingCategories[i]);
     }
 }
 
