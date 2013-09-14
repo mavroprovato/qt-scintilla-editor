@@ -250,6 +250,14 @@ void QScintillaEditor::on_actionWhitespace_triggered() {
     }
 }
 
+void QScintillaEditor::on_actionIndentationGuides_triggered() {
+    if (ui->actionIndentationGuides->isChecked()) {
+        edit->setIndentationGuides(SC_IV_LOOKBOTH);
+    } else {
+        edit->setIndentationGuides(SC_IV_NONE);
+    }
+}
+
 void QScintillaEditor::on_actionLongLineIndicator_triggered() {
     if (ui->actionLongLineIndicator->isChecked()) {
         edit->setEdgeMode(EDGE_LINE);

@@ -100,6 +100,7 @@
     <addaction name="separator"/>
     <addaction name="menuZoom"/>
     <addaction name="actionWhitespace"/>
+    <addaction name="actionIndentationGuides"/>
     <addaction name="actionLineNumbers"/>
     <addaction name="actionLongLineIndicator"/>
    </widget>
@@ -403,6 +404,17 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionIndentationGuides">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Indentation Guides</string>
    </property>
   </action>
  </widget>

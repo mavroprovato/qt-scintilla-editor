@@ -38,6 +38,11 @@ Buffer::Buffer(QWidget *parent) :
     // View whitespace
     setViewWS(SCWS_VISIBLEALWAYS);
     setWhitespaceFore(true, convertColor(Qt::lightGray));
+    // Set up identation
+    setTabWidth(4);
+    setUseTabs(false);
+    setIndent(4);
+    setIndentationGuides(SC_IV_LOOKBOTH);
     // Set long line indicator
     setEdgeMode(EDGE_LINE);
     setEdgeColumn(80);

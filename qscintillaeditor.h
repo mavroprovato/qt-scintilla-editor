@@ -180,6 +180,11 @@ private slots:
     void on_actionWhitespace_triggered();
 
     /**
+     * Called when the View indentation guides action is triggered.
+     */
+    void on_actionIndentationGuides_triggered();
+
+    /**
      * Called when the action to show/hide the long line indicator is triggered.
      */
     void on_actionLongLineIndicator_triggered();
