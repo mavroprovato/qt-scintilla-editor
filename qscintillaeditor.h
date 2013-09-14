@@ -230,6 +230,16 @@ private slots:
     void on_actionEndOfLineMacintosh_triggered();
 
     /**
+     * Called when the To lower case action is triggered.
+     */
+    void on_actionToLowercase_triggered();
+
+    /**
+     * Called when the To upper case action is triggered.
+     */
+    void on_actionToUppercase_triggered();
+
+    /**
      * Called when the About action is triggered.
      */
     void on_actionAbout_triggered();

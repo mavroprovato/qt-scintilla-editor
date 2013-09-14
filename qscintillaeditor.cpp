@@ -317,6 +317,14 @@ void QScintillaEditor::on_actionEndOfLineMacintosh_triggered() {
     edit->convertEOLs(SC_EOL_CR);
 }
 
+void QScintillaEditor::on_actionToLowercase_triggered() {
+    edit->lowerCase();
+}
+
+void QScintillaEditor::on_actionToUppercase_triggered() {
+    edit->upperCase();
+}
+
 void QScintillaEditor::on_actionAbout_triggered() {
     if (!aboutDlg) {
         aboutDlg = new AboutDialog(this);
