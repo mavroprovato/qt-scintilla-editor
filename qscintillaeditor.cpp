@@ -2,7 +2,6 @@
 
 #include <QtGlobal>
 
-#include <QDebug>
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QInputDialog>
@@ -20,7 +19,7 @@
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QScintillaEditor),
-    wasMaximized(false),
+    workingDir(QDir::home()), wasMaximized(false),
     findDlg(0), aboutDlg(0) {
 
     ui->setupUi(this);
@@ -54,7 +53,8 @@ void QScintillaEditor::openFile(const QString& fileName) {
         QString openFileName;
         if (fileName.isEmpty()) {
             // Display the open file dialog
-            openFileName = QFileDialog::getOpenFileName(this, tr("Open File"));
+            openFileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                    workingDir.absolutePath(), filterString());
         }
         else {
             openFileName = fileName;
@@ -85,6 +85,9 @@ void QScintillaEditor::openFile(const QString& fileName) {
                     return;
                 }
             }
+            // Save the working directory.
+            workingDir = fileInfo.absoluteDir();
+            // Open the selected file.
             if (!edit->open(openFileName)) {
                 QString message(tr("File '%1' cannot be opened").arg(
                         fileInfo.absoluteFilePath()));

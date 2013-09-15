@@ -1,7 +1,6 @@
 #include "buffer.h"
 #include "util.h"
 
-#include <QDebug>
 #include <QDropEvent>
 #include <QFontDatabase>
 #include <QTextStream>
@@ -77,7 +76,7 @@ bool Buffer::open(const QString &fileName) {
     setText(content.toUtf8());
     file.close();
 
-    // File saved succesfully
+    // File opened succesfully
     setFileInfo(QFileInfo(fileName));
     emptyUndoBuffer();
     setSavePoint();
@@ -185,6 +184,31 @@ void Buffer::dropEvent(QDropEvent *event) {
 void Buffer::setFileInfo(const QFileInfo& fileInfo) {
     if (m_fileInfo != fileInfo) {
         m_fileInfo = fileInfo;
+        // Set up the lexer for the buffer
+        setupLexer();
         emit fileInfoChanged(fileInfo);
+    }
+}
+
+void Buffer::setupLexer() {
+    Language lang;
+
+    for (size_t i = 0; i < G_LANGUAGE_COUNT; i++) {
+        Language currentLang = G_AVAILABLE_LANGUAGES[i];
+        QStringList extensions = currentLang.patterns.split(' ');
+        for (int i = 0; i < extensions.size(); ++i) {
+            QRegExp re(extensions.at(i));
+            re.setPatternSyntax(QRegExp::Wildcard);
+            if (re.exactMatch(m_fileInfo.fileName())) {
+                lang = currentLang;
+                goto outer;
+            }
+        }
+    }
+
+outer:
+    if (lang.lexer) {
+        setLexer(lang.lexer);
+        setKeyWords(0, lang.keywords.toLatin1());
     }
 }

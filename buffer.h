@@ -137,11 +137,16 @@ public slots:
 
 private:
     /**
-     * Sets the file information of the underlying info.
+     * Sets the file information of the underlying file.
      *
      * @param fileInfo The new file information.
      */
     void setFileInfo(const QFileInfo& fileInfo);
+
+    /**
+     * Set up the lexer for the buffer, depending of the opened file.
+     */
+    void setupLexer();
 
     /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;

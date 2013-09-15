@@ -2,6 +2,7 @@
 #define QSCINTILLAEDITOR_H
 
 #include <QCloseEvent>
+#include <QDir>
 #include <QFileInfo>
 #include <QList>
 #include <QMainWindow>
@@ -375,6 +376,9 @@ private:
 
     /** The editor control. */
     Buffer *edit;
+
+    /** The working directory. */
+    QDir workingDir;
 
     /** The status bar label that displays messages */
     QLabel *messageLabel;

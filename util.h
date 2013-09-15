@@ -6,6 +6,30 @@
 #include <QString>
 
 /**
+ * Information about the languages that the editor supports.
+ */
+struct Language {
+    /** The lexer for the language. */
+    int lexer;
+    /** The language name. */
+    QString name;
+    /** The file patterns for the language. */
+    QString patterns;
+    /** The keywords for the language, seperated by space. */
+    QString keywords;
+};
+
+/**
+ * An array that holds all the available languages.
+ */
+extern Language G_AVAILABLE_LANGUAGES[];
+
+/**
+ * The number of available languages.
+ */
+extern size_t G_LANGUAGE_COUNT;
+
+/**
  * The differenct categories for the encodings.
  */
 enum EncodingCategory {
@@ -35,6 +59,8 @@ extern Encoding G_AVAILABLE_ENCODINGS[];
  * The number of available encodings.
  */
 extern size_t G_ENCODING_COUNT;
+
+QString filterString();
 
 /**
  * Converts an instance of QColor to a value that can be understood by

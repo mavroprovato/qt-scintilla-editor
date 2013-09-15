@@ -1,5 +1,41 @@
 #include "util.h"
 
+#include <SciLexer.h>
+
+#include <QObject>
+
+Language G_AVAILABLE_LANGUAGES[] = {
+    {
+        SCLEX_CPP, "C/C++", "*.h *.hh *.hpp *.hxx *.h++ *.c *.cc *.cpp *.cxx *.c++",
+        "alignas alignof and and_eq asm auto bitand bitor bool break case "
+        "catch char char16_t char32_t class compl const constexpr const_cast "
+        "continue decltype default delete do double dynamic_cast else enum "
+        "explicit export extern false float for friend goto if inline int "
+        "long mutable namespace new noexcept not not_eq nullptr operator or "
+        "or_eq private protected public register reinterpret_cast return short "
+        "signed sizeof static static_assert static_cast struct switch template "
+        "this thread_local throw true try typedef typeid typename union "
+        "unsigned using virtual void volatile wchar_t while xor xor_eq"
+    },
+    {
+        SCLEX_CPP, "Java", "*.java",
+        "abstract assert boolean break byte case catch char class const "
+        "continue default double do else enum extends final finally float for "
+        "goto if implements import instanceof int interface long native new "
+        "package private protected public return short static strictfp super "
+        "switch synchronized this throw throws transient try void volatile "
+        "while"
+    },
+    {
+        SCLEX_PYTHON, "Python", "*.py *.pyw",
+        "False None True and as assert break class continue def del elif else "
+        "except finally for from global if import in is lambda nonlocal not or "
+        "pass raise return try while with yield"
+    }
+};
+
+size_t G_LANGUAGE_COUNT = sizeof(G_AVAILABLE_LANGUAGES) / sizeof(G_AVAILABLE_LANGUAGES[0]);
+
 Encoding G_AVAILABLE_ENCODINGS[] = {
     { "Arabic", "ISO 8859-6", "ISO-8859-6", MiddleEastern },
     { "Arabic", "ISO 8859-6-I", "ISO-8859-6-I", MiddleEastern },
@@ -69,6 +105,22 @@ Encoding G_AVAILABLE_ENCODINGS[] = {
 };
 
 size_t G_ENCODING_COUNT = sizeof(G_AVAILABLE_ENCODINGS) / sizeof(G_AVAILABLE_ENCODINGS[0]);
+
+QString filterString() {
+    QString filter(QObject::tr("All files (*)"));
+    filter.append(";;");
+
+    for (size_t i = 0; i < G_LANGUAGE_COUNT; i++) {
+        Language language = G_AVAILABLE_LANGUAGES[i];
+        filter.append(QString(QObject::tr("%1 files (%2)")).arg(language.name,
+            language.patterns));
+        if (i != G_LANGUAGE_COUNT - 1) {
+            filter.append(";;");
+        }
+    }
+
+    return filter;
+}
 
 int convertColor(const QColor& color) {
     return color.red() | (color.green() << 8) | (color.blue() << 16);
