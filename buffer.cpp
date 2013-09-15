@@ -54,13 +54,13 @@ Buffer::Buffer(QWidget *parent) :
     setShowFoldMargin(true);
     setMarginMaskN(Fold, SC_MASK_FOLDERS);
     setMarginSensitiveN(Fold, true);
-    markerDefine(SC_MARKNUM_FOLDER, SC_MARK_PLUS);
-    markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_MINUS);
-    markerDefine(SC_MARKNUM_FOLDEREND, SC_MARK_EMPTY);
-    markerDefine(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY);
-    markerDefine(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY);
-    markerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_EMPTY);
-    markerDefine(SC_MARKNUM_FOLDERTAIL, SC_MARK_EMPTY);
+    markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_ARROWDOWN);
+    markerDefine(SC_MARKNUM_FOLDER, SC_MARK_ARROW);
+    markerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_VLINE);
+    markerDefine(SC_MARKNUM_FOLDERTAIL, SC_MARK_LCORNER);
+    markerDefine(SC_MARKNUM_FOLDEREND, SC_MARK_ARROW);
+    markerDefine(SC_MARKNUM_FOLDEROPENMID, SC_MARK_ARROWDOWN);
+    markerDefine(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_TCORNER);
 
     connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
     connect(this, SIGNAL(marginClicked(int,int,int)), this,
