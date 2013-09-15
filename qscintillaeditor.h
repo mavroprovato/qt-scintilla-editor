@@ -196,6 +196,16 @@ private slots:
     void on_actionLineNumbers_triggered();
 
     /**
+     * Called when the View icon margin action is triggered.
+     */
+    void on_actionIconMargin_triggered();
+
+    /**
+     * Called when the View fold margin action is triggered.
+     */
+    void on_actionFoldMargin_triggered();
+
+    /**
      * Called when the Word wrap action is triggered.
      */
     void on_actionWordWrap_triggered();

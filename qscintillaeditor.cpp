@@ -277,6 +277,14 @@ void QScintillaEditor::on_actionLineNumbers_triggered() {
     edit->setShowLineNumbers(ui->actionLineNumbers->isChecked());
 }
 
+void QScintillaEditor::on_actionIconMargin_triggered() {
+    edit->setShowIconMargin(ui->actionIconMargin->isChecked());
+}
+
+void QScintillaEditor::on_actionFoldMargin_triggered() {
+    edit->setShowFoldMargin(ui->actionFoldMargin->isChecked());
+}
+
 void QScintillaEditor::on_actionWordWrap_triggered() {
     edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
 }

@@ -70,6 +70,48 @@ public:
     void setEncoding(const QByteArray& encoding);
 
     /**
+     * Returns true if the line numbers are shown.
+     *
+     * @return true if the line numbers are shown.
+     */
+    bool showLineNumbers() const;
+
+    /**
+     * Shows or hides the line numbers.
+     *
+     * @param showLineNumbers if true, show the line numbers.
+     */
+    void setShowLineNumbers(bool showLineNumbers);
+
+    /**
+     * Returns true if the icon margin is shown.
+     *
+     * @return true if the icon margin is shown.
+     */
+    bool showIconMargin() const;
+
+    /**
+     * Shows or hides the icon margin.
+     *
+     * @param showIconMargin if true, show the icon margin.
+     */
+    void setShowIconMargin(bool showIconMargin);
+
+    /**
+     * Returns true if the fold margin is shown.
+     *
+     * @return true if the fold margin is shown.
+     */
+    bool showFoldMargin() const;
+
+    /**
+     * Shows or hides the fold margin.
+     *
+     * @param showIconMargin if true, show the fold margin.
+     */
+    void setShowFoldMargin(bool showFoldMargin);
+
+    /**
      * Finds the occurance of the provided text and selects the match.
      *
      * @param findText The text to find.
@@ -82,20 +124,6 @@ public:
      */
     bool find(const QString& findText, int flags, bool forward, bool wrap,
         bool *searchWrapped);
-
-    /**
-     * Returns true if the line numbers are shown.
-     *
-     * @return true if the line numbers are shown.
-     */
-    bool showLineNumbers();
-
-    /**
-     * Shows or hides the line numbers.
-     *
-     * @param show if true, show the line numbers.
-     */
-    void setShowLineNumbers(bool show);
 
     /**
      * Overriden in order to customize the default implementation in the case
@@ -144,15 +172,26 @@ private:
     void setFileInfo(const QFileInfo& fileInfo);
 
     /**
-     * Set up the lexer for the buffer, depending of the opened file.
+     * Set up the lexer for the buffer, depending on the opened file name.
      */
     void setupLexer();
+
+    int getLineMarginWidth();
 
     /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;
 
     /** The encofding for the buffer. */
     QByteArray m_encoding;
+
+    /** Flag to display line numbers */
+    bool m_showLineNumbers;
+
+    /** Flag to display the icon margin */
+    bool m_showIconMargin;
+
+    /** Flag to display the fold margin */
+    bool m_showFoldMargin;
 };
 
 #endif // BUFFER_H

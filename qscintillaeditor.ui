@@ -113,11 +113,13 @@
     <addaction name="menuZoom"/>
     <addaction name="separator"/>
     <addaction name="actionWhitespace"/>
+    <addaction name="actionEndOfLine"/>
     <addaction name="actionIndentationGuides"/>
+    <addaction name="actionLongLineIndicator"/>
     <addaction name="separator"/>
     <addaction name="actionLineNumbers"/>
-    <addaction name="actionLongLineIndicator"/>
-    <addaction name="actionEndOfLine"/>
+    <addaction name="actionIconMargin"/>
+    <addaction name="actionFoldMargin"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -478,6 +480,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+U</string>
+   </property>
+  </action>
+  <action name="actionIconMargin">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Icon Margin</string>
+   </property>
+  </action>
+  <action name="actionFoldMargin">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fold Margin</string>
    </property>
   </action>
  </widget>

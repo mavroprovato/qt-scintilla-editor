@@ -47,10 +47,10 @@ Buffer::Buffer(QWidget *parent) :
     // Set long line indicator
     setEdgeMode(EDGE_LINE);
     setEdgeColumn(80);
-
     // Setup the margins
     setShowLineNumbers(true);
-    setMarginWidthN(1, 0);
+    setShowIconMargin(false);
+    setShowFoldMargin(false);
 
     connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
 }
@@ -123,19 +123,35 @@ void Buffer::setEncoding(const QByteArray& encoding) {
     }
 }
 
-bool Buffer::showLineNumbers() {
-    return marginWidthN(0) != 0;
+bool Buffer::showLineNumbers() const {
+    return m_showLineNumbers;
 }
 
-void Buffer::setShowLineNumbers(bool show) {
-    if (show) {
-        int width = ((int) std::log10(lineCount())) + 1;
-        QString text;
-        text.fill('9', width).prepend('_');
-        setMarginWidthN(0, textWidth(STYLE_LINENUMBER, text.toLatin1()));
+void Buffer::setShowLineNumbers(bool showLineNumbers) {
+    m_showLineNumbers = showLineNumbers;
+    if (m_showLineNumbers) {
+        setMarginWidthN(0, getLineMarginWidth());
     } else {
         setMarginWidthN(0, 0);
     }
+}
+
+bool Buffer::showIconMargin() const {
+    return m_showIconMargin;
+}
+
+void Buffer::setShowIconMargin(bool showIconMargin) {
+    m_showIconMargin = showIconMargin;
+    setMarginWidthN(1, m_showIconMargin ? 16 : 0);
+}
+
+bool Buffer::showFoldMargin() const {
+    return m_showFoldMargin;
+}
+
+void Buffer::setShowFoldMargin(bool showFoldMargin) {
+    m_showFoldMargin = showFoldMargin;
+    setMarginWidthN(2, m_showFoldMargin ? 16 : 0);
 }
 
 bool Buffer::find(const QString& findText, int flags, bool forward,
@@ -167,8 +183,8 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
 }
 
 void Buffer::onLinesAdded(int) {
-    if (showLineNumbers()) {
-        setShowLineNumbers(true);
+    if (m_showLineNumbers) {
+        setMarginWidthN(0, getLineMarginWidth());
     }
 }
 
@@ -216,4 +232,12 @@ outer:
         setLexer(SCLEX_NULL);
         setKeyWords(0, "");
     }
+}
+
+int Buffer::getLineMarginWidth() {
+    int width = ((int) std::log10(lineCount())) + 1;
+    QString text;
+    text.fill('9', width).prepend('_');
+
+    return textWidth(STYLE_LINENUMBER, text.toLatin1());
 }
