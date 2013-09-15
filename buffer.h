@@ -13,7 +13,15 @@ class Buffer : public ScintillaEdit {
 
     Q_PROPERTY(QFileInfo fileInfo READ fileInfo NOTIFY fileInfoChanged)
     Q_PROPERTY(QByteArray encoding READ encoding WRITE setEncoding NOTIFY encodingChanged)
+
 public:
+    /**
+     * Enumeration that holds the various margins.
+     */
+    enum Margin {
+        Line = 0, Icon = 1, Fold = 2
+    };
+
     /**
      * Creates the buffer.
      *
@@ -162,6 +170,18 @@ public slots:
      * @param linesAdded The number of lines added.
      */
     void onLinesAdded(int linesAdded);
+
+    /**
+     * Called when a margin is clicked.
+     *
+     * @param position The position of the start of the line in the document
+     * that corresponds to the margin click.
+     * @param modifiers The appropriate combination of SCI_SHIFT, SCI_CTRL and
+     * SCI_ALT to indicate the keys that were held down at the time of the
+     * margin click.
+     * @param margin The margin number that was clicked.
+     */
+    void onMarginClicked(int position, int modifiers, int margin);
 
 private:
     /**

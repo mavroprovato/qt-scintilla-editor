@@ -3,6 +3,7 @@
 
 #include <SciLexer.h>
 
+#include <QDebug>
 #include <QDropEvent>
 #include <QFontDatabase>
 #include <QTextStream>
@@ -50,9 +51,20 @@ Buffer::Buffer(QWidget *parent) :
     // Setup the margins
     setShowLineNumbers(true);
     setShowIconMargin(false);
-    setShowFoldMargin(false);
+    setShowFoldMargin(true);
+    setMarginMaskN(Fold, SC_MASK_FOLDERS);
+    setMarginSensitiveN(Fold, true);
+    markerDefine(SC_MARKNUM_FOLDER, SC_MARK_PLUS);
+    markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_MINUS);
+    markerDefine(SC_MARKNUM_FOLDEREND, SC_MARK_EMPTY);
+    markerDefine(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY);
+    markerDefine(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY);
+    markerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_EMPTY);
+    markerDefine(SC_MARKNUM_FOLDERTAIL, SC_MARK_EMPTY);
 
     connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
+    connect(this, SIGNAL(marginClicked(int,int,int)), this,
+            SLOT(onMarginClicked(int,int,int)));
 }
 
 Buffer::~Buffer() {
@@ -130,9 +142,9 @@ bool Buffer::showLineNumbers() const {
 void Buffer::setShowLineNumbers(bool showLineNumbers) {
     m_showLineNumbers = showLineNumbers;
     if (m_showLineNumbers) {
-        setMarginWidthN(0, getLineMarginWidth());
+        setMarginWidthN(Line, getLineMarginWidth());
     } else {
-        setMarginWidthN(0, 0);
+        setMarginWidthN(Line, 0);
     }
 }
 
@@ -142,7 +154,7 @@ bool Buffer::showIconMargin() const {
 
 void Buffer::setShowIconMargin(bool showIconMargin) {
     m_showIconMargin = showIconMargin;
-    setMarginWidthN(1, m_showIconMargin ? 16 : 0);
+    setMarginWidthN(Icon, m_showIconMargin ? 16 : 0);
 }
 
 bool Buffer::showFoldMargin() const {
@@ -151,7 +163,7 @@ bool Buffer::showFoldMargin() const {
 
 void Buffer::setShowFoldMargin(bool showFoldMargin) {
     m_showFoldMargin = showFoldMargin;
-    setMarginWidthN(2, m_showFoldMargin ? 16 : 0);
+    setMarginWidthN(Fold, m_showFoldMargin ? 16 : 0);
 }
 
 bool Buffer::find(const QString& findText, int flags, bool forward,
@@ -184,7 +196,13 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
 
 void Buffer::onLinesAdded(int) {
     if (m_showLineNumbers) {
-        setMarginWidthN(0, getLineMarginWidth());
+        setMarginWidthN(Line, getLineMarginWidth());
+    }
+}
+
+void Buffer::onMarginClicked(int position, int, int margin) {
+    if (margin == Fold) {
+        toggleFold(lineFromPosition(position));
     }
 }
 
@@ -228,9 +246,12 @@ outer:
     if (lang.lexer) {
         setLexer(lang.lexer);
         setKeyWords(0, lang.keywords.toLatin1());
+        setProperty("fold", "1");
+        setProperty("fold.compact", "0");
     } else {
         setLexer(SCLEX_NULL);
         setKeyWords(0, "");
+        setProperty("fold", "0");
     }
 }
 
