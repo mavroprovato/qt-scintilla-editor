@@ -1,6 +1,8 @@
 #include "buffer.h"
 #include "util.h"
 
+#include <SciLexer.h>
+
 #include <QDropEvent>
 #include <QFontDatabase>
 #include <QTextStream>
@@ -210,5 +212,8 @@ outer:
     if (lang.lexer) {
         setLexer(lang.lexer);
         setKeyWords(0, lang.keywords.toLatin1());
+    } else {
+        setLexer(SCLEX_NULL);
+        setKeyWords(0, "");
     }
 }
