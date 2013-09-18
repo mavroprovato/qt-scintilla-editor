@@ -212,14 +212,14 @@ void QScintillaEditor::on_actionStatusBar_triggered() {
 
 void QScintillaEditor::on_actionFullscreen_triggered() {
     if (ui->actionFullscreen->isChecked()) {
+        wasMaximized = isMaximized();
+        showFullScreen();
+    } else {
         if (wasMaximized) {
             showMaximized();
         } else {
             showNormal();
         }
-    } else {
-        wasMaximized = isMaximized();
-        showFullScreen();
     }
 }
 
