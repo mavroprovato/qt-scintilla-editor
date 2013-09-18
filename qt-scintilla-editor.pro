@@ -11,28 +11,29 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = qt-scintilla-editor
 TEMPLATE = app
 
+INCLUDEPATH += include
 
-SOURCES += main.cpp\
-        qscintillaeditor.cpp \
-    findreplacedialog.cpp \
-    buffer.cpp \
-    util.cpp \
-    icondb.cpp \
-    aboutdialog.cpp
+SOURCES += src/main.cpp\
+        src/qscintillaeditor.cpp \
+    src/findreplacedialog.cpp \
+    src/buffer.cpp \
+    src/util.cpp \
+    src/icondb.cpp \
+    src/aboutdialog.cpp
 
-HEADERS  += qscintillaeditor.h \
-    findreplacedialog.h \
-    buffer.h \
-    util.h \
-    icondb.h \
-    aboutdialog.h \
-    version.h
+HEADERS  += include/qscintillaeditor.h \
+    include/findreplacedialog.h \
+    include/buffer.h \
+    include/util.h \
+    include/icondb.h \
+    include/aboutdialog.h \
+    include/version.h
 
-FORMS    += qscintillaeditor.ui \
-    findreplacedialog.ui \
-    aboutdialog.ui
+FORMS    += forms/qscintillaeditor.ui \
+    forms/findreplacedialog.ui \
+    forms/aboutdialog.ui
 
 LIBS += -lScintillaEdit
 
 RESOURCES += \
-    qtscitntillaeditor.qrc
+    resources/qtscitntillaeditor.qrc
