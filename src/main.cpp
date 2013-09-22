@@ -13,6 +13,8 @@
 int main(int argc, char *argv[]) {
     // Initialize the application
     QApplication a(argc, argv);
+    a.setOrganizationName(ORGANIZATION_NAME);
+    a.setOrganizationDomain(ORGANIZATION_DOMAIN);
     a.setApplicationName(APPLICATION_NAME);
     a.setApplicationVersion(APPLICATION_VERSION);
 

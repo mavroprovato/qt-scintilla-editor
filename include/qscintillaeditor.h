@@ -12,6 +12,7 @@ class AboutDialog;
 class Buffer;
 class FindReplaceDialog;
 class QLabel;
+class QSettings;
 
 namespace Ui {
 class QScintillaEditor;

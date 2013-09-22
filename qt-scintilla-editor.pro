@@ -19,7 +19,8 @@ SOURCES += src/main.cpp\
     src/buffer.cpp \
     src/util.cpp \
     src/icondb.cpp \
-    src/aboutdialog.cpp
+    src/aboutdialog.cpp \
+    src/configuration.cpp
 
 HEADERS  += include/qscintillaeditor.h \
     include/findreplacedialog.h \
@@ -27,7 +28,8 @@ HEADERS  += include/qscintillaeditor.h \
     include/util.h \
     include/icondb.h \
     include/aboutdialog.h \
-    include/version.h
+    include/version.h \
+    include/configuration.h
 
 FORMS    += forms/qscintillaeditor.ui \
     forms/findreplacedialog.ui \

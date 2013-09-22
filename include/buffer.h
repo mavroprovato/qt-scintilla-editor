@@ -11,15 +11,26 @@
 class Buffer : public ScintillaEdit {
     Q_OBJECT
 
-    Q_PROPERTY(QFileInfo fileInfo READ fileInfo NOTIFY fileInfoChanged)
-    Q_PROPERTY(QByteArray encoding READ encoding WRITE setEncoding NOTIFY encodingChanged)
-
 public:
     /**
      * Enumeration that holds the various margins.
      */
     enum Margin {
         Line = 0, Icon = 1, Fold = 2
+    };
+
+    /**
+     * The possible types of fold symbols.
+     */
+    enum FoldSymbols {
+        Arrows, PlusMinus, CirclePlusMinus, BoxPlusMinus
+    };
+
+    /**
+     * The possible types of fold symbols.
+     */
+    enum FoldLines {
+        None, CircleLine, BoxLine
     };
 
     /**
@@ -78,6 +89,38 @@ public:
     void setEncoding(const QByteArray& encoding);
 
     /**
+     * Returns true if the whitespace should be shown.
+     *
+     * @return true if the whitespace should be shown.
+     */
+    bool viewWhitespace() const;
+
+    /**
+     * Sets whether the whitespace characters should be shown or not.
+     *
+     * @param viewWhitespace Set to true if the whitespace should be shown.
+     */
+    void setViewWhitespace(bool viewWhitespace);
+
+    /**
+     * Returns whether the indentation guides should be shown or not.
+     *
+     * @return Whether the indentation guides should be shown or not.
+     */
+    bool viewIndentationGuides() const;
+
+    /**
+     * Sets whether the indentation guides hsould ba shown or not.
+     *
+     * @param viewIndentationGuides
+     */
+    void setViewIndentationGuides(bool viewIndentationGuides);
+
+    bool longLineIndicator() const;
+
+    void setLongLineIndicator(bool longLineIndicator);
+
+    /**
      * Returns true if the line numbers are shown.
      *
      * @return true if the line numbers are shown.
@@ -118,6 +161,35 @@ public:
      * @param showIconMargin if true, show the fold margin.
      */
     void setShowFoldMargin(bool showFoldMargin);
+
+    /**
+     * Sets the types of the symbols in the fold margin.
+     *
+     * @param foldSymbols The types of the symbols in the fold margin.
+     */
+    void setFoldSymbols(FoldSymbols foldSymbols);
+
+    /**
+     * @brief setFoldLines
+     * @param foldLines
+     */
+    void setFoldLines(FoldLines foldLines);
+
+    /**
+     * Returns the font for the specific style.
+     *
+     * @param style The style.
+     * @return The font.
+     */
+    QFont styleQFont(int style) const;
+
+    /**
+     * Sets the font for the specific style.
+     *
+     * @param style The style.
+     * @param font The font.
+     */
+    void setStyleQFont(int style, const QFont& font);
 
     /**
      * Finds the occurance of the provided text and selects the match.
@@ -185,6 +257,11 @@ public slots:
 
 private:
     /**
+     * Loads the editor preferences from the configuration.
+     */
+    void loadConfiguration();
+
+    /**
      * Sets the file information of the underlying file.
      *
      * @param fileInfo The new file information.
@@ -203,15 +280,6 @@ private:
 
     /** The encofding for the buffer. */
     QByteArray m_encoding;
-
-    /** Flag to display line numbers */
-    bool m_showLineNumbers;
-
-    /** Flag to display the icon margin */
-    bool m_showIconMargin;
-
-    /** Flag to display the fold margin */
-    bool m_showFoldMargin;
 };
 
 #endif // BUFFER_H

@@ -1,4 +1,5 @@
 #include "buffer.h"
+#include "configuration.h"
 #include "util.h"
 
 #include <SciLexer.h>
@@ -15,52 +16,10 @@ Buffer::Buffer(QWidget *parent) :
         ScintillaEdit(parent), m_encoding("UTF-8") {
     // Use Unicode code page
     setCodePage(SC_CP_UTF8);
-    // Track the scroll width
-    setScrollWidth(1);
-    setScrollWidthTracking(true);
-    // Set a monospaced font
-    QFontDatabase fontDb;
-#ifdef Q_OS_WIN
-    if (fontDb.families(QFontDatabase::Any).contains("Consolas")) {
-        styleSetFont(STYLE_DEFAULT, "Consolas");
-    } else {
-        styleSetFont(STYLE_DEFAULT, "Courier New");
-    }
-#elif Q_OS_MAC
-    if (fontDb.families(QFontDatabase::Any).contains("Menlo")) {
-        styleSetFont(STYLE_DEFAULT, "Menlo");
-    } else {
-        styleSetFont(STYLE_DEFAULT, "Monaco");
-    }
-#else
-    styleSetFont(STYLE_DEFAULT, "Monospace");
-#endif
-    // Set font size.
-    styleSetSize(STYLE_DEFAULT, 10);
-    // View whitespace
-    setViewWS(SCWS_VISIBLEALWAYS);
-    setWhitespaceFore(true, convertColor(Qt::lightGray));
-    // Set up identation
-    setTabWidth(4);
-    setUseTabs(false);
-    setIndent(4);
-    setIndentationGuides(SC_IV_LOOKBOTH);
-    // Set long line indicator
-    setEdgeMode(EDGE_LINE);
-    setEdgeColumn(80);
-    // Setup the margins
-    setShowLineNumbers(true);
-    setShowIconMargin(false);
-    setShowFoldMargin(true);
     setMarginMaskN(Fold, SC_MASK_FOLDERS);
     setMarginSensitiveN(Fold, true);
-    markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_ARROWDOWN);
-    markerDefine(SC_MARKNUM_FOLDER, SC_MARK_ARROW);
-    markerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_VLINE);
-    markerDefine(SC_MARKNUM_FOLDERTAIL, SC_MARK_LCORNER);
-    markerDefine(SC_MARKNUM_FOLDEREND, SC_MARK_ARROW);
-    markerDefine(SC_MARKNUM_FOLDEROPENMID, SC_MARK_ARROWDOWN);
-    markerDefine(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_TCORNER);
+    // Load the initial state from the configuration
+    loadConfiguration();
 
     connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
     connect(this, SIGNAL(marginClicked(int,int,int)), this,
@@ -135,35 +94,138 @@ void Buffer::setEncoding(const QByteArray& encoding) {
     }
 }
 
-bool Buffer::showLineNumbers() const {
-    return m_showLineNumbers;
+bool Buffer::viewWhitespace() const {
+    return viewWS() != SCWS_INVISIBLE;
 }
 
-void Buffer::setShowLineNumbers(bool showLineNumbers) {
-    m_showLineNumbers = showLineNumbers;
-    if (m_showLineNumbers) {
-        setMarginWidthN(Line, getLineMarginWidth());
+void Buffer::setViewWhitespace(bool viewWhitespace) {
+    if (viewWhitespace) {
+        Configuration *configuration = Configuration::instance();
+        if (configuration->viewIndentationWhitespace()) {
+            setViewWS(SCWS_VISIBLEALWAYS);
+        } else {
+            setViewWS(SCWS_VISIBLEAFTERINDENT);
+        }
     } else {
-        setMarginWidthN(Line, 0);
+        setViewWS(SCWS_INVISIBLE);
     }
 }
 
+bool Buffer::viewIndentationGuides() const {
+    return indentationGuides() != SC_IV_NONE;
+}
+
+void Buffer::setViewIndentationGuides(bool viewIndentationGuides) {
+    if (viewIndentationGuides) {
+        setIndentationGuides(
+                Configuration::instance()->indentationGuidesMode());
+    } else {
+        setIndentationGuides(SC_IV_NONE);
+    }
+}
+
+bool Buffer::longLineIndicator() const {
+    return edgeMode() != EDGE_NONE;
+}
+
+void Buffer::setLongLineIndicator(bool longLineIndicator) {
+    Configuration *config = Configuration::instance();
+    if (longLineIndicator) {
+        if (config->longLineIndicatorLine()) {
+            setEdgeMode(EDGE_LINE);
+            setEdgeColumn(config->longLineIndicatorColumn());
+        } else {
+            setEdgeMode(EDGE_BACKGROUND);
+        }
+    } else {
+        setEdgeMode(EDGE_NONE);
+    }
+}
+
+bool Buffer::showLineNumbers() const {
+    return marginWidthN(Line) != 0;
+}
+
+void Buffer::setShowLineNumbers(bool showLineNumbers) {
+    setMarginWidthN(Line, showLineNumbers ? getLineMarginWidth() : 0);
+}
+
 bool Buffer::showIconMargin() const {
-    return m_showIconMargin;
+    return marginWidthN(Icon) != 0;
 }
 
 void Buffer::setShowIconMargin(bool showIconMargin) {
-    m_showIconMargin = showIconMargin;
-    setMarginWidthN(Icon, m_showIconMargin ? 16 : 0);
+    setMarginWidthN(Icon, showIconMargin ? 16 : 0);
 }
 
 bool Buffer::showFoldMargin() const {
-    return m_showFoldMargin;
+    return marginWidthN(Fold) != 0;
 }
 
 void Buffer::setShowFoldMargin(bool showFoldMargin) {
-    m_showFoldMargin = showFoldMargin;
-    setMarginWidthN(Fold, m_showFoldMargin ? 16 : 0);
+    setMarginWidthN(Fold, showFoldMargin ? 16 : 0);
+}
+
+void Buffer::setFoldSymbols(Buffer::FoldSymbols foldSymbols) {
+    switch(foldSymbols) {
+    case Arrows:
+        markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_ARROWDOWN);
+        markerDefine(SC_MARKNUM_FOLDER, SC_MARK_ARROW);
+        markerDefine(SC_MARKNUM_FOLDEROPENMID, SC_MARK_ARROWDOWN);
+        markerDefine(SC_MARKNUM_FOLDEREND, SC_MARK_ARROW);
+        break;
+    case PlusMinus:
+        markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_MINUS);
+        markerDefine(SC_MARKNUM_FOLDER, SC_MARK_PLUS);
+        markerDefine(SC_MARKNUM_FOLDEROPENMID, SC_MARK_MINUS);
+        markerDefine(SC_MARKNUM_FOLDEREND, SC_MARK_PLUS);
+        break;
+    case CirclePlusMinus:
+        markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_CIRCLEMINUS);
+        markerDefine(SC_MARKNUM_FOLDER, SC_MARK_CIRCLEPLUS);
+        markerDefine(SC_MARKNUM_FOLDEROPENMID, SC_MARK_CIRCLEMINUSCONNECTED);
+        markerDefine(SC_MARKNUM_FOLDEREND, SC_MARK_CIRCLEPLUSCONNECTED);
+        break;
+    case BoxPlusMinus:
+        markerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_BOXMINUS);
+        markerDefine(SC_MARKNUM_FOLDER, SC_MARK_BOXPLUS);
+        markerDefine(SC_MARKNUM_FOLDEROPENMID, SC_MARK_BOXMINUSCONNECTED);
+        markerDefine(SC_MARKNUM_FOLDEREND, SC_MARK_BOXPLUSCONNECTED);
+        break;
+    }
+}
+
+void Buffer::setFoldLines(FoldLines foldLines) {
+    switch(foldLines) {
+    case None:
+        markerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_EMPTY);
+        markerDefine(SC_MARKNUM_FOLDERTAIL, SC_MARK_EMPTY);
+        markerDefine(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY);
+        break;
+    case CircleLine:
+        markerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_VLINE);
+        markerDefine(SC_MARKNUM_FOLDERTAIL, SC_MARK_LCORNERCURVE);
+        markerDefine(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_TCORNERCURVE);
+        break;
+    case BoxLine:
+        markerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_VLINE);
+        markerDefine(SC_MARKNUM_FOLDERTAIL, SC_MARK_LCORNER);
+        markerDefine(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_TCORNER);
+        break;
+    }
+}
+
+QFont Buffer::styleQFont(int style) const {
+    QFont font(styleFont(style), styleSize(style),
+            styleBold(style) ? QFont::Bold :QFont::Normal, styleItalic(style));
+    return font;
+}
+
+void Buffer::setStyleQFont(int style, const QFont& font) {
+    styleSetFont(style, font.family().toLatin1());
+    styleSetSize(style, font.pointSize());
+    styleSetBold(style, font.bold());
+    styleSetItalic(style, font.italic());
 }
 
 bool Buffer::find(const QString& findText, int flags, bool forward,
@@ -195,7 +257,7 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
 }
 
 void Buffer::onLinesAdded(int) {
-    if (m_showLineNumbers) {
+    if (showLineNumbers()) {
         setMarginWidthN(Line, getLineMarginWidth());
     }
 }
@@ -215,7 +277,28 @@ void Buffer::dropEvent(QDropEvent *event) {
         // Do the default action
         ScintillaEditBase::dropEvent(event);
     }
- }
+}
+
+void Buffer::loadConfiguration() {
+    Configuration *config = Configuration::instance();
+    setStyleQFont(STYLE_DEFAULT, config->font());
+    setViewWhitespace(config->viewWhitespace());
+    setViewIndentationGuides(config->viewIndentationGuides());
+    setLongLineIndicator(config->longLineIndicator());
+    setViewEOL(config->viewEndOfLine());
+    setShowLineNumbers(config->showLineMargin());
+    setShowIconMargin(config->showIconMargin());
+    setShowFoldMargin(config->showFoldMargin());
+    setTabWidth(config->tabWidth());
+    setIndent(config->indentationWidth());
+    setUseTabs(config->useTabs());
+    setScrollWidth(config->scrollWidth());
+    setScrollWidthTracking(config->scrollWidthTracking());
+    setWhitespaceFore(true, convertColor(config->whitespaceForeground()));
+    setWhitespaceBack(true, convertColor(config->whitespaceBackground()));
+    setFoldSymbols(config->foldSymbols());
+    setFoldLines(config->foldLines());
+}
 
 void Buffer::setFileInfo(const QFileInfo& fileInfo) {
     if (m_fileInfo != fileInfo) {

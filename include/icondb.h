@@ -45,7 +45,7 @@ private:
     IconDb(const IconDb&);
 
     /**
-     * Private copy constructor to prevent instantiation.
+     * Private equals operator to prevent instantiation.
      */
     IconDb& operator=(const IconDb&);
 

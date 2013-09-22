@@ -2,14 +2,17 @@
 
 #include <QtGlobal>
 
+#include <QDebug>
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "aboutdialog.h"
 #include "buffer.h"
+#include "configuration.h"
 #include "findreplacedialog.h"
 #include "icondb.h"
 #include "qscintillaeditor.h"
@@ -28,8 +31,8 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
 
     IconDb* iconDb = IconDb::instance();
     setWindowIcon(iconDb->getIcon(IconDb::Application));
-    setUpActions();
     setTitle();
+    setUpActions();
     setUpMenuBar();
     setUpStatusBar();
 
@@ -204,10 +207,13 @@ void QScintillaEditor::on_actionSelectAll_triggered() {
 
 void QScintillaEditor::on_actionToolBar_triggered() {
     ui->mainToolBar->setVisible(ui->actionToolBar->isChecked());
+    Configuration::instance()->setShowToolBar(ui->actionToolBar->isChecked());
 }
 
 void QScintillaEditor::on_actionStatusBar_triggered() {
     ui->statusBar->setVisible(ui->actionStatusBar->isChecked());
+    Configuration::instance()->setShowStatusBar(
+                ui->actionStatusBar->isChecked());
 }
 
 void QScintillaEditor::on_actionFullscreen_triggered() {
@@ -221,6 +227,7 @@ void QScintillaEditor::on_actionFullscreen_triggered() {
             showNormal();
         }
     }
+    Configuration::instance()->setFullscreen(ui->actionFullscreen->isChecked());
 }
 
 void QScintillaEditor::on_actionZoomIn_triggered() {
@@ -246,65 +253,61 @@ void QScintillaEditor::on_actionResetZoom_triggered() {
 }
 
 void QScintillaEditor::on_actionWhitespace_triggered() {
-    if (ui->actionWhitespace->isChecked()) {
-        edit->setViewWS(SCWS_VISIBLEALWAYS);
-    } else {
-        edit->setViewWS(SCWS_INVISIBLE);
-    }
+    edit->setViewWhitespace(ui->actionWhitespace->isChecked());
+    Configuration::instance()->setViewWhitespace(
+                ui->actionWhitespace->isChecked());
 }
 
 void QScintillaEditor::on_actionIndentationGuides_triggered() {
-    if (ui->actionIndentationGuides->isChecked()) {
-        edit->setIndentationGuides(SC_IV_LOOKBOTH);
-    } else {
-        edit->setIndentationGuides(SC_IV_NONE);
-    }
+    edit->setViewIndentationGuides(ui->actionIndentationGuides->isChecked());
+    Configuration::instance()->setViewIndentationGuides(
+            ui->actionIndentationGuides->isChecked());
 }
 
 void QScintillaEditor::on_actionLongLineIndicator_triggered() {
-    if (ui->actionLongLineIndicator->isChecked()) {
-        edit->setEdgeMode(EDGE_LINE);
-    } else {
-        edit->setEdgeMode(EDGE_NONE);
-    }
+    edit->setLongLineIndicator(ui->actionLongLineIndicator->isChecked());
+    Configuration::instance()->setLongLineIndicator(
+            ui->actionLongLineIndicator->isChecked());
 }
 
 void QScintillaEditor::on_actionEndOfLine_triggered() {
     edit->setViewEOL(ui->actionEndOfLine->isChecked());
+    Configuration::instance()->setViewEndOfLine(
+            ui->actionEndOfLine->isChecked());
 }
 
 void QScintillaEditor::on_actionLineNumbers_triggered() {
     edit->setShowLineNumbers(ui->actionLineNumbers->isChecked());
+    Configuration::instance()->setShowLineMargin(
+        ui->actionLineNumbers->isChecked());
 }
 
 void QScintillaEditor::on_actionIconMargin_triggered() {
     edit->setShowIconMargin(ui->actionIconMargin->isChecked());
+    Configuration::instance()->setShowIconMargin(
+        ui->actionIconMargin->isChecked());
 }
 
 void QScintillaEditor::on_actionFoldMargin_triggered() {
     edit->setShowFoldMargin(ui->actionFoldMargin->isChecked());
+    Configuration::instance()->setShowFoldMargin(
+        ui->actionFoldMargin->isChecked());
 }
 
 void QScintillaEditor::on_actionWordWrap_triggered() {
     edit->setWrapMode(ui->actionWordWrap->isChecked() ? 1 : 0);
+    Configuration::instance()->setWrap(ui->actionWordWrap->isChecked());
 }
 
 void QScintillaEditor::on_actionFont_triggered() {
     // Read the current font
-    QString family = edit->styleFont(STYLE_DEFAULT);
-    int pointSize = edit->styleSize(STYLE_DEFAULT);
-    bool bold = edit->styleBold(STYLE_DEFAULT);
-    bool italic = edit->styleItalic(STYLE_DEFAULT);
-    QFont initial(family, pointSize,
-        bold ? QFont::Bold : QFont::Normal, italic);
+    QFont initial = edit->styleQFont(STYLE_DEFAULT);
     // Show the font dialog
     bool ok;
     QFont font = QFontDialog::getFont(&ok, initial);
     if (ok) {
-        edit->styleSetFont(STYLE_DEFAULT, font.family().toLatin1());
-        edit->styleSetSize(STYLE_DEFAULT, font.pointSize());
-        edit->styleSetBold(STYLE_DEFAULT, font.bold());
-        edit->styleSetItalic(STYLE_DEFAULT, font.italic());
+        edit->setStyleQFont(STYLE_DEFAULT, font);
+        Configuration::instance()->setFont(font);
     }
 }
 
@@ -435,6 +438,7 @@ void QScintillaEditor::onUrlsDropped(const QList<QUrl>& urls) {
 }
 
 void QScintillaEditor::setUpActions() {
+    // Set the icon of the actions.
     IconDb* iconDb = IconDb::instance();
     ui->actionNew->setIcon(iconDb->getIcon(IconDb::New));
     ui->actionOpen->setIcon(iconDb->getIcon(IconDb::Open));
@@ -457,6 +461,24 @@ void QScintillaEditor::setUpActions() {
     ui->actionResetZoom->setIcon(iconDb->getIcon(IconDb::ZoomReset));
     ui->actionFont->setIcon(iconDb->getIcon(IconDb::Font));
     ui->actionAbout->setIcon(iconDb->getIcon(IconDb::About));
+
+    // Read the action status from the settings
+    Configuration *configuration = Configuration::instance();
+    ui->actionFullscreen->setChecked(configuration->fullscreen());
+    on_actionFullscreen_triggered();
+    ui->actionToolBar->setChecked(configuration->showToolBar());
+    on_actionToolBar_triggered();
+    ui->actionStatusBar->setChecked(configuration->showStatusBar());
+    on_actionStatusBar_triggered();
+    ui->actionWhitespace->setChecked(configuration->viewWhitespace());
+    ui->actionIndentationGuides->setChecked(
+                configuration->viewIndentationGuides());
+    ui->actionLongLineIndicator->setChecked(configuration->longLineIndicator());
+    ui->actionEndOfLine->setChecked(configuration->viewEndOfLine());
+    ui->actionLineNumbers->setChecked(configuration->showLineMargin());
+    ui->actionIconMargin->setChecked(configuration->showIconMargin());
+    ui->actionFoldMargin->setChecked(configuration->showFoldMargin());
+    ui->actionWordWrap->setChecked(configuration->wrap());
 }
 
 void QScintillaEditor::setUpMenuBar() {
@@ -495,7 +517,7 @@ void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
         encodingCategories[encoding.category]->addAction(action);
         connect(action, SIGNAL(triggered()), this, slot);
     }
-
+    // Add all the categories to the encoding menu
     for (size_t i = 0; i < sizeof(encodingCategories) / sizeof(QMenu*); i++) {
         parent->addMenu(encodingCategories[i]);
     }
