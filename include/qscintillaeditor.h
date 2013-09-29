@@ -252,6 +252,11 @@ private slots:
     void on_actionToUppercase_triggered();
 
     /**
+     * Called when the Toggle bookmark action is triggered.
+     */
+    void on_actionToggleBookmark_triggered();
+
+    /**
      * Called when the About action is triggered.
      */
     void on_actionAbout_triggered();

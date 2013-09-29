@@ -1,25 +1,33 @@
 #include "buffer.h"
 #include "configuration.h"
+#include "icondb.h"
 #include "util.h"
 
 #include <SciLexer.h>
 
+#include <QBuffer>
 #include <QDebug>
 #include <QDropEvent>
 #include <QFontDatabase>
 #include <QTextStream>
 #include <QUrl>
 
+#include <algorithm>
 #include <cmath>
 
 Buffer::Buffer(QWidget *parent) :
         ScintillaEdit(parent), m_encoding("UTF-8") {
     // Use Unicode code page
     setCodePage(SC_CP_UTF8);
-    setMarginMaskN(Fold, SC_MASK_FOLDERS);
-    setMarginSensitiveN(Fold, true);
+
     // Load the initial state from the configuration
     loadConfiguration();
+
+    // Setup the margins
+    setMarginMaskN(Fold, SC_MASK_FOLDERS);
+    setMarginSensitiveN(Icon, true);
+    setMarginSensitiveN(Fold, true);
+    setupMarginIcons();
 
     connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
     connect(this, SIGNAL(marginClicked(int,int,int)), this,
@@ -256,6 +264,14 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
     return findPos != -1;
 }
 
+void Buffer::toggleBookmark(int line) {
+    if (markerGet(line) & (1 << Bookmark)) {
+        markerDelete(line, Bookmark);
+    } else {
+        markerAdd(line, Bookmark);
+    }
+}
+
 void Buffer::onLinesAdded(int) {
     if (showLineNumbers()) {
         setMarginWidthN(Line, getLineMarginWidth());
@@ -265,6 +281,8 @@ void Buffer::onLinesAdded(int) {
 void Buffer::onMarginClicked(int position, int, int margin) {
     if (margin == Fold) {
         toggleFold(lineFromPosition(position));
+    } else if (margin == Icon) {
+        toggleBookmark(lineFromPosition(position));
     }
 }
 
@@ -344,4 +362,15 @@ int Buffer::getLineMarginWidth() {
     text.fill('9', width).prepend('_');
 
     return textWidth(STYLE_LINENUMBER, text.toLatin1());
+}
+
+void Buffer::setupMarginIcons() {
+    QIcon bookmarkIcon = IconDb::instance()->getIcon(IconDb::Bookmark);
+    QImage image = bookmarkIcon.pixmap(16).toImage();
+    int dim = std::min(textHeight(0), marginWidthN(Icon));
+    image = image.scaled(dim, dim);
+    rGBAImageSetWidth(dim);
+    rGBAImageSetHeight(dim);
+    markerDefineRGBAImage(Bookmark, reinterpret_cast<const char*>(
+            image.rgbSwapped().bits()));
 }

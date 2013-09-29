@@ -16,7 +16,11 @@ public:
      * Enumeration that holds the various margins.
      */
     enum Margin {
-        Line = 0, Icon = 1, Fold = 2
+        Line, Icon, Fold
+    };
+
+    enum IconMarkers {
+        Bookmark
     };
 
     /**
@@ -110,14 +114,25 @@ public:
     bool viewIndentationGuides() const;
 
     /**
-     * Sets whether the indentation guides hsould ba shown or not.
+     * Sets whether the indentation guides should be shown or not.
      *
-     * @param viewIndentationGuides
+     * @param viewIndentationGuides true if the indentation guides should be
+     * shown.
      */
     void setViewIndentationGuides(bool viewIndentationGuides);
 
+    /**
+     * Returns true if the long line indicator should be shown.
+     *
+     * @return true if the long line indicator should be shown.
+     */
     bool longLineIndicator() const;
 
+    /**
+     * Sets whether the long line indicator should be shown.
+     *
+     * @param longLineIndicator Whether the long line indicator should be shown.
+     */
     void setLongLineIndicator(bool longLineIndicator);
 
     /**
@@ -206,6 +221,13 @@ public:
         bool *searchWrapped);
 
     /**
+     * Toggles a bookmark in the current line.
+     *
+     * @param line The line to toggle the bookmark.
+     */
+    void toggleBookmark(int line);
+
+    /**
      * Overriden in order to customize the default implementation in the case
      * when urls are dropped into the editor.
      *
@@ -273,7 +295,18 @@ private:
      */
     void setupLexer();
 
+    /**
+     * Calculates the width of the line margin, in order to accomodate the
+     * largest line number.
+     *
+     * @return The line width.
+     */
     int getLineMarginWidth();
+
+    /**
+     * Sets up the icons for the margins.
+     */
+    void setupMarginIcons();
 
     /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;

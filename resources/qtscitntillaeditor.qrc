@@ -52,5 +52,7 @@
         <file>icons/22x22/dialog-close.png</file>
         <file>icons/16x16/view-refresh.png</file>
         <file>icons/22x22/view-refresh.png</file>
+        <file>icons/16x16/bookmarks.png</file>
+        <file>icons/22x22/bookmarks.png</file>
     </qresource>
 </RCC>

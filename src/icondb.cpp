@@ -124,6 +124,11 @@ IconDb::IconDb() {
     iconMap[Font] = icon;
 
     icon = QIcon();
+    icon.addFile(":/icons/icons/16x16/bookmarks.png", QSize(16, 16));
+    icon.addFile(":/icons/icons/22x22/bookmarks.png", QSize(22, 22));
+    iconMap[Bookmark] = icon;
+
+    icon = QIcon();
     icon.addFile(":/icons/icons/16x16/help-about.png", QSize(16, 16));
     icon.addFile(":/icons/icons/22x22/help-about.png", QSize(22, 22));
     iconMap[About] = icon;

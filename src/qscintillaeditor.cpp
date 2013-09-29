@@ -339,6 +339,10 @@ void QScintillaEditor::on_actionToUppercase_triggered() {
     edit->upperCase();
 }
 
+void QScintillaEditor::on_actionToggleBookmark_triggered() {
+    edit->toggleBookmark(edit->lineFromPosition(edit->currentPos()));
+}
+
 void QScintillaEditor::on_actionAbout_triggered() {
     if (!aboutDlg) {
         aboutDlg = new AboutDialog(this);

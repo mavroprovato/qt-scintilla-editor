@@ -127,10 +127,17 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuBookmarks">
+    <property name="title">
+     <string>&amp;Bookmarks</string>
+    </property>
+    <addaction name="actionToggleBookmark"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuFormat"/>
+   <addaction name="menuBookmarks"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -499,6 +506,14 @@
    </property>
    <property name="text">
     <string>Fold Margin</string>
+   </property>
+  </action>
+  <action name="actionToggleBookmark">
+   <property name="text">
+    <string>Toggle Bookmark</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
    </property>
   </action>
  </widget>
