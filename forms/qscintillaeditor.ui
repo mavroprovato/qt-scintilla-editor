@@ -132,6 +132,9 @@
      <string>&amp;Bookmarks</string>
     </property>
     <addaction name="actionToggleBookmark"/>
+    <addaction name="actionPreviousBookmark"/>
+    <addaction name="actionNextBookmark"/>
+    <addaction name="actionClearAllBookmarks"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -514,6 +517,27 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionPreviousBookmark">
+   <property name="text">
+    <string>Previous</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F2</string>
+   </property>
+  </action>
+  <action name="actionNextBookmark">
+   <property name="text">
+    <string>Next</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="actionClearAllBookmarks">
+   <property name="text">
+    <string>Clear All</string>
    </property>
   </action>
  </widget>

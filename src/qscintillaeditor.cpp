@@ -340,7 +340,19 @@ void QScintillaEditor::on_actionToUppercase_triggered() {
 }
 
 void QScintillaEditor::on_actionToggleBookmark_triggered() {
-    edit->toggleBookmark(edit->lineFromPosition(edit->currentPos()));
+    edit->toggleBookmark(-1);
+}
+
+void QScintillaEditor::on_actionPreviousBookmark_triggered() {
+    edit->gotoBookmark(false);
+}
+
+void QScintillaEditor::on_actionNextBookmark_triggered() {
+    edit->gotoBookmark(true);
+}
+
+void QScintillaEditor::on_actionClearAllBookmarks_triggered() {
+    edit->markerDeleteAll(Buffer::Bookmark);
 }
 
 void QScintillaEditor::on_actionAbout_triggered() {
@@ -628,3 +640,4 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
+

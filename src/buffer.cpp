@@ -265,12 +265,43 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
 }
 
 void Buffer::toggleBookmark(int line) {
+    if (line < 0) {
+        line = lineFromPosition(currentPos());
+    }
     if (markerGet(line) & (1 << Bookmark)) {
         markerDelete(line, Bookmark);
     } else {
         markerAdd(line, Bookmark);
     }
 }
+
+void Buffer::gotoBookmark(bool next) {
+    // Try to find the bookmark, from the next/previous line
+    int line = lineFromPosition(currentPos());
+    int markerLine = -1;
+    if (next) {
+        line = (line == lineCount()) ? 0 : line + 1;
+        markerLine = markerNext(line, 1 << Bookmark);
+    } else {
+        line = (line == 0 ? lineCount() : line - 1);
+        markerLine = markerPrevious(line, 1 << Bookmark);
+    }
+
+     // Wrap search if a bookmark was not found.
+    if (markerLine == -1) {
+        if (next) {
+            markerLine = markerNext(0, 1 << Buffer::Bookmark);
+        } else {
+            markerLine = markerPrevious(lineCount(), 1 << Buffer::Bookmark);
+        }
+    }
+
+    // If the marker was found, go to the line.
+    if (markerLine != -1) {
+        gotoLine(markerLine);
+    }
+}
+
 
 void Buffer::onLinesAdded(int) {
     if (showLineNumbers()) {

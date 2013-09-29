@@ -257,6 +257,21 @@ private slots:
     void on_actionToggleBookmark_triggered();
 
     /**
+     * Called when the Previous Bookmark action is triggered.
+     */
+    void on_actionPreviousBookmark_triggered();
+
+    /**
+     * Called when the Next Bookmark action is triggered.
+     */
+    void on_actionNextBookmark_triggered();
+
+    /**
+     * Called when the Clear All Bookmark action is triggered.
+     */
+    void on_actionClearAllBookmarks_triggered();
+
+    /**
      * Called when the About action is triggered.
      */
     void on_actionAbout_triggered();

@@ -221,11 +221,20 @@ public:
         bool *searchWrapped);
 
     /**
-     * Toggles a bookmark in the current line.
+     * Toggles a bookmark. If the line number is less than zero, then the
+     * bookmark is toggled in the current line.
      *
      * @param line The line to toggle the bookmark.
      */
     void toggleBookmark(int line);
+
+    /**
+     * Navigates to the next or previous bookmark.
+     *
+     * @param next true to navigate to the previous bookmark, false to navigate
+     * to the next.
+     */
+    void gotoBookmark(bool next);
 
     /**
      * Overriden in order to customize the default implementation in the case
