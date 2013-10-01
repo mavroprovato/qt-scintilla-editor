@@ -383,7 +383,11 @@ void QScintillaEditor::replace(const QString& findText,
     // Only replace if there is selected text
     if (edit->selectionStart() != edit->selectionEnd()) {
         QByteArray replaceArray = replaceText.toUtf8();
-        edit->replaceTarget(replaceArray.length(), replaceArray);
+        if (flags & SCFIND_REGEXP) {
+            edit->replaceTargetRE(replaceArray.length(), replaceArray);
+        } else {
+            edit->replaceTarget(replaceArray.length(), replaceArray);
+        }
         // If searching forward, move the caret after the replacement text
         if (forward) {
             edit->setAnchor(edit->currentPos() + replaceText.length());
@@ -397,10 +401,18 @@ void QScintillaEditor::replace(const QString& findText,
 
 void QScintillaEditor::replaceAll(const QString& findText,
         const QString& replaceText, int flags) {
-    while (edit->find(findText, flags, true, true, NULL)) {
+    edit->beginUndoAction();
+    edit->setCurrentPos(0);
+    edit->setAnchor(0);
+    while (edit->find(findText, flags, true, false, NULL)) {
         QByteArray replaceArray = replaceText.toUtf8();
-        edit->replaceTarget(replaceArray.length(), replaceArray);
+        if (flags & SCFIND_REGEXP) {
+            edit->replaceTargetRE(replaceArray.length(), replaceArray);
+        } else {
+            edit->replaceTarget(replaceArray.length(), replaceArray);
+        }
     }
+    edit->endUndoAction();
 }
 
 void QScintillaEditor::savePointChanged(bool dirty) {

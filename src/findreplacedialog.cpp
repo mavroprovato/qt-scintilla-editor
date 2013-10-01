@@ -39,7 +39,7 @@ void FindReplaceDialog::on_findPushButton_clicked() {
 void FindReplaceDialog::on_replacePushButton_clicked() {
     QString findText = ui->findLindEdit->text();
     QString replaceText = ui->replaceLineEdit->text();
-    if (!replaceText.isEmpty()) {
+    if (!findText.isEmpty()) {
         // Emit the signal
         emit replace(findText, replaceText, searchFlags(),
             ui->forwardRadioButton->isChecked(),
@@ -51,7 +51,7 @@ void FindReplaceDialog::on_replacePushButton_clicked() {
 void FindReplaceDialog::on_replaceAllPushButton_clicked() {
     QString findText = ui->findLindEdit->text();
     QString replaceText = ui->replaceLineEdit->text();
-    if (!replaceText.isEmpty()) {
+    if (!findText.isEmpty()) {
         // Emit the signal
         emit replaceAll(findText, replaceText, searchFlags());
     }
