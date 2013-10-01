@@ -241,7 +241,9 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
     if (findText.isEmpty()) {
         return false;
     }
-    *searchWrapped = false;
+    if (searchWrapped) {
+        *searchWrapped = false;
+    }
     // Perform the search
     setSearchFlags(flags);
     setTargetStart(forward ? currentPos() : currentPos() - 1);
@@ -253,7 +255,7 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
         setTargetStart(forward ? 0 : length());
         setTargetEnd(forward ? currentPos() : currentPos() - 1);
         findPos = searchInTarget(findArray.length(), findArray);
-        if (searchWrapped != NULL) {
+        if (searchWrapped) {
             *searchWrapped = true;
         }
     }
