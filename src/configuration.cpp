@@ -1,6 +1,7 @@
 #include "configuration.h"
 
 #include <QColor>
+#include <QDebug>
 #include <QFont>
 
 Configuration* Configuration::configuration = 0;
@@ -271,4 +272,15 @@ QColor Configuration::whitespaceBackground() const {
 
 void Configuration::setWhitespaceBackground(const QColor& whitespaceBackground) {
     settings.setValue("whitespace.back", whitespaceBackground.name());
+}
+
+QHash<int, StyleInfo> Configuration::styleForLanguage(const Language& language) {
+    QHash<int, StyleInfo> styles;
+    for (int i = 0; i < language.styles().length(); ++i) {
+        int style = language.styles().at(i).style;
+        QString key = QString("style.%1.%2").arg(language.langId()).arg(style);
+        StyleInfo info = StyleInfo::fromString(settings.value(key, "").toString());
+        styles[style] = info;
+    }
+    return styles;
 }

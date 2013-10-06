@@ -15,6 +15,7 @@
 #include "configuration.h"
 #include "findreplacedialog.h"
 #include "icondb.h"
+#include "language.h"
 #include "qscintillaeditor.h"
 #include "ui_qscintillaeditor.h"
 #include "util.h"
@@ -57,7 +58,7 @@ void QScintillaEditor::openFile(const QString& fileName) {
         if (fileName.isEmpty()) {
             // Display the open file dialog
             openFileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-                    workingDir.absolutePath(), filterString());
+                    workingDir.absolutePath(), Language::filterString());
         }
         else {
             openFileName = fileName;

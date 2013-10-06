@@ -2,7 +2,10 @@
 #define CONFIGURATION_H
 
 #include "buffer.h"
+#include "language.h"
+#include "styleinfo.h"
 
+#include <QHash>
 #include <QSettings>
 
 class Configuration {
@@ -222,6 +225,16 @@ public:
     QColor whitespaceBackground() const;
 
     void setWhitespaceBackground(const QColor& whitespaceBackground);
+
+    /**
+     * Returns a hash with the styles information for a specific language. In
+     * the return hash, the key is the scitilla style identifier and the value
+     * is the style information.
+     *
+     * @param language The language.
+     * @return The
+     */
+    QHash<int, StyleInfo> styleForLanguage(const Language& language);
 
 private:
     /**

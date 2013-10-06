@@ -1,6 +1,8 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
+#include "styleinfo.h"
+
 #include <ScintillaEdit.h>
 
 #include <QFileInfo>
@@ -316,6 +318,8 @@ private:
      * Sets up the icons for the margins.
      */
     void setupMarginIcons();
+
+    void applyStyle(int styleNumber, const StyleInfo& style);
 
     /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;

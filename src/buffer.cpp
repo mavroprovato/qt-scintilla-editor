@@ -1,6 +1,7 @@
 #include "buffer.h"
 #include "configuration.h"
 #include "icondb.h"
+#include "language.h"
 #include "util.h"
 
 #include <SciLexer.h>
@@ -361,25 +362,23 @@ void Buffer::setFileInfo(const QFileInfo& fileInfo) {
 }
 
 void Buffer::setupLexer() {
-    Language lang;
-
-    for (size_t i = 0; i < G_LANGUAGE_COUNT; i++) {
-        Language currentLang = G_AVAILABLE_LANGUAGES[i];
-        QStringList extensions = currentLang.patterns.split(' ');
-        for (int i = 0; i < extensions.size(); ++i) {
-            QRegExp re(extensions.at(i));
-            re.setPatternSyntax(QRegExp::Wildcard);
-            if (re.exactMatch(m_fileInfo.fileName())) {
-                lang = currentLang;
-                goto outer;
-            }
+    // Set all styles to default
+    styleClearAll();
+    // Find the language from the filename
+    const Language *lang = Language::languageFromFilename(
+                m_fileInfo.fileName());
+    if (lang) {
+        setLexer(lang->lexer());
+        for (int i = 0; i < lang->keywords().size(); ++i) {
+            setKeyWords(i, lang->keywords().at(i).toLatin1());
         }
-    }
-
-outer:
-    if (lang.lexer) {
-        setLexer(lang.lexer);
-        setKeyWords(0, lang.keywords.toLatin1());
+        Configuration *config = Configuration::instance();
+        QHash<int, StyleInfo> styles = config->styleForLanguage(*lang);
+        QHashIterator<int, StyleInfo> iter(styles);
+        while (iter.hasNext()) {
+            iter.next();
+            applyStyle(iter.key(), iter.value());
+        }
         setProperty("fold", "1");
         setProperty("fold.compact", "0");
     } else {
@@ -406,4 +405,17 @@ void Buffer::setupMarginIcons() {
     rGBAImageSetHeight(dim);
     markerDefineRGBAImage(Bookmark, reinterpret_cast<const char*>(
             image.rgbSwapped().bits()));
+}
+
+void Buffer::applyStyle(int styleNumber, const StyleInfo& style) {
+    if (style.foregroundColour() >= 0) {
+        styleSetFore(styleNumber, style.foregroundColour());
+    }
+    if (style.backgroundColour() >=0) {
+        styleSetBack(styleNumber, style.backgroundColour());
+    }
+    styleSetBold(styleNumber, style.bold());
+    styleSetItalic(styleNumber, style.italic());
+    styleSetUnderline(styleNumber, style.underline());
+    styleSetEOLFilled(styleNumber, style.eolFilled());
 }
