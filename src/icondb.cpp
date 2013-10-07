@@ -1,13 +1,9 @@
 #include "icondb.h"
 
-IconDb* IconDb::iconDb = 0;
-
 IconDb* IconDb::instance() {
-    if (!iconDb) {
-        iconDb = new IconDb;
-    }
+    static IconDb instance;
 
-    return iconDb;
+    return &instance;
 }
 
 QIcon IconDb::getIcon(Icon icon) {

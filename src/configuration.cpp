@@ -4,14 +4,10 @@
 #include <QDebug>
 #include <QFont>
 
-Configuration* Configuration::configuration = 0;
-
 Configuration* Configuration::instance() {
-    if (!configuration) {
-        configuration = new Configuration;
-    }
+    static Configuration configuration;
 
-    return configuration;
+    return &configuration;
 }
 
 Configuration::Configuration() {

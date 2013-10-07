@@ -51,9 +51,6 @@ private:
      */
     IconDb& operator=(const IconDb&);
 
-    /** The single static instance of this class. */
-    static IconDb* iconDb;
-
     /** The map that stores the various icons. */
     QMap<Icon, QIcon> iconMap;
 };

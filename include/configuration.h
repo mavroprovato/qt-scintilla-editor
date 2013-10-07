@@ -252,9 +252,6 @@ private:
      */
     Configuration& operator=(const Configuration&);
 
-    /** The single static instance of this class. */
-    static Configuration* configuration;
-
     /** The application settings. */
     QSettings settings;
 };
