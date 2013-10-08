@@ -22,12 +22,21 @@ public:
     static QString filterString();
 
     /**
+     * Returns all languages that are available.
+     *
+     * @return All languages that are available.
+     */
+    static QListIterator<Language> allLanguages();
+
+    static const Language* fromLanguageId(const QString& languageId);
+
+    /**
      * Returns the language that correspond to the file with the specific name.
      *
      * @param fileName The file name.
      * @return The corresponding language.
      */
-    static const Language* languageFromFilename(const QString& fileName);
+    static const Language* fromFilename(const QString& fileName);
 
     /**
      * Constructor for the language.

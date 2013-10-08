@@ -84,9 +84,15 @@
      <addaction name="actionEndOfLineUnix"/>
      <addaction name="actionEndOfLineMacintosh"/>
     </widget>
+    <widget class="QMenu" name="menuLanguage">
+     <property name="title">
+      <string>Language</string>
+     </property>
+    </widget>
     <addaction name="actionWordWrap"/>
     <addaction name="actionFont"/>
     <addaction name="separator"/>
+    <addaction name="menuLanguage"/>
     <addaction name="menuEncoding"/>
     <addaction name="menuEndOfLine"/>
     <addaction name="separator"/>

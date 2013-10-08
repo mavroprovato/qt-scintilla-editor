@@ -21,7 +21,21 @@ QString Language::filterString() {
     return filter;
 }
 
-const Language* Language::languageFromFilename(const QString& fileName) {
+QListIterator<Language> Language::allLanguages() {
+    return QListIterator<Language>(availableLangs);
+}
+
+const Language* Language::fromLanguageId(const QString& languageId) {
+    for (int i = 0; i < availableLangs.size(); ++i) {
+        if (availableLangs.at(i).langId() == languageId) {
+            return &availableLangs.at(i);
+        }
+    }
+    // Not found
+    return NULL;
+}
+
+const Language* Language::fromFilename(const QString& fileName) {
     // Search for all available languages.
     for (int i = 0; i < availableLangs.size(); ++i) {
         Language currentLang = availableLangs.at(i);

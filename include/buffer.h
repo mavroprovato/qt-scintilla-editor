@@ -10,6 +10,8 @@
 #include <QUrl>
 #include <QWidget>
 
+class Language;
+
 class Buffer : public ScintillaEdit {
     Q_OBJECT
 
@@ -93,6 +95,20 @@ public:
      * @param encoding The new encoding for the buffer.
      */
     void setEncoding(const QByteArray& encoding);
+
+    /**
+     * Rerurns the language for the buffer.
+     *
+     * @return The language for the buffer.
+     */
+    const Language *language() const;
+
+    /**
+     * Set the language for the buffer.
+     *
+     * @param lang The language.
+     */
+    void setLanguage(const Language *language);
 
     /**
      * Returns true if the whitespace should be shown.
@@ -248,7 +264,7 @@ public:
 
 signals:
     /**
-     * Emitted when the underlying file for this buffer is changed.
+     * Emitted when the underlying file for this buffer has changed.
      *
      * @param fileInfo The new file information.
      */
@@ -260,6 +276,13 @@ signals:
      * @param encoding The new character encoding.
      */
     void encodingChanged(const QByteArray& encoding);
+
+    /**
+     * Emitted when the Language for this buffer has changed.
+     *
+     * @param language The new language information.
+     */
+    void languageChanged(const Language *language);
 
     /**
      * Called when a list of URLs have been dropped into the editor.
@@ -302,11 +325,6 @@ private:
     void setFileInfo(const QFileInfo& fileInfo);
 
     /**
-     * Set up the lexer for the buffer, depending on the opened file name.
-     */
-    void setupLexer();
-
-    /**
      * Calculates the width of the line margin, in order to accomodate the
      * largest line number.
      *
@@ -326,6 +344,9 @@ private:
 
     /** The encofding for the buffer. */
     QByteArray m_encoding;
+
+    /** The language for the buffer. */
+    Language *m_language;
 };
 
 #endif // BUFFER_H

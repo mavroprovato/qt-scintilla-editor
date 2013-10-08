@@ -356,35 +356,41 @@ void Buffer::setFileInfo(const QFileInfo& fileInfo) {
     if (m_fileInfo != fileInfo) {
         m_fileInfo = fileInfo;
         // Set up the lexer for the buffer
-        setupLexer();
+        setLanguage(Language::fromFilename(m_fileInfo.fileName()));
         emit fileInfoChanged(fileInfo);
     }
 }
 
-void Buffer::setupLexer() {
-    // Set all styles to default
-    styleClearAll();
-    // Find the language from the filename
-    const Language *lang = Language::languageFromFilename(
-                m_fileInfo.fileName());
-    if (lang) {
-        setLexer(lang->lexer());
-        for (int i = 0; i < lang->keywords().size(); ++i) {
-            setKeyWords(i, lang->keywords().at(i).toLatin1());
+const Language *Buffer::language() const {
+    return m_language;
+}
+
+void Buffer::setLanguage(const Language *language) {
+    if (language != m_language) {
+        // Set all styles to default
+        styleClearAll();
+        // Find the language from the filename
+        if (language) {
+            setLexer(language->lexer());
+            for (int i = 0; i < language->keywords().size(); ++i) {
+                setKeyWords(i, language->keywords().at(i).toLatin1());
+            }
+            Configuration *config = Configuration::instance();
+            QHash<int, StyleInfo> styles = config->styleForLanguage(*language);
+            QHashIterator<int, StyleInfo> iter(styles);
+            while (iter.hasNext()) {
+                iter.next();
+                applyStyle(iter.key(), iter.value());
+            }
+            setProperty("fold", "1");
+            setProperty("fold.compact", "0");
+        } else {
+            setLexer(SCLEX_NULL);
+            setKeyWords(0, "");
+            setProperty("fold", "0");
         }
-        Configuration *config = Configuration::instance();
-        QHash<int, StyleInfo> styles = config->styleForLanguage(*lang);
-        QHashIterator<int, StyleInfo> iter(styles);
-        while (iter.hasNext()) {
-            iter.next();
-            applyStyle(iter.key(), iter.value());
-        }
-        setProperty("fold", "1");
-        setProperty("fold.compact", "0");
-    } else {
-        setLexer(SCLEX_NULL);
-        setKeyWords(0, "");
-        setProperty("fold", "0");
+
+        emit languageChanged(language);
     }
 }
 

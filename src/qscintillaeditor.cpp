@@ -21,10 +21,8 @@
 #include "util.h"
 
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::QScintillaEditor),
-    workingDir(QDir::home()), wasMaximized(false),
-    findDlg(0), aboutDlg(0) {
+    QMainWindow(parent), ui(new Ui::QScintillaEditor), workingDir(QDir::home()),
+    wasMaximized(false), findDlg(0), aboutDlg(0) {
 
     ui->setupUi(this);
     edit = new Buffer(parent);
@@ -44,6 +42,8 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
         SLOT(onFileInfoChanged(QFileInfo)));
     connect(edit, SIGNAL(encodingChanged(QByteArray)), this,
         SLOT(onEncodingChanged(QByteArray)));
+    connect(edit, SIGNAL(languageChanged(const Language *)), this,
+        SLOT(onLanguageChanged(const Language *)));
     connect(edit, SIGNAL(urlsDropped(QList<QUrl>)), this,
         SLOT(onUrlsDropped(QList<QUrl>)));
 }
@@ -317,6 +317,13 @@ void QScintillaEditor::changeEncoding_triggered() {
     edit->setEncoding(action->data().toByteArray());
 }
 
+void QScintillaEditor::changeLanguage_triggered() {
+    QAction *action = qobject_cast<QAction*>(sender());
+    const Language *language = Language::fromLanguageId(
+        action->data().toString());
+    edit->setLanguage(language);
+}
+
 void QScintillaEditor::on_actionEndOfLineWindows_triggered() {
     edit->setEOLMode(SC_EOL_CRLF);
     edit->convertEOLs(SC_EOL_CRLF);
@@ -447,6 +454,10 @@ void QScintillaEditor::onEncodingChanged(const QByteArray& encoding) {
     }
 }
 
+void QScintillaEditor::onLanguageChanged(const Language *language) {
+    languageLabel->setText(language->name());
+}
+
 void QScintillaEditor::onUrlsDropped(const QList<QUrl>& urls) {
     for (int i = 0; i < urls.size(); ++i) {
         QUrl url = urls.at(i);
@@ -511,6 +522,16 @@ void QScintillaEditor::setUpActions() {
 }
 
 void QScintillaEditor::setUpMenuBar() {
+    QListIterator<Language> languages = Language::allLanguages();
+    while (languages.hasNext()) {
+        Language language = languages.next();
+        QAction* action = new QAction(language.name(), this);
+        action->setData(language.langId());
+        ui->menuLanguage->addAction(action);
+        connect(action, SIGNAL(triggered()), this,
+            SLOT(changeLanguage_triggered()));
+    }
+
     setUpEncodingMenu(ui->menuEncoding, SLOT(changeEncoding_triggered()));
     setUpEncodingMenu(ui->menuReopenWithEncoding,
         SLOT(reopenWithEncoding_triggered()));
@@ -554,10 +575,12 @@ void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
 
 void QScintillaEditor::setUpStatusBar() {
     messageLabel = new QLabel(this);
+    languageLabel = new QLabel(this);
     encodingLabel = new QLabel(edit->encoding(), this);
     positionLabel = new QLabel(this);
 
     statusBar()->addPermanentWidget(messageLabel, 1);
+    statusBar()->addPermanentWidget(languageLabel);
     statusBar()->addPermanentWidget(encodingLabel);
     statusBar()->addPermanentWidget(positionLabel);
 }

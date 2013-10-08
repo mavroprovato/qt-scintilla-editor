@@ -11,6 +11,7 @@
 class AboutDialog;
 class Buffer;
 class FindReplaceDialog;
+class Language;
 class QLabel;
 class QSettings;
 
@@ -222,6 +223,11 @@ private slots:
     void on_actionFont_triggered();
 
     /**
+     * Called when the change language action is triggered.
+     */
+    void changeLanguage_triggered();
+
+    /**
      * Called when the Change encoding action is triggered.
      */
     void changeEncoding_triggered();
@@ -338,6 +344,13 @@ private slots:
     void onEncodingChanged(const QByteArray& encoding);
 
     /**
+     * Called when the language of the buffer has changed.
+     *
+     * @param encoding The new language.
+     */
+    void onLanguageChanged(const Language *language);
+
+    /**
      * Triggered when URL are dropped in the editor.
      *
      * @param uls The list of URLs that were dropped.
@@ -413,6 +426,9 @@ private:
 
     /** The status bar label that displays messages */
     QLabel *messageLabel;
+
+    /** The status bar label that displays the current language*/
+    QLabel *languageLabel;
 
     /** The status bar label that displays the current encoding */
     QLabel *encodingLabel;
