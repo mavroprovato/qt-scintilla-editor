@@ -17,8 +17,9 @@
 #include <cmath>
 
 Buffer::Buffer(QWidget *parent) :
-        ScintillaEdit(parent), m_encoding("UTF-8") {
+        ScintillaEdit(parent), m_language(0) {
     // Use Unicode code page
+    m_encoding = Encoding::fromName("UTF-8");
     setCodePage(SC_CP_UTF8);
 
     // Load the initial state from the configuration
@@ -53,7 +54,7 @@ bool Buffer::open(const QString &fileName) {
         return false;
     }
     QTextStream input(&file);
-    input.setCodec(m_encoding);
+    input.setCodec(m_encoding->name());
     QString content = input.readAll();
     setText(content.toUtf8());
     file.close();
@@ -76,7 +77,7 @@ bool Buffer::save(const QString &fileName) {
     // Save the text to a file.
     QTextStream output(&file);
     QByteArray content = getText(textLength() + 1);
-    output.setCodec(m_encoding);
+    output.setCodec(m_encoding->name());
     output << QString::fromUtf8(content);
     output.flush();
     file.close();
@@ -92,11 +93,11 @@ QFileInfo Buffer::fileInfo() const {
     return m_fileInfo;
 }
 
-QByteArray Buffer::encoding() const {
+const Encoding *Buffer::encoding() const {
     return m_encoding;
 }
 
-void Buffer::setEncoding(const QByteArray& encoding) {
+void Buffer::setEncoding(const Encoding *encoding) {
     if (m_encoding != encoding) {
         m_encoding = encoding;
         emit encodingChanged(encoding);
@@ -366,7 +367,7 @@ const Language *Buffer::language() const {
 }
 
 void Buffer::setLanguage(const Language *language) {
-    if (language != m_language) {
+    if (m_language != language) {
         // Set all styles to default
         styleClearAll();
         // Find the language from the filename
@@ -390,6 +391,7 @@ void Buffer::setLanguage(const Language *language) {
             setProperty("fold", "0");
         }
 
+        m_language = language;
         emit languageChanged(language);
     }
 }

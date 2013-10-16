@@ -2,6 +2,7 @@
 #define BUFFER_H
 
 #include "styleinfo.h"
+#include "encoding.h"
 
 #include <ScintillaEdit.h>
 
@@ -87,17 +88,17 @@ public:
      *
      * @return The encoding for the buffer.
      */
-    QByteArray encoding() const;
+    const Encoding *encoding() const;
 
     /**
      * Sets the encoding for the buffer.
      *
      * @param encoding The new encoding for the buffer.
      */
-    void setEncoding(const QByteArray& encoding);
+    void setEncoding(const Encoding *encoding);
 
     /**
-     * Rerurns the language for the buffer.
+     * Returns the language for the buffer.
      *
      * @return The language for the buffer.
      */
@@ -275,7 +276,7 @@ signals:
      *
      * @param encoding The new character encoding.
      */
-    void encodingChanged(const QByteArray& encoding);
+    void encodingChanged(const Encoding *encoding);
 
     /**
      * Emitted when the Language for this buffer has changed.
@@ -337,16 +338,22 @@ private:
      */
     void setupMarginIcons();
 
+    /**
+     * Applies the specified style to the buffer.
+     *
+     * @param styleNumber The style number, as defined in the lexer.
+     * @param style The style information.
+     */
     void applyStyle(int styleNumber, const StyleInfo& style);
 
     /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;
 
-    /** The encofding for the buffer. */
-    QByteArray m_encoding;
+    /** The encoding for the buffer. */
+    const Encoding *m_encoding;
 
     /** The language for the buffer. */
-    Language *m_language;
+    const Language *m_language;
 };
 
 #endif // BUFFER_H

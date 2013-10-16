@@ -13,6 +13,7 @@
 #include "aboutdialog.h"
 #include "buffer.h"
 #include "configuration.h"
+#include "encodingdialog.h"
 #include "findreplacedialog.h"
 #include "icondb.h"
 #include "language.h"
@@ -22,7 +23,7 @@
 
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::QScintillaEditor), workingDir(QDir::home()),
-    wasMaximized(false), findDlg(0), aboutDlg(0) {
+    wasMaximized(false), findDlg(0), aboutDlg(0), encodingDlg(0) {
 
     ui->setupUi(this);
     edit = new Buffer(parent);
@@ -40,8 +41,8 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
     connect(edit, SIGNAL(fileInfoChanged(QFileInfo)), this,
         SLOT(onFileInfoChanged(QFileInfo)));
-    connect(edit, SIGNAL(encodingChanged(QByteArray)), this,
-        SLOT(onEncodingChanged(QByteArray)));
+    connect(edit, SIGNAL(encodingChanged(const Encoding *)), this,
+        SLOT(onEncodingChanged(const Encoding *)));
     connect(edit, SIGNAL(languageChanged(const Language *)), this,
         SLOT(onLanguageChanged(const Language *)));
     connect(edit, SIGNAL(urlsDropped(QList<QUrl>)), this,
@@ -100,6 +101,27 @@ void QScintillaEditor::openFile(const QString& fileName) {
         }
     }
 }
+
+bool QScintillaEditor::eventFilter(QObject *obj, QEvent *event) {
+    if (obj == encodingLabel && event->type() == QEvent::MouseButtonDblClick) {
+        if (!encodingDlg) {
+            encodingDlg = new EncodingDialog(this);
+        }
+        encodingDlg->setSelectedEncoding(edit->encoding());
+        encodingDlg->setCanReopen(!edit->fileInfo().fileName().isEmpty());
+        if (encodingDlg->exec() == QDialog::Accepted) {
+            edit->setEncoding(encodingDlg->selectedEncoding());
+            if (encodingDlg->reopen()) {
+                openFile(edit->fileInfo().absoluteFilePath());
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 
 void QScintillaEditor::on_actionNew_triggered() {
     QScintillaEditor *w = new QScintillaEditor;
@@ -314,7 +336,8 @@ void QScintillaEditor::on_actionFont_triggered() {
 
 void QScintillaEditor::changeEncoding_triggered() {
     QAction *action = qobject_cast<QAction*>(sender());
-    edit->setEncoding(action->data().toByteArray());
+    const Encoding *encoding = Encoding::fromName(action->data().toByteArray());
+    edit->setEncoding(encoding);
 }
 
 void QScintillaEditor::changeLanguage_triggered() {
@@ -444,18 +467,14 @@ void QScintillaEditor::onFileInfoChanged(const QFileInfo& fileInfo) {
     ui->menuReopenWithEncoding->setEnabled(!fileInfo.fileName().isEmpty());
 }
 
-void QScintillaEditor::onEncodingChanged(const QByteArray& encoding) {
-    // Find the display name
-    for (size_t i = 0; i < G_ENCODING_COUNT; i++) {
-        if (G_AVAILABLE_ENCODINGS[i].name == encoding) {
-            encodingLabel->setText(G_AVAILABLE_ENCODINGS[i].displayName);
-            break;
-        }
+void QScintillaEditor::onEncodingChanged(const Encoding *encoding) {
+    if (encoding) {
+        encodingLabel->setText(encoding->toString());
     }
 }
 
 void QScintillaEditor::onLanguageChanged(const Language *language) {
-    languageLabel->setText(language->name());
+    languageLabel->setText(language ? language->name() : tr("Default text"));
 }
 
 void QScintillaEditor::onUrlsDropped(const QList<QUrl>& urls) {
@@ -558,13 +577,12 @@ void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
         new QMenu(tr("Unicode"), this),
     };
     // Add a menu for each encoding
-    for (size_t i = 0; i < G_ENCODING_COUNT; i++) {
-        Encoding encoding = G_AVAILABLE_ENCODINGS[i];
-        QString text = QString("%1 (%2)").arg(encoding.language,
-            encoding.displayName);
-        QAction* action = new QAction(text, this);
-        action->setData(encoding.name);
-        encodingCategories[encoding.category]->addAction(action);
+    QListIterator<Encoding> encodings = Encoding::allEncodings();
+    while (encodings.hasNext()) {
+        Encoding encoding = encodings.next();
+        QAction* action = new QAction(encoding.toString(), this);
+        action->setData(encoding.name());
+        encodingCategories[encoding.category()]->addAction(action);
         connect(action, SIGNAL(triggered()), this, slot);
     }
     // Add all the categories to the encoding menu
@@ -575,8 +593,10 @@ void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
 
 void QScintillaEditor::setUpStatusBar() {
     messageLabel = new QLabel(this);
-    languageLabel = new QLabel(this);
-    encodingLabel = new QLabel(edit->encoding(), this);
+    languageLabel = new QLabel(edit->language() ?
+            edit->language()->name() : tr("Default text"), this);
+    encodingLabel = new QLabel(edit->encoding()->toString(), this);
+    encodingLabel->installEventFilter(this);
     positionLabel = new QLabel(this);
 
     statusBar()->addPermanentWidget(messageLabel, 1);
@@ -676,4 +696,3 @@ void QScintillaEditor::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
-

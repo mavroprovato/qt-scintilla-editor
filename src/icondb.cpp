@@ -128,4 +128,19 @@ IconDb::IconDb() {
     icon.addFile(":/icons/icons/16x16/help-about.png", QSize(16, 16));
     icon.addFile(":/icons/icons/22x22/help-about.png", QSize(22, 22));
     iconMap[About] = icon;
+
+    icon = QIcon();
+    icon.addFile(":/icons/icons/16x16/dialog-ok.png", QSize(16, 16));
+    icon.addFile(":/icons/icons/22x22/dialog-ok.png", QSize(22, 22));
+    iconMap[DialogOk] = icon;
+
+    icon = QIcon();
+    icon.addFile(":/icons/icons/16x16/dialog-close.png", QSize(16, 16));
+    icon.addFile(":/icons/icons/22x22/dialog-close.png", QSize(22, 22));
+    iconMap[DialogClose] = icon;
+
+    icon = QIcon();
+    icon.addFile(":/icons/icons/16x16/dialog-cancel.png", QSize(16, 16));
+    icon.addFile(":/icons/icons/22x22/dialog-cancel.png", QSize(22, 22));
+    iconMap[DialogCancel] = icon;
 }

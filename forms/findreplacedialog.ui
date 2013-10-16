@@ -23,6 +23,9 @@
          <property name="text">
           <string>Find</string>
          </property>
+         <property name="buddy">
+          <cstring>findLindEdit</cstring>
+         </property>
         </widget>
        </item>
        <item row="0" column="1" colspan="2">
@@ -32,6 +35,9 @@
         <widget class="QLabel" name="replaceLabel">
          <property name="text">
           <string>Replace with</string>
+         </property>
+         <property name="buddy">
+          <cstring>replaceLineEdit</cstring>
          </property>
         </widget>
        </item>

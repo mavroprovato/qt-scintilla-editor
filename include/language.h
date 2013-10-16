@@ -28,6 +28,12 @@ public:
      */
     static QListIterator<Language> allLanguages();
 
+    /**
+     * Returns the language from the language identifier.
+     *
+     * @param languageId The language identifier.
+     * @return The language
+     */
     static const Language* fromLanguageId(const QString& languageId);
 
     /**

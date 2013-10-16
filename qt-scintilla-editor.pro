@@ -22,7 +22,9 @@ SOURCES += src/main.cpp\
     src/aboutdialog.cpp \
     src/configuration.cpp \
     src/language.cpp \
-    src/styleinfo.cpp
+    src/styleinfo.cpp \
+    src/encodingdialog.cpp \
+    src/encoding.cpp
 
 HEADERS  += include/qscintillaeditor.h \
     include/findreplacedialog.h \
@@ -33,11 +35,14 @@ HEADERS  += include/qscintillaeditor.h \
     include/version.h \
     include/configuration.h \
     include/language.h \
-    include/styleinfo.h
+    include/styleinfo.h \
+    include/encodingdialog.h \
+    include/encoding.h
 
 FORMS    += forms/qscintillaeditor.ui \
     forms/findreplacedialog.ui \
-    forms/aboutdialog.ui
+    forms/aboutdialog.ui \
+    forms/encodingdialog.ui
 
 LIBS += -lScintillaEdit
 

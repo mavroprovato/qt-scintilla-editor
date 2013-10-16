@@ -4,8 +4,6 @@
 #include <QIcon>
 #include <QMap>
 
-extern const char *BOOKMARK_XMP[];
-
 /**
  * A class that holds all the application icons.
  */
@@ -17,7 +15,7 @@ public:
     enum Icon {
         Application, New, Open, Reopen, Save, SaveAs, Print, Close, Quit, Undo,
         Redo, Cut, Copy, Paste, Find, Replace, Fullscreen, ZoomIn, ZoomOut,
-        ZoomReset, Font, Bookmark, About
+        ZoomReset, Font, Bookmark, About, DialogOk, DialogClose, DialogCancel
     };
 
     /**

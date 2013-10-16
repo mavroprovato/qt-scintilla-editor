@@ -10,6 +10,8 @@
 
 class AboutDialog;
 class Buffer;
+class Encoding;
+class EncodingDialog;
 class FindReplaceDialog;
 class Language;
 class QLabel;
@@ -50,6 +52,9 @@ public:
      * @param fileName The file name.
      */
     void openFile(const QString& fileName);
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
     /**
@@ -341,7 +346,7 @@ private slots:
      *
      * @param encoding The new encoding.
      */
-    void onEncodingChanged(const QByteArray& encoding);
+    void onEncodingChanged(const Encoding *encoding);
 
     /**
      * Called when the language of the buffer has changed.
@@ -447,6 +452,8 @@ private:
 
     /** The about dialog. */
     AboutDialog *aboutDlg;
+
+    EncodingDialog *encodingDlg;
 };
 
 #endif // QSCINTILLAEDITOR_H
