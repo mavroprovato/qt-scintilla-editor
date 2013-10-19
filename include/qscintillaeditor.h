@@ -14,6 +14,7 @@ class Encoding;
 class EncodingDialog;
 class FindReplaceDialog;
 class Language;
+class LanguageDialog;
 class QLabel;
 class QSettings;
 
@@ -453,7 +454,11 @@ private:
     /** The about dialog. */
     AboutDialog *aboutDlg;
 
+    /** The select encoding dialog. */
     EncodingDialog *encodingDlg;
+
+    /** The select language dialog. */
+    LanguageDialog *languageDlg;
 };
 
 #endif // QSCINTILLAEDITOR_H

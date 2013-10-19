@@ -17,13 +17,15 @@
 #include "findreplacedialog.h"
 #include "icondb.h"
 #include "language.h"
+#include "languagedialog.h"
 #include "qscintillaeditor.h"
 #include "ui_qscintillaeditor.h"
 #include "util.h"
 
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::QScintillaEditor), workingDir(QDir::home()),
-    wasMaximized(false), findDlg(0), aboutDlg(0), encodingDlg(0) {
+    wasMaximized(false), findDlg(0), aboutDlg(0), encodingDlg(0),
+    languageDlg(0) {
 
     ui->setupUi(this);
     edit = new Buffer(parent);
@@ -117,6 +119,14 @@ bool QScintillaEditor::eventFilter(QObject *obj, QEvent *event) {
         }
 
         return true;
+    } else if (obj == languageLabel && event->type() == QEvent::MouseButtonDblClick) {
+        if (!languageDlg) {
+            languageDlg = new LanguageDialog(this);
+        }
+        languageDlg->setSelectedLanguage(edit->language());
+        if (languageDlg->exec() == QDialog::Accepted) {
+            edit->setLanguage(languageDlg->selectedLanguage());
+        }
     }
 
     return false;
@@ -595,6 +605,7 @@ void QScintillaEditor::setUpStatusBar() {
     messageLabel = new QLabel(this);
     languageLabel = new QLabel(edit->language() ?
             edit->language()->name() : tr("Default text"), this);
+    languageLabel->installEventFilter(this);
     encodingLabel = new QLabel(edit->encoding()->toString(), this);
     encodingLabel->installEventFilter(this);
     positionLabel = new QLabel(this);

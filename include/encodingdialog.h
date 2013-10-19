@@ -62,8 +62,8 @@ public:
 
 protected:
     /**
-     * Overriden, in order to make sure that the find line edit always takes
-     * focus when the dialog is shown.
+     * Overriden, in order to make sure that filter text is cleared when the
+     * dialog is shown.
      *
      * @param e The show event.
      */
