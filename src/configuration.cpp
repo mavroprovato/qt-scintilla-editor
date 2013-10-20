@@ -3,6 +3,7 @@
 #include <QColor>
 #include <QDebug>
 #include <QFont>
+#include <QFontDatabase>
 
 Configuration* Configuration::instance() {
     static Configuration configuration;
