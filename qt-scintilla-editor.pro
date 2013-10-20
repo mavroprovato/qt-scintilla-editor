@@ -11,7 +11,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = qt-scintilla-editor
 TEMPLATE = app
 
-INCLUDEPATH += include
+DEPENDPATH+= . ../scintilla-code/qt
+
+INCLUDEPATH += include \
+    ../scintilla-code/qt/ScintillaEdit \
+    ../scintilla-code/qt/ScintillaEditBase \
+    ../scintilla-code/include
+
+win32: LIBS += -L$$PWD/../scintilla-code/bin/ -lScintillaEdit3
+else:unix: LIBS += -L$$PWD/../scintilla-code/bin/ -lScintillaEdit
 
 SOURCES += src/main.cpp\
         src/qscintillaeditor.cpp \
@@ -47,7 +55,6 @@ FORMS    += forms/qscintillaeditor.ui \
     forms/encodingdialog.ui \
     forms/languagedialog.ui
 
-LIBS += -lScintillaEdit
-
 RESOURCES += \
     resources/qtscitntillaeditor.qrc
+
