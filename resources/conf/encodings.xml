@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<encodings>
+    <category id="0" name="West European">
+        <encoding language="Celtic" displayName="ISO-8859-14" name="ISO-8859-14" />
+        <encoding language="Greek" displayName="ISO 8859-7" name="ISO-8859-7" />
+        <encoding language="Greek" displayName="Windows-1253" name="windows-1253" />
+        <encoding language="Nordic" displayName="ISO 8859-10" name="ISO-8859-10" />
+        <encoding language="North European" displayName="ISO 8859-4" name="ISO 8859-4" />
+        <encoding language="South European" displayName="ISO 8859-3" name="ISO-8859-3" />
+        <encoding language="Western European" displayName="ISO 8859-1" name="ISO 8859-1" />
+        <encoding language="Western European" displayName="ISO 8859-15" name="ISO 8859-15" />
+        <encoding language="Western European" displayName="Windows 1252" name="windows-1252" />
+        <encoding language="Western European" displayName="CP 850" name="CP850" />
+        <encoding language="Western European" displayName="Mac OS Roman" name="macintosh" />
+        <encoding language="Western European" displayName="HP roman8" name="hp-roman8" />
+    </category>
+    <category id="1" name="East European">
+        <encoding language="Baltic" displayName="ISO-8859-13" name="ISO-8859-13" />
+        <encoding language="Baltic" displayName="Windows-1257" name="windows-1257" />
+        <encoding language="Cyrillic" displayName="ISO 8859-5" name="ISO-8859-5" />
+        <encoding language="Cyrillic" displayName="Windows-1251" name="windows-1251 " />
+        <encoding language="Cyrillic" displayName="CP 866" name="CP866" />
+        <encoding language="Cyrillic" displayName="KOI8-R" name="KOI8-R" />
+        <encoding language="Cyrillic Ukrainian" displayName="KOI8-U" name="KOI8-U" />
+        <encoding language="Eastern European" displayName="ISO 8859-2" name="ISO-8859-2" />
+        <encoding language="Eastern European" displayName="Windows-1250" name="windows-1250 " />
+        <encoding language="South-Eastern European" displayName="ISO 8859-16" name="ISO-8859-16" />
+    </category>
+    <category id="2" name="East Asian">
+        <encoding language="Chinese" displayName="Big5" name="Big5" />
+        <encoding language="Chinese" displayName="CP 950" name="CP950" />
+        <encoding language="Chinese" displayName="GB18030" name="GB18030" />
+        <encoding language="Chinese" displayName="GB2312" name="GB2312" />
+        <encoding language="Chinese" displayName="HKSCS" name="Big5-HKSCS" />
+        <encoding language="Chinese" displayName="CP 936" name="CP936" />
+        <encoding language="Chinese" displayName="GBK" name="gbk-0" />
+        <encoding language="Japanese" displayName="EUC-JP" name="EUC-JP" />
+        <encoding language="Japanese" displayName="ISO 2022-JP" name="ISO-2022-JP" />
+        <encoding language="Japanese" displayName="JIS X 0201" name="jisx0201*-0" />
+        <encoding language="Japanese" displayName="JIS X 0208" name="jisx0208*-0" />
+        <encoding language="Japanese" displayName="Shift JIS" name="Shift_JIS" />
+        <encoding language="Korean" displayName="EUC-KR" name="EUC-KR" />
+        <encoding language="Korean" displayName="CP 949" name="cp949" />
+    </category>
+    <category id="3" name="South Asian">
+        <encoding language="Hindi (Bengali)" displayName="ISCII-Bng" name="Iscii-Bng" />
+        <encoding language="Hindi (Devanagari)" displayName="ISCII-Dev" name="Iscii-Dev" />
+        <encoding language="Hindi (Gujarati)" displayName="ISCII-Gjr" name="Iscii-Gjr" />
+        <encoding language="Hindi (Kannada)" displayName="ISCII-Knd" name="Iscii-Knd" />
+        <encoding language="Hindi (Malayalam)" displayName="ISCII-Mlm" name="Iscii-Mlm" />
+        <encoding language="Hindi (Oriya)" displayName="ISCII-Ori" name="Iscii-Ori" />
+        <encoding language="Hindi (Punjabi)" displayName="ISCIIi-Pnj" name="Iscii-Pnj" />
+        <encoding language="Hindi (Telugu)" displayName="ISCII-Tlg" name="Iscii-Tlg" />
+        <encoding language="Hindi (Tamil)" displayName="ISCII-Tml" name="Iscii-Tml" />
+        <encoding language="Tamil" displayName="TSCII" name="TSCII" />
+        <encoding language="Thai" displayName="ISO 8859-11" name="ISO-8859-11" />
+        <encoding language="Thai" displayName="CP 874" name="CP874" />
+        <encoding language="Thai" displayName="TIS-620" name="TIS-620" />
+        <encoding language="Turkish" displayName="ISO 8859-9" name="ISO-8859-9" />
+        <encoding language="Turkish" displayName="Windows-1254" name="windows-1254" />
+        <encoding language="Vietnamese" displayName="Windows-1258" name="windows-1258" />
+    </category>
+    <category id="4" name="Middle Eastern">
+        <encoding language="Arabic" displayName="ISO 8859-6" name="ISO-8859-6" />
+        <encoding language="Arabic" displayName="ISO 8859-6-I" name="ISO-8859-6-I" />
+        <encoding language="Arabic" displayName="Windows-1256" name="windows-1256" />
+        <encoding language="Hebrew" displayName="ISO 8859-8" name="ISO-8859-8" />
+        <encoding language="Hebrew" displayName="ISO 8859-8-I" name="ISO-8859-8-I" />
+        <encoding language="Hebrew" displayName="Windows-1255" name="windows-1255" />
+    </category>
+    <category id="5" name="Unicode">
+        <encoding language="Unicode" displayName="UTF-8" name="UTF-8" />
+        <encoding language="Unicode" displayName="UTF-16" name="UTF-16" />
+        <encoding language="Unicode" displayName="UTF-16BE" name="UTF-16BE" />
+        <encoding language="Unicode" displayName="UTF-16LE" name="UTF-16LE" />
+        <encoding language="Unicode" displayName="UTF-32" name="UTF-32" />
+        <encoding language="Unicode" displayName="UTF-32BE" name="UTF-32BE" />
+        <encoding language="Unicode" displayName="UTF-32LE" name="UTF-32LE" />
+    </category>
+</encodings>

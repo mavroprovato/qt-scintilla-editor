@@ -58,4 +58,7 @@
         <file>icons/16x16/dialog-cancel.png</file>
         <file>icons/22x22/dialog-ok.png</file>
     </qresource>
+    <qresource prefix="/conf">
+        <file>conf/encodings.xml</file>
+    </qresource>
 </RCC>

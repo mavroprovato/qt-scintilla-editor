@@ -11,7 +11,8 @@ public:
      * The differenct categories for the encodings.
      */
     enum EncodingCategory {
-        WestEuropean, EastEuropean, EastAsian, SouthAsian, MiddleEastern, Unicode
+        WestEuropean = 0, EastEuropean = 1, EastAsian = 2, SouthAsian = 3,
+        MiddleEastern = 4, Unicode = 5
     };
 
     /**
