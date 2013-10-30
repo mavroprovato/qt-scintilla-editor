@@ -45,17 +45,9 @@ public:
     static const Language* fromFilename(const QString& fileName);
 
     /**
-     * Constructor for the language.
-     *
-     * @param langId The language identifier.
-     * @param lexer The lexer for the language.
-     * @param name The language name.
-     * @param patterns The file patterns for the language.
-     * @param keywords The keywords for the language, seperated by space.
-     * @param styles The list of lexer styles available for this language.
+     * Default constructor for the language.
      */
-    Language(QString langId, int lexer, QString name, QString patterns,
-             QStringList keywords, QList<StyleDescription> styles);
+    Language();
 
     /**
      * Returns the language identifier.
@@ -69,7 +61,7 @@ public:
      *
      * @return the lexer for the language.
      */
-    int lexer() const;
+    QString lexer() const;
 
     /**
      * Returns the name of the language.
@@ -112,7 +104,7 @@ private:
     QString m_langId;
 
     /** The lexer for the language. */
-    int m_lexer;
+    QString m_lexer;
 
     /** The language name. */
     QString m_name;

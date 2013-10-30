@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languages>
+    <language id="cpp" lexer="cpp" name="C/C++">
+        <patterns>*.h *.hh *.hpp *.hxx *.h++ *.c *.cc *.cpp *.cxx *.c++</patterns>
+        <keywordSets>
+            <keywordSet id="0">
+            alignas alignof and and_eq asm auto bitand bitor bool break case
+            catch char char16_t char32_t class compl const constexpr const_cast
+            continue decltype default delete do double dynamic_cast else enum
+            explicit export extern false float for friend goto if inline int
+            long mutable namespace new noexcept not not_eq nullptr operator or
+            or_eq private protected public register reinterpret_cast return
+            short signed sizeof static static_assert static_cast struct switch
+            template this thread_local throw true try typedef typeid typename
+            union unsigned using virtual void volatile wchar_t while xor xor_eq
+            </keywordSet>
+            <keywordSet id="2">
+            a addindex addtogroup anchor arg attention author authors b brief
+            bug c callgraph callergraph category cite class code cond copybrief
+            copydetails copydoc copyright date def defgroup deprecated details
+            dir docbookonly dontinclude dot dotfile e else elseif em endcode
+            endcond enddocbookonly enddot endhtmlonly endif endinternal
+            endlatexonly endlink endmanonly endmsc endrtfonly endsecreflist
+            endverbatim endxmlonly enum example exception extends f$ f[ f] f{ f}
+            file fn headerfile hideinitializer htmlinclude htmlonly idlexcept
+            if ifnot image implements include includelineno ingroup internal
+            invariant interface latexonly li line link mainpage manonly memberof
+            msc mscfile n name namespace nosubgrouping note overload p package
+            page par paragraph param post pre private privatesection property
+            protected protectedsection protocol public publicsection pure ref
+            refitem related relates relatedalso relatesalso remark remarks
+            result return returns retval rtfonly sa secreflist section see short
+            showinitializer since skip skipline snippet struct subpage
+            subsection subsubsection tableofcontents test throw throws todo
+            tparam typedef union until var verbatim verbinclude version vhdlflow
+            warning weakgroup xmlonly xrefitem $ @ \ &amp; ~ &lt; &gt; # %
+            &quot; . :: |
+            </keywordSet>
+        </keywordSets>
+        <styleDescriptions>
+            <styleDescription style="0" description="Whitespace" />
+            <styleDescription style="1" description="Comment" />
+            <styleDescription style="2" description="Line Comment" />
+            <styleDescription style="3" description="Documentation Comment" />
+            <styleDescription style="4" description="Number" />
+            <styleDescription style="5" description="Keyword" />
+            <styleDescription style="6" description="String" />
+            <styleDescription style="7" description="Character" />
+            <styleDescription style="9" description="Preprocessor" />
+            <styleDescription style="10" description="Operators" />
+            <styleDescription style="11" description="Identifiers" />
+            <styleDescription style="12" description="Unclosed String Literal" />
+            <styleDescription style="15" description="Documentation Comment Line" />
+            <styleDescription style="17" description="Comment Keyword" />
+            <styleDescription style="18" description="Comment Keyword Error" />
+            <styleDescription style="20" description="Raw Strings" />
+        </styleDescriptions>
+    </language>
+    <language id="java" lexer="cpp" name="Java">
+        <patterns>*.java</patterns>
+        <keywordSets>
+            <keywordSet id="0">
+            abstract assert boolean break byte case catch char class const
+            continue default double do else enum extends final finally float for
+            goto if implements import instanceof int interface long native new
+            package private protected public return short static strictfp super
+            switch synchronized this throw throws transient try void volatile
+            while
+            </keywordSet>
+            <keywordSet id="2">
+            author code docRoot deprecated exception inheritDoc link linkplain
+            literal param return see serial serialData serialField since throws
+            value version
+            </keywordSet>
+        </keywordSets>
+        <styleDescriptions>
+            <styleDescription style="0" description="Whitespace" />
+            <styleDescription style="1" description="Comment" />
+            <styleDescription style="2" description="Line Comment" />
+            <styleDescription style="3" description="Documentation Comment" />
+            <styleDescription style="4" description="Number" />
+            <styleDescription style="5" description="Keyword" />
+            <styleDescription style="6" description="String" />
+            <styleDescription style="7" description="Character" />
+            <styleDescription style="10" description="Operators" />
+            <styleDescription style="11" description="Identifiers" />
+            <styleDescription style="12" description="Unclosed String Literal" />
+            <styleDescription style="15" description="Documentation Comment Line" />
+            <styleDescription style="17" description="Comment Keyword" />
+            <styleDescription style="18" description="Comment Keyword Error" />
+        </styleDescriptions>
+    </language>
+    <language id="python" lexer="python" name="Python">
+        <patterns>*.py *.pyw</patterns>
+        <keywordSets>
+            <keywordSet id="0">
+            False None True and as assert break class continue def del elif else
+            except finally for from global if import in is lambda nonlocal not
+            or pass raise return try while with yield
+            </keywordSet>
+        </keywordSets>
+        <styleDescriptions>
+            <styleDescription style="0" description="Whitespace" />
+            <styleDescription style="1" description="Comment" />
+            <styleDescription style="2" description="Number" />
+            <styleDescription style="3" description="String" />
+            <styleDescription style="4" description="Character" />
+            <styleDescription style="5" description="Keyword" />
+            <styleDescription style="6" description="Triple Quotes" />
+            <styleDescription style="7" description="Triple Double Quotes" />
+            <styleDescription style="8" description="Class Name" />
+            <styleDescription style="9" description="Function or Method" />
+            <styleDescription style="10" description="Operators" />
+            <styleDescription style="11" description="Identifiers" />
+            <styleDescription style="12" description="Comment Blocks" />
+            <styleDescription style="13" description="Unclosed String Literal" />
+            <styleDescription style="15" description="Decorators" />
+        </styleDescriptions>
+    </language>
+</languages>

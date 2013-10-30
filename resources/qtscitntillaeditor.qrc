@@ -60,5 +60,6 @@
     </qresource>
     <qresource prefix="/conf">
         <file>conf/encodings.xml</file>
+        <file>conf/languages.xml</file>
     </qresource>
 </RCC>

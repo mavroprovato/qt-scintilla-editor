@@ -372,7 +372,7 @@ void Buffer::setLanguage(const Language *language) {
         styleClearAll();
         // Find the language from the filename
         if (language) {
-            setLexer(language->lexer());
+            setLexerLanguage(language->lexer().toLocal8Bit());
             for (int i = 0; i < language->keywords().size(); ++i) {
                 setKeyWords(i, language->keywords().at(i).toLatin1());
             }

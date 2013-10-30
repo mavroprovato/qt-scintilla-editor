@@ -1,7 +1,9 @@
 #include "language.h"
 
+#include <QFile>
 #include <QObject>
 #include <QStringList>
+#include <QXmlStreamReader>
 
 #include <SciLexer.h>
 
@@ -58,127 +60,78 @@ QList<Language> Language::availableLangs = Language::intializeLangs();
 QList<Language> Language::intializeLangs() {
     QList<Language> langs;
 
-    langs.append(Language(
-        "cpp", SCLEX_CPP, "C/C++",
-        "*.h *.hh *.hpp *.hxx *.h++ *.c *.cc *.cpp *.cxx *.c++",
-        QStringList() <<
-        // Keywords
-        "alignas alignof and and_eq asm auto bitand bitor bool break case "
-        "catch char char16_t char32_t class compl const constexpr const_cast "
-        "continue decltype default delete do double dynamic_cast else enum "
-        "explicit export extern false float for friend goto if inline int "
-        "long mutable namespace new noexcept not not_eq nullptr operator or "
-        "or_eq private protected public register reinterpret_cast return short "
-        "signed sizeof static static_assert static_cast struct switch template "
-        "this thread_local throw true try typedef typeid typename union "
-        "unsigned using virtual void volatile wchar_t while xor xor_eq"
-        << "" <<
-        // Doxygen Keywords
-        "a addindex addtogroup anchor arg attention author authors b brief bug "
-        "c callgraph callergraph category cite class code cond copybrief "
-        "copydetails copydoc copyright date def defgroup deprecated details "
-        "dir docbookonly dontinclude dot dotfile e else elseif em endcode "
-        "endcond enddocbookonly enddot endhtmlonly endif endinternal "
-        "endlatexonly endlink endmanonly endmsc endrtfonly endsecreflist "
-        "endverbatim endxmlonly enum example exception extends f$ f[ f] f{ f} "
-        "file fn headerfile hideinitializer htmlinclude htmlonly idlexcept "
-        "if ifnot image implements include includelineno ingroup internal "
-        "invariant interface latexonly li line link mainpage manonly memberof "
-        "msc mscfile n name namespace nosubgrouping note overload p package "
-        "page par paragraph param post pre private privatesection property "
-        "protected protectedsection protocol public publicsection pure ref "
-        "refitem related relates relatedalso relatesalso remark remarks result "
-        "return returns retval rtfonly sa secreflist section see short "
-        "showinitializer since skip skipline snippet struct subpage subsection "
-        "subsubsection tableofcontents test throw throws todo tparam typedef "
-        "union until var verbatim verbinclude version vhdlflow warning "
-        "weakgroup xmlonly xrefitem $ @ \\ &amp; ~ < > # % \" . :: |",
-        QList<StyleDescription>()
-        << StyleDescription(SCE_C_DEFAULT, "Whitespace")
-        << StyleDescription(SCE_C_COMMENT, "Comment")
-        << StyleDescription(SCE_C_COMMENTLINE, "Line Comment")
-        << StyleDescription(SCE_C_COMMENTDOC, "Documentation Comment")
-        << StyleDescription(SCE_C_NUMBER, "Number")
-        << StyleDescription(SCE_C_WORD, "Keyword")
-        << StyleDescription(SCE_C_STRING, "String")
-        << StyleDescription(SCE_C_CHARACTER, "Character")
-        << StyleDescription(SCE_C_PREPROCESSOR, "Preprocessor")
-        << StyleDescription(SCE_C_OPERATOR, "Operators")
-        << StyleDescription(SCE_C_IDENTIFIER, "Identifiers")
-        << StyleDescription(SCE_C_STRINGEOL, "Unclosed String Literal")
-        << StyleDescription(SCE_C_COMMENTLINEDOC, "Documentation Comment Line")
-        << StyleDescription(SCE_C_COMMENTDOCKEYWORD, "Comment Keyword")
-        << StyleDescription(SCE_C_COMMENTDOCKEYWORDERROR, "Comment Keyword error")
-        << StyleDescription(SCE_C_STRINGRAW, "Raw strings")
-    ));
-    langs.append(Language(
-        "java", SCLEX_CPP, "Java", "*.java",
-        QStringList() <<
-        // Keywords
-        "abstract assert boolean break byte case catch char class const "
-        "continue default double do else enum extends final finally float for "
-        "goto if implements import instanceof int interface long native new "
-        "package private protected public return short static strictfp super "
-        "switch synchronized this throw throws transient try void volatile "
-        "while" << "" <<
-        // Javadoc keywords
-        "author code docRoot deprecated exception inheritDoc link linkplain "
-        "literal param return see serial serialData serialField since throws "
-        "value version",
-        QList<StyleDescription>()
-        << StyleDescription(SCE_C_DEFAULT, "Whitespace")
-        << StyleDescription(SCE_C_COMMENT, "Comment")
-        << StyleDescription(SCE_C_COMMENTLINE, "Line Comment")
-        << StyleDescription(SCE_C_COMMENTDOC, "Documentation Comment")
-        << StyleDescription(SCE_C_NUMBER, "Number")
-        << StyleDescription(SCE_C_WORD, "Keyword")
-        << StyleDescription(SCE_C_STRING, "String")
-        << StyleDescription(SCE_C_CHARACTER, "Character")
-        << StyleDescription(SCE_C_OPERATOR, "Operators")
-        << StyleDescription(SCE_C_IDENTIFIER, "Identifiers")
-        << StyleDescription(SCE_C_STRINGEOL, "Unclosed String Literal")
-        << StyleDescription(SCE_C_COMMENTLINEDOC, "Documentation Comment Line")
-        << StyleDescription(SCE_C_COMMENTDOCKEYWORD, "Comment Keyword")
-        << StyleDescription(SCE_C_COMMENTDOCKEYWORDERROR, "Comment Keyword error")
-    ));
-    langs.append(Language(
-        "python", SCLEX_PYTHON, "Python", "*.py *.pyw",
-        QStringList() <<
-        "False None True and as assert break class continue def del elif else "
-        "except finally for from global if import in is lambda nonlocal not or "
-        "pass raise return try while with yield",
-        QList<StyleDescription>()
-        << StyleDescription(SCE_P_DEFAULT, "Whitespace")
-        << StyleDescription(SCE_P_COMMENTLINE, "Comment")
-        << StyleDescription(SCE_P_NUMBER, "Number")
-        << StyleDescription(SCE_P_STRING, "String")
-        << StyleDescription(SCE_P_CHARACTER, "Character")
-        << StyleDescription(SCE_P_WORD, "Keyword")
-        << StyleDescription(SCE_P_TRIPLE, "Triple Quotes")
-        << StyleDescription(SCE_P_TRIPLEDOUBLE, "Triple Double quotes")
-        << StyleDescription(SCE_P_CLASSNAME, "Class Name")
-        << StyleDescription(SCE_P_DEFNAME, "Function or Method")
-        << StyleDescription(SCE_P_OPERATOR, "Operators")
-        << StyleDescription(SCE_P_IDENTIFIER, "Identifiers")
-        << StyleDescription(SCE_P_COMMENTBLOCK, "Comment-blocks")
-        << StyleDescription(SCE_P_STRINGEOL, "Unclosed String literal")
-        << StyleDescription(SCE_P_DECORATOR, "Decorators")
-    ));
+    // Make sure the resources are initialized
+    Q_INIT_RESOURCE(qtscitntillaeditor);
+    // Open the encoding xml file for reading
+    QFile file(":/conf/conf/languages.xml");
+    if (file.open(QFile::ReadOnly | QIODevice::Text)) {
+        QXmlStreamReader xml(&file);
+        // Loop through the xml elements
+        Language currentLang;
+        QStringList keywords;
+        QList<StyleDescription> styles;
+        while(!xml.atEnd() && !xml.hasError()) {
+            QXmlStreamReader::TokenType token = xml.readNext();
+            if (token == QXmlStreamReader::StartElement) {
+                if (xml.name() == "language") {
+                    QXmlStreamAttributes attrs = xml.attributes();
+                    currentLang.m_langId = attrs.value("id").toString();
+                    currentLang.m_name = attrs.value("name").toString();
+                    currentLang.m_lexer = attrs.value("lexer").toString();
+                } else if (xml.name() == "patterns") {
+                    currentLang.m_patterns = xml.readElementText(
+                                QXmlStreamReader::ErrorOnUnexpectedElement);
+                } else if (xml.name() == "keywordSet") {
+                    bool ok;
+                    int id = xml.attributes().value("id").toString().toInt(&ok);
+                    if (ok) {
+                        while (id != keywords.size()) {
+                            keywords.append("");
+                        }
+                        keywords << xml.readElementText(
+                            QXmlStreamReader::ErrorOnUnexpectedElement);
+                    }
+                } else if (xml.name() == "styleDescription") {
+                    QXmlStreamAttributes attrs = xml.attributes();
+                    QString description = attrs.value("description").toString();
+                    bool ok;
+                    uint style = attrs.value("style").toString().toUInt(&ok);
+                    if (ok && style <= UCHAR_MAX) {
+                        styles << StyleDescription((uchar) style, description);
+                    }
+                }
+            } else if (token == QXmlStreamReader::EndElement) {
+                if (xml.name() == "keywordSets") {
+                    currentLang.m_keywords = keywords.replaceInStrings(
+                            QRegExp("\\s+"), " ");;
+                    keywords.clear();
+                } else if (xml.name() == "styleDescriptions") {
+                    currentLang.m_styles = styles;
+                    styles.clear();
+                } else if (xml.name() == "language") {
+                    langs << currentLang;
+                }
+            }
+        }
+        if (xml.hasError()) {
+            qFatal("Error while parsing the languages configuration file: %s.",
+                qPrintable(xml.errorString().toLatin1()));
+        }
+    } else {
+        qFatal("Unable to find the languages configuration file.");
+    }
 
     return langs;
 }
 
-Language::Language(QString langId, int lexer, QString name, QString patterns,
-                   QStringList keywords, QList<StyleDescription> styles)
-    : m_langId(langId), m_lexer(lexer), m_name(name), m_patterns(patterns),
-      m_keywords(keywords), m_styles(styles) {
+Language::Language() {
 }
 
 QString Language::langId() const {
     return m_langId;
 }
 
-int Language::lexer() const {
+QString Language::lexer() const {
     return m_lexer;
 }
 
