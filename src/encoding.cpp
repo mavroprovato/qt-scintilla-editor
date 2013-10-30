@@ -48,11 +48,12 @@ QList<Encoding> Encoding::intializeEncodings(){
             if (token == QXmlStreamReader::StartElement) {
                 if (xml.name() == "category") {
                     // New category element, get the id
-                    QString value = xml.attributes().value("id").toString();
                     bool ok;
-                    int intValue = value.toInt(&ok);
-                    if (ok && intValue >= 0 && intValue <= 5) {
-                        currentCategory = (EncodingCategory) intValue;
+                    int id = xml.attributes().value("id").toString().toInt(&ok);
+                    if (ok && id >= 0 && id <= 5) {
+                        currentCategory = (EncodingCategory) id;
+                    } else {
+                        qWarning("id attribute of category element is invalid");
                     }
                 } else if (xml.name() == "encoding") {
                     // New encoding element, add it to the list
@@ -64,6 +65,12 @@ QList<Encoding> Encoding::intializeEncodings(){
                 }
             }
         }
+        if (xml.hasError()) {
+            qFatal("Error while parsing the encodings configuration file: %s.",
+                qPrintable(xml.errorString().toLatin1()));
+        }
+    } else {
+        qFatal("Unable to open the encodings configuration file.");
     }
 
     return encodings;

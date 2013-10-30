@@ -90,6 +90,9 @@ QList<Language> Language::intializeLangs() {
                         }
                         keywords << xml.readElementText(
                             QXmlStreamReader::ErrorOnUnexpectedElement);
+                    } else {
+                        qWarning("id attribute of keywordSet element is "
+                                 "invalid");
                     }
                 } else if (xml.name() == "styleDescription") {
                     QXmlStreamAttributes attrs = xml.attributes();
@@ -98,6 +101,9 @@ QList<Language> Language::intializeLangs() {
                     uint style = attrs.value("style").toString().toUInt(&ok);
                     if (ok && style <= UCHAR_MAX) {
                         styles << StyleDescription((uchar) style, description);
+                    } else {
+                        qWarning("id attribute of styleDescription element is "
+                                 "invalid");
                     }
                 }
             } else if (token == QXmlStreamReader::EndElement) {
