@@ -63,21 +63,21 @@ void Configuration::setViewIndentationGuides(bool viewIndentationGuides) {
     settings.setValue("view.indentation.guides", viewIndentationGuides);
 }
 
-Configuration::IndentationGuidesMode Configuration::indentationGuidesMode() {
-    int examine = settings.value("view.indentation.examine", LookBoth).toInt();
+Buffer::IndentationGuidesMode Configuration::indentationGuidesMode() {
+    int examine = settings.value("view.indentation.examine", Buffer::LookBoth).toInt();
     switch(examine) {
     case 1:
-        return Real;
+        return Buffer::Real;
     case 2:
-        return LookForward;
+        return Buffer::LookForward;
     case 3:
-        return LookBoth;
+        return Buffer::LookBoth;
     default:
-        return None;
+        return Buffer::None;
     }
 }
 
-void Configuration::setIndentationGuidesMode(Configuration::IndentationGuidesMode mode) {
+void Configuration::setIndentationGuidesMode(Buffer::IndentationGuidesMode mode) {
     settings.setValue("view.indentation.examine", mode);
 }
 
@@ -161,7 +161,7 @@ Buffer::FoldLines Configuration::foldLines() {
     int value = settings.value("fold.lines", Buffer::BoxLine).toInt();
     switch (value) {
     case 0:
-        return Buffer::None;
+        return Buffer::NoLine;
     case 1:
         return Buffer::CircleLine;
     case 2:
@@ -253,31 +253,4 @@ QFont Configuration::font() const {
 
 void Configuration::setFont(const QFont &font) {
     settings.setValue("font.default", font.toString());
-}
-
-QColor Configuration::whitespaceForeground() const {
-    return QColor(settings.value("whitespace.fore", "#c0c0c0").toString());
-}
-
-void Configuration::setWhitespaceForeground(const QColor& whitespaceForeground) {
-    settings.setValue("whitespace.fore", whitespaceForeground.name());
-}
-
-QColor Configuration::whitespaceBackground() const {
-    return QColor(settings.value("whitespace.back", "#ffffff").toString());
-}
-
-void Configuration::setWhitespaceBackground(const QColor& whitespaceBackground) {
-    settings.setValue("whitespace.back", whitespaceBackground.name());
-}
-
-QHash<int, StyleInfo> Configuration::styleForLanguage(const Language& language) {
-    QHash<int, StyleInfo> styles;
-    for (int i = 0; i < language.styles().length(); ++i) {
-        int style = language.styles().at(i).style;
-        QString key = QString("style.%1.%2").arg(language.langId()).arg(style);
-        StyleInfo info = StyleInfo::fromString(settings.value(key, "").toString());
-        styles[style] = info;
-    }
-    return styles;
 }

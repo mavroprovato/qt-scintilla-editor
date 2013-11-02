@@ -347,8 +347,6 @@ void Buffer::loadConfiguration() {
     setUseTabs(config->useTabs());
     setScrollWidth(config->scrollWidth());
     setScrollWidthTracking(config->scrollWidthTracking());
-    setWhitespaceFore(true, convertColor(config->whitespaceForeground()));
-    setWhitespaceBack(true, convertColor(config->whitespaceBackground()));
     setFoldSymbols(config->foldSymbols());
     setFoldLines(config->foldLines());
 }
@@ -375,13 +373,6 @@ void Buffer::setLanguage(const Language *language) {
             setLexerLanguage(language->lexer().toLocal8Bit());
             for (int i = 0; i < language->keywords().size(); ++i) {
                 setKeyWords(i, language->keywords().at(i).toLatin1());
-            }
-            Configuration *config = Configuration::instance();
-            QHash<int, StyleInfo> styles = config->styleForLanguage(*language);
-            QHashIterator<int, StyleInfo> iter(styles);
-            while (iter.hasNext()) {
-                iter.next();
-                applyStyle(iter.key(), iter.value());
             }
             setProperty("fold", "1");
             setProperty("fold.compact", "0");

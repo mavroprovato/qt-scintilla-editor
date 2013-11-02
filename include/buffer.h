@@ -24,6 +24,9 @@ public:
         Line, Icon, Fold
     };
 
+    /**
+     * Enumeration of the various icon markers.
+     */
     enum IconMarkers {
         Bookmark
     };
@@ -39,7 +42,14 @@ public:
      * The possible types of fold symbols.
      */
     enum FoldLines {
-        None, CircleLine, BoxLine
+        NoLine, CircleLine, BoxLine
+    };
+
+    /**
+     * The legal values for the indentation guides mode.
+     */
+    enum IndentationGuidesMode {
+        None, Real, LookForward, LookBoth
     };
 
     /**

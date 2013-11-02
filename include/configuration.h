@@ -10,12 +10,6 @@
 
 class Configuration {
 public:
-    /**
-     * The legal values for the indentation guides mode.
-     */
-    enum IndentationGuidesMode {
-        None, Real, LookForward, LookBoth
-    };
 
     /**
      * Returns an instance of the configuration.
@@ -120,25 +114,61 @@ public:
      *
      * @return The indentation guides mode.
      */
-    IndentationGuidesMode indentationGuidesMode();
+    Buffer::IndentationGuidesMode indentationGuidesMode();
 
     /**
      * Sets the indentation guides mode.
      *
      * @param mode The new indentation guides mode.
      */
-    void setIndentationGuidesMode(IndentationGuidesMode mode);
+    void setIndentationGuidesMode(Buffer::IndentationGuidesMode mode);
 
+    /**
+     * Returns whether the long line indicator should be shown or not.
+     *
+     * @return true if the long line indicator should be shown.
+     */
     bool longLineIndicator();
 
+    /**
+     * Sets the flag to show or hide the long line indicator.
+     *
+     * @param longLineIndicator true if the long line indicator should be shown,
+     * false otherwise.
+     */
     void setLongLineIndicator(bool longLineIndicator);
 
+    /**
+     * If this method returns true, then the long line indicator should be
+     * displayed as a horizontal line. If false, the background color changes
+     * after the limit.
+     *
+     * @return The type of the long line indicator.
+     */
     bool longLineIndicatorLine();
 
+    /**
+     * Sets the long line indicator type. If this true, then the long line
+     * indicator should be displayed as a horizontal line. If false,
+     * the background color changes after the limit.
+     *
+     * @param longLineIndicatorLine The new type of the long line indicator.
+     */
     void setLongLineIndicatorLine(bool longLineIndicatorLine);
 
+    /**
+     * Retruns the column number at which to display the long line marker.
+     *
+     * @return the column number at which to display the long line marker.
+     */
     int longLineIndicatorColumn();
 
+    /**
+     * Sets the column number at which to display the long line marker.
+     *
+     * @param longLineIndicatorColumn The column number at which to display the
+     * long line marker.
+     */
     void setLongLineIndicatorColumn(int longLineIndicatorColumn);
 
     /**
@@ -162,6 +192,11 @@ public:
      */
     bool showLineMargin();
 
+    /**
+     * Sets whether the line margin should be displayed or not.
+     *
+     * @param showLineMargin Set to true if the line margin should be shown.
+     */
     void setShowLineMargin(bool showLineMargin);
 
     /**
@@ -171,6 +206,11 @@ public:
      */
     bool showIconMargin();
 
+    /**
+     * Sets whether the icon margin should be displayed or not.
+     *
+     * @param showLineMargin Set to true if the icon margin should be shown.
+     */
     void setShowIconMargin(bool showIconMargin);
 
     /**
@@ -180,61 +220,144 @@ public:
      */
     bool showFoldMargin();
 
+    /**
+     * Sets whether the fold margin should be displayed or not.
+     *
+     * @param showLineMargin Set to true if the fold margin should be shown.
+     */
     void setShowFoldMargin(bool showFoldMargin);
 
+    /**
+     * Returns the type of the fold symbols.
+     *
+     * @return The type of the fold symbols.
+     */
     Buffer::FoldSymbols foldSymbols();
 
+    /**
+     * Sets the type of the fold symbols.
+     *
+     * @param foldSymbols The type of the fold symbols.
+     */
     void setFoldSymbols(Buffer::FoldSymbols foldSymbols);
 
+    /**
+     * Returns the type of the fold lines.
+     *.
+     * @return The type of the fold lines.
+     */
     Buffer::FoldLines foldLines();
 
+    /**
+     * Sets the type of the fold lines.
+     *
+     * @param foldLines The type of the fold lines.
+     */
     void setFoldLines(Buffer::FoldLines foldLines);
 
+    /**
+     * Returns true if the long lines should be wrapped.
+     *
+     * @return true if the long lines should be wrapped.
+     */
     bool wrap();
 
+    /**
+     * Sets whether the long lines should be wrapped.
+     *
+     * @param wrap true if the long lines should be wrapped.
+     */
     void setWrap(bool wrap);
 
+    /**
+     * Returns the width of the tab charachter.
+     *
+     * @return The width of the tab charachter.
+     */
     int tabWidth() const;
 
+    /**
+     * Sets the width of the tab character.
+     *
+     * @param tabWidth The new width of the tab character.
+     */
     void setTabWidth(int tabWidth);
 
+    /**
+     * Returns the identation width.
+     *
+     * @return The identation width.
+     */
     int indentationWidth() const;
 
+    /**
+     * Sets the width of the identation character.
+     *
+     * @param indentationWidth The width of the identation character.
+     */
     void setIndentationWidth(int indentationWidth);
 
+    /**
+     * Returns true if tabs should be used for identation, false if spaces
+     * should be used.
+     *
+     * @return true if tabs should be used for identation, false if spaces
+     * should be used.
+     */
     bool useTabs() const;
 
+    /**
+     * Set to true if tabs should be used for identation. Set to false if
+     * spaces should be used for identation.
+     *
+     * @param useTabs true, if tabs should be used for identation, false if
+     * spaces should be used for identation.
+     */
     void setUseTabs(bool useTabs);
 
+    /**
+     * Returns the assumed width of the scrollable area.
+     *
+     * @return The assumed width of the scrollable area.
+     */
     int scrollWidth() const;
 
+    /**
+     * Sets the assumed width of the scrollable area.
+     *
+     * @param scrollWidth The assumed width of the scrollable area.
+     */
     void setScrollWidth(int scrollWidth);
 
+    /**
+     * Returns whether the horizontal size of the scollable area should be
+     * tracked or not.
+     * @return Whether the horizontal size of the scollable area should be
+     * tracked or not.
+     */
     bool scrollWidthTracking() const;
 
+    /**
+     * Sets whether the horizontal size of the scollable area should be tracked
+     *or not.
+     * @param scrollWidthTracking true to track the horizontal size of the
+     * scrollable area, false otherwise.
+     */
     void setScrollWidthTracking(bool scrollWidthTracking);
 
+    /**
+     * Returns the font that should be used in the editor.
+     *
+     * @return The font that should be used in the editor.
+     */
     QFont font() const;
 
-    void setFont(const QFont &font);
-
-    QColor whitespaceForeground() const;
-
-    void setWhitespaceForeground(const QColor& whitespaceForeground);
-
-    QColor whitespaceBackground() const;
-
-    void setWhitespaceBackground(const QColor& whitespaceBackground);
-
     /**
-     * Returns a hash with the styles information for a specific language. In
-     * the return hash, the key is the scitilla style identifier and the value
-     * is the style information.
+     * Set the font to be used for the editor.
      *
-     * @param language The language.
-     * @return The
+     * @param font The font to be used for the editor.
      */
-    QHash<int, StyleInfo> styleForLanguage(const Language& language);
+    void setFont(const QFont &font);
 
 private:
     /**
