@@ -78,8 +78,8 @@ private:
      * Creates the encoding.
      *
      * @param language The encoding language.
-     * @param m_displayName The encoding display name.
-     * @param m_name The encoding system name.
+     * @param displayName The encoding display name.
+     * @param name The encoding system name.
      * @param category The encoding category.
      */
     Encoding(QString language, QString displayName, QByteArray name,
