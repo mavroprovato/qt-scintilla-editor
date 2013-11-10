@@ -110,19 +110,19 @@ public:
     void setViewIndentationGuides(bool viewIndentationGuides);
 
     /**
-     * Returns true if the background colour of the line containing the caret
+     * Returns true if the background color of the line containing the caret
      * should have a different background.
      *
-     * @return true if the background colour of the line containing the caret
+     * @return true if the background color of the line containing the caret
      * should have a different background.
      */
     bool caretLineVisible();
 
     /**
-     * Sets whether the background colour of the line containing the caret
+     * Sets whether the background color of the line containing the caret
      * should have a different background.
      *
-     * @param caretLineVisible whether the background colour of the line
+     * @param caretLineVisible whether the background color of the line
      * containing the caret should have a different background.
      */
     void setCaretLineVisible(bool caretLineVisible);

@@ -234,6 +234,11 @@ private slots:
     void on_actionFont_triggered();
 
     /**
+     * Called when the change color scheme action is triggered.
+     */
+    void changeColorScheme_triggered();
+
+    /**
      * Called when the change language action is triggered.
      */
     void changeLanguage_triggered();

@@ -93,6 +93,28 @@ QFileInfo Buffer::fileInfo() const {
     return m_fileInfo;
 }
 
+void Buffer::setColorScheme(const ColorScheme *colorScheme) {
+    if (colorScheme->foreground() != -1) {
+        styleSetFore(STYLE_DEFAULT, colorScheme->foreground());
+    }
+    if (colorScheme->background() != -1) {
+        styleSetBack(STYLE_DEFAULT, colorScheme->background());
+    }
+    if (colorScheme->caret() != -1) {
+        setCaretFore(colorScheme->caret());
+    }
+    if (colorScheme->caretLine() != -1) {
+        setCaretLineBack(colorScheme->caretLine());
+    }
+    if (colorScheme->selection() == -1) {
+        setSelBack(false, 0);
+    } else {
+        setSelBack(true, colorScheme->selection());
+    }
+
+    styleClearAll();
+}
+
 const Encoding *Buffer::encoding() const {
     return m_encoding;
 }
@@ -350,7 +372,7 @@ void Buffer::loadConfiguration() {
     setScrollWidthTracking(config->scrollWidthTracking());
     setFoldSymbols(config->foldSymbols());
     setFoldLines(config->foldLines());
-    applyColorScheme(ColorScheme::getColorScheme(config->colorScheme()));
+    setColorScheme(ColorScheme::getColorScheme(config->colorScheme()));
 }
 
 void Buffer::setFileInfo(const QFileInfo& fileInfo) {
@@ -406,26 +428,6 @@ void Buffer::setupMarginIcons() {
     rGBAImageSetHeight(dim);
     markerDefineRGBAImage(Bookmark, reinterpret_cast<const char*>(
             image.rgbSwapped().bits()));
-}
-
-void Buffer::applyColorScheme(ColorScheme *colorScheme) {
-    if (colorScheme->foreground() != -1) {
-        styleSetFore(STYLE_DEFAULT, colorScheme->foreground());
-    }
-    if (colorScheme->background() != -1) {
-        styleSetBack(STYLE_DEFAULT, colorScheme->background());
-    }
-    if (colorScheme->caret() != -1) {
-        setCaretFore(colorScheme->caret());
-    }
-    if (colorScheme->caretLine() != -1) {
-        setCaretLineBack(colorScheme->caretLine());
-    }
-    if (colorScheme->selection() == -1) {
-        setSelBack(false, 0);
-    } else {
-        setSelBack(true, colorScheme->selection());
-    }
 }
 
 void Buffer::applyStyle(int styleNumber, const StyleInfo& style) {

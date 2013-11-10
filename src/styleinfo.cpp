@@ -9,27 +9,6 @@ StyleDescription::StyleDescription(unsigned char stl, QString desc)
 
 }
 
-StyleInfo StyleInfo::fromString(const QString& string) {
-    QStringList tokens = string.split(',', QString::SkipEmptyParts);
-    StyleInfo style;
-    for (int i = 0; i < tokens.length(); ++i) {
-        QString token = tokens[i].trimmed();
-        if (token.startsWith("fore:")) {
-            style.setForegroundColor(convertColor(token.right(6)));
-        } else if (token.startsWith("back:")) {
-            style.setBackgroundColor(convertColor(token.right(6)));
-        } else if (token == "bold") {
-            style.setBold(true);
-        } else if (token == "italic") {
-            style.setItalic(true);
-        } else if (token == "eolfilled") {
-            style.setEolFilled(true);
-        }
-    }
-
-    return style;
-}
-
 StyleInfo::StyleInfo(int foregroundColor, int backgroundColor, bool bold,
                      bool italic, bool underline, bool eolFilled) :
     m_foregroundColor(foregroundColor), m_backgroundColor(backgroundColor),

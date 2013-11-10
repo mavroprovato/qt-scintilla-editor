@@ -356,6 +356,13 @@ void QScintillaEditor::changeEncoding_triggered() {
     edit->setEncoding(encoding);
 }
 
+void QScintillaEditor::changeColorScheme_triggered() {
+    QAction *action = qobject_cast<QAction*>(sender());
+    const ColorScheme *colorScheme = ColorScheme::getColorScheme(
+            action->text());
+    edit->setColorScheme(colorScheme);
+}
+
 void QScintillaEditor::changeLanguage_triggered() {
     QAction *action = qobject_cast<QAction*>(sender());
     const Language *language = Language::fromLanguageId(
@@ -559,6 +566,15 @@ void QScintillaEditor::setUpActions() {
 }
 
 void QScintillaEditor::setUpMenuBar() {
+    // Add all color schemes to the menu
+    QStringList colorSchemeNames = ColorScheme::allColorSchemes();
+    for (int i = 0; i < colorSchemeNames.size(); ++i) {
+        QAction* action = new QAction(colorSchemeNames.at(i), this);
+        ui->menuColorScheme->addAction(action);
+        connect(action, SIGNAL(triggered()), this,
+            SLOT(changeColorScheme_triggered()));
+    }
+    // Add all languages to the menu
     QListIterator<Language*> languages = Language::allLanguages();
     while (languages.hasNext()) {
         Language *language = languages.next();
@@ -568,11 +584,11 @@ void QScintillaEditor::setUpMenuBar() {
         connect(action, SIGNAL(triggered()), this,
             SLOT(changeLanguage_triggered()));
     }
-
+    // Add all encodings to the menu.
     setUpEncodingMenu(ui->menuEncoding, SLOT(changeEncoding_triggered()));
     setUpEncodingMenu(ui->menuReopenWithEncoding,
         SLOT(reopenWithEncoding_triggered()));
-
+    // Set up the end of line menu.
     QActionGroup* group = new QActionGroup(this);
     ui->actionEndOfLineWindows->setActionGroup(group);
     ui->actionEndOfLineUnix->setActionGroup(group);

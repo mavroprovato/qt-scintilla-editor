@@ -24,7 +24,6 @@ struct StyleDescription {
 
 class StyleInfo {
 public:
-    static StyleInfo fromString(const QString& string);
 
     StyleInfo(int foregroundColor = -1, int backgroundColor = -1,
               bool bold = false, bool italic = false, bool underline = false,
@@ -79,10 +78,10 @@ public:
 
     /**
      * Returns true if the remainder of the line up to the right edge of the
-     * window is filled with the background colour set for the last character.
+     * window is filled with the background color set for the last character.
      *
      * @return true if the remainder of the line up to the right edge of the
-     * window is filled with the background colour set for the last character.
+     * window is filled with the background color set for the last character.
      */
     bool eolFilled() const;
 
@@ -100,7 +99,7 @@ private:
     /** true for underline style. */
     bool m_underline;
     /** true if the remainder of the line up to the right edge of the window is
-     * filled with the background colour set for the last character. */
+     * filled with the background color set for the last character. */
     bool m_eolFilled;
 };
 

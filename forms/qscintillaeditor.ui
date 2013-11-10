@@ -89,8 +89,14 @@
       <string>Language</string>
      </property>
     </widget>
+    <widget class="QMenu" name="menuColorScheme">
+     <property name="title">
+      <string>Color Scheme</string>
+     </property>
+    </widget>
     <addaction name="actionWordWrap"/>
     <addaction name="actionFont"/>
+    <addaction name="menuColorScheme"/>
     <addaction name="separator"/>
     <addaction name="menuLanguage"/>
     <addaction name="menuEncoding"/>

@@ -95,6 +95,13 @@ public:
     QFileInfo fileInfo() const;
 
     /**
+     * Applies the specified color scheme to the buffer.
+     *
+     * @param colorScheme The color scheme to apply.
+     */
+    void setColorScheme(const ColorScheme *colorScheme);
+
+    /**
      * Returns the encoding for the buffer.
      *
      * @return The encoding for the buffer.
@@ -356,13 +363,6 @@ private:
      * @param style The style information.
      */
     void applyStyle(int styleNumber, const StyleInfo& style);
-
-    /**
-     * Applies the specified color scheme to the buffer.
-     *
-     * @param colorScheme The color scheme to apply.
-     */
-    void applyColorScheme(ColorScheme *colorScheme);
 
     /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;

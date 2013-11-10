@@ -13,7 +13,13 @@ public:
      */
     static QStringList allColorSchemes();
 
-    static ColorScheme *getColorScheme(const QString &name);
+    /**
+     * Returns the color scheme from its name.
+     *
+     * @param name The name of the color scheme.
+     * @return The color scheme.
+     */
+    static const ColorScheme *getColorScheme(const QString &name);
 
     /**
      * Cleans up the static resources.

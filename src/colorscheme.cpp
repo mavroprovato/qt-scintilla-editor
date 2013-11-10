@@ -7,10 +7,14 @@
 #include <QXmlStreamReader>
 
 QStringList ColorScheme::allColorSchemes() {
-    return QStringList();
+    // Sort the keys and return them.
+    QStringList list = colorSchemes.keys();
+    qSort(list.begin(), list.end());
+
+    return list;
 }
 
-ColorScheme* ColorScheme::getColorScheme(const QString &name) {
+const ColorScheme *ColorScheme::getColorScheme(const QString &name) {
     return colorSchemes[name];
 }
 
