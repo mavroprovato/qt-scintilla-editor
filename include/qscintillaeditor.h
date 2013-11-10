@@ -194,6 +194,11 @@ private slots:
     void on_actionIndentationGuides_triggered();
 
     /**
+     * Called when the Highlight current line action is triggered.
+     */
+    void on_actionHighlightCurrentLine_triggered();
+
+    /**
      * Called when the action to show/hide the long line indicator is triggered.
      */
     void on_actionLongLineIndicator_triggered();

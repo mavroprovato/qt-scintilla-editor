@@ -62,4 +62,8 @@
         <file>conf/encodings.xml</file>
         <file>conf/languages.xml</file>
     </qresource>
+    <qresource prefix="/colorschemes">
+        <file>colorschemes/monokai.xml</file>
+        <file>colorschemes/default.xml</file>
+    </qresource>
 </RCC>

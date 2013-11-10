@@ -33,7 +33,8 @@ SOURCES += src/main.cpp\
     src/styleinfo.cpp \
     src/encodingdialog.cpp \
     src/encoding.cpp \
-    src/languagedialog.cpp
+    src/languagedialog.cpp \
+    src/colorscheme.cpp
 
 HEADERS  += include/qscintillaeditor.h \
     include/findreplacedialog.h \
@@ -47,7 +48,8 @@ HEADERS  += include/qscintillaeditor.h \
     include/styleinfo.h \
     include/encodingdialog.h \
     include/encoding.h \
-    include/languagedialog.h
+    include/languagedialog.h \
+    include/colorscheme.h
 
 FORMS    += forms/qscintillaeditor.ui \
     forms/findreplacedialog.ui \

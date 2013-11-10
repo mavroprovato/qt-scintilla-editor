@@ -110,6 +110,24 @@ public:
     void setViewIndentationGuides(bool viewIndentationGuides);
 
     /**
+     * Returns true if the background colour of the line containing the caret
+     * should have a different background.
+     *
+     * @return true if the background colour of the line containing the caret
+     * should have a different background.
+     */
+    bool caretLineVisible();
+
+    /**
+     * Sets whether the background colour of the line containing the caret
+     * should have a different background.
+     *
+     * @param caretLineVisible whether the background colour of the line
+     * containing the caret should have a different background.
+     */
+    void setCaretLineVisible(bool caretLineVisible);
+
+    /**
      * Returns the indentation guides mode.
      *
      * @return The indentation guides mode.
@@ -358,6 +376,20 @@ public:
      * @param font The font to be used for the editor.
      */
     void setFont(const QFont &font);
+
+    /**
+     * Returns the name of the selected color scheme.
+     *
+     * @return The name of the selected color scheme.
+     */
+    QString colorScheme() const;
+
+    /**
+     * Sets the initialy selected color scheme by name.
+     *
+     * @param name The name of the initialy selected color scheme.
+     */
+    void setColorScheme(const QString &name);
 
 private:
     /**

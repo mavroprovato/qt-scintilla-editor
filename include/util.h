@@ -4,12 +4,12 @@
 #include <QColor>
 
 /**
- * Converts an instance of QColor to a value that can be understood by
- * Scintilla.
+ * Converts a hexademical representation of a color to the color format
+ * understood by Scintilla.
  *
- * @param color The color.
+ * @param color The hexademical representation of the color.
  * @return The color value understood by Scintilla.
  */
-int convertColor(const QColor& color) ;
+int convertColor(const QString& colorStr) ;
 
 #endif // UTIL_H

@@ -1,4 +1,5 @@
 #include "styleinfo.h"
+#include "util.h"
 
 #include <QDebug>
 #include <QStringList>
@@ -14,23 +15,9 @@ StyleInfo StyleInfo::fromString(const QString& string) {
     for (int i = 0; i < tokens.length(); ++i) {
         QString token = tokens[i].trimmed();
         if (token.startsWith("fore:")) {
-            bool ok;
-            uint colour = token.right(6).toUInt(&ok, 16);
-            if (ok) {
-                colour = ((colour << 16) & 0xFF0000) |
-                         (colour & 0x00FF00) |
-                         ((colour >> 16) & 0x0000FF);
-                style.setForegroundColour(colour);
-            }
+            style.setForegroundColor(convertColor(token.right(6)));
         } else if (token.startsWith("back:")) {
-            bool ok;
-            uint colour = token.right(6).toUInt(&ok, 16);
-            if (ok) {
-                colour = ((colour << 16) & 0xFF0000) |
-                         (colour & 0x00FF00) |
-                         ((colour >> 16) & 0x0000FF);
-                style.setBackgroundColour(colour);
-            }
+            style.setBackgroundColor(convertColor(token.right(6)));
         } else if (token == "bold") {
             style.setBold(true);
         } else if (token == "italic") {
@@ -43,27 +30,27 @@ StyleInfo StyleInfo::fromString(const QString& string) {
     return style;
 }
 
-StyleInfo::StyleInfo(int foregroundColour, int backgroundColour, bool bold,
+StyleInfo::StyleInfo(int foregroundColor, int backgroundColor, bool bold,
                      bool italic, bool underline, bool eolFilled) :
-    m_foregroundColour(foregroundColour), m_backgroundColour(backgroundColour),
+    m_foregroundColor(foregroundColor), m_backgroundColor(backgroundColor),
     m_bold(bold), m_italic(italic), m_underline(underline),
     m_eolFilled(eolFilled) {
 }
 
-int StyleInfo::foregroundColour() const {
-    return m_foregroundColour;
+int StyleInfo::foregroundColor() const {
+    return m_foregroundColor;
 }
 
-void StyleInfo::setForegroundColour(int foregroundColour) {
-    m_foregroundColour = foregroundColour;
+void StyleInfo::setForegroundColor(int foregroundColor) {
+    m_foregroundColor = foregroundColor;
 }
 
-int StyleInfo::backgroundColour() const {
-    return m_backgroundColour;
+int StyleInfo::backgroundColor() const {
+    return m_backgroundColor;
 }
 
-void StyleInfo::setBackgroundColour(int backgroundColour) {
-    m_backgroundColour = backgroundColour;
+void StyleInfo::setBackgroundColor(int backgroundColor) {
+    m_backgroundColor = backgroundColor;
 }
 
 bool StyleInfo::bold() const {

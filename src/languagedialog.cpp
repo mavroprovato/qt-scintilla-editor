@@ -17,11 +17,11 @@ LanguageDialog::LanguageDialog(QWidget *parent) :
 
     m_model = new QStandardItemModel();
     QStandardItem *parentItem = m_model->invisibleRootItem();
-    QListIterator<Language> languages = Language::allLanguages();
+    QListIterator<Language*> languages = Language::allLanguages();
     while (languages.hasNext()) {
-        Language language = languages.next();
-        QStandardItem *item = new QStandardItem(language.name());
-        item->setData(language.langId());
+        Language *language = languages.next();
+        QStandardItem *item = new QStandardItem(language->name());
+        item->setData(language->langId());
         parentItem->appendRow(item);
     }
 

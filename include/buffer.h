@@ -1,6 +1,7 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
+#include "colorscheme.h"
 #include "styleinfo.h"
 #include "encoding.h"
 
@@ -355,6 +356,13 @@ private:
      * @param style The style information.
      */
     void applyStyle(int styleNumber, const StyleInfo& style);
+
+    /**
+     * Applies the specified color scheme to the buffer.
+     *
+     * @param colorScheme The color scheme to apply.
+     */
+    void applyColorScheme(ColorScheme *colorScheme);
 
     /** The underlying file for this buffer. */
     QFileInfo m_fileInfo;

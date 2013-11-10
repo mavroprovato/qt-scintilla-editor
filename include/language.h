@@ -26,7 +26,7 @@ public:
      *
      * @return All languages that are available.
      */
-    static QListIterator<Language> allLanguages();
+    static QListIterator<Language*> allLanguages();
 
     /**
      * Returns the language from the language identifier.
@@ -45,9 +45,9 @@ public:
     static const Language* fromFilename(const QString& fileName);
 
     /**
-     * Default constructor for the language.
+     * Cleans up the static recources.
      */
-    Language();
+    static void cleanup();
 
     /**
      * Returns the language identifier.
@@ -92,13 +92,34 @@ public:
     QList<StyleDescription> styles() const;
 
 private:
+
+    /**
+     * Default constructor for the language.
+     */
+    Language();
+
+    /**
+     * Destructor for the language.
+     */
+    ~Language();
+
+    /**
+     * Private copy constructor, not implemented.
+     */
+    Language(Language const&);
+
+    /**
+     * Private assgnement operator, not implemented.
+     */
+    void operator=(Language const&);
+
     /**
      * Initializes the available languages list
      */
-    static QList<Language> intializeLangs();
+    static QList<Language*> intializeLangs();
 
     /** Holds all the available languages. */
-    static QList<Language> availableLangs;
+    static QList<Language*> availableLangs;
 
     /** The language identifier */
     QString m_langId;

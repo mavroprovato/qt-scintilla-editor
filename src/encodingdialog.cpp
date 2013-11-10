@@ -19,11 +19,11 @@ EncodingDialog::EncodingDialog(QWidget *parent) :
 
     m_model = new QStandardItemModel();
     QStandardItem *parentItem = m_model->invisibleRootItem();
-    QListIterator<Encoding> encodings = Encoding::allEncodings();
+    QListIterator<Encoding*> encodings = Encoding::allEncodings();
     while (encodings.hasNext()) {
-        Encoding encoding = encodings.next();
-        QStandardItem *item = new QStandardItem(encoding.toString());
-        item->setData(encoding.name());
+        Encoding *encoding = encodings.next();
+        QStandardItem *item = new QStandardItem(encoding->toString());
+        item->setData(encoding->name());
         parentItem->appendRow(item);
     }
 

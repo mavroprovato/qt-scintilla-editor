@@ -1,7 +1,12 @@
 #include "qscintillaeditor.h"
+
+#include "colorscheme.h"
+#include "encoding.h"
+#include "language.h"
 #include "version.h"
 
 #include <QApplication>
+#include <QDebug>
 
 /**
  * The application entry point.
@@ -34,5 +39,12 @@ int main(int argc, char *argv[]) {
         w->show();
     }
 
-    return a.exec();
+    int exitCode = a.exec();
+
+    // Exiting, clean-up static resources
+    Encoding::cleanup();
+    Language::cleanup();
+    ColorScheme::cleanup();
+
+    return exitCode;
 }

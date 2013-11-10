@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colorscheme name="Default">
+    <colors>
+        <color type="foreground">#000000</color>
+        <color type="background">#FFFFFF</color>
+        <color type="caret">#000000</color>
+        <color type="caretLine">#EFE4B0</color>
+        <color type="selection">#00A2E8</color>
+    </colors>
+</colorscheme>

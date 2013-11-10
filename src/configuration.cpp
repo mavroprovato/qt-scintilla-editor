@@ -63,6 +63,14 @@ void Configuration::setViewIndentationGuides(bool viewIndentationGuides) {
     settings.setValue("view.indentation.guides", viewIndentationGuides);
 }
 
+bool Configuration::caretLineVisible() {
+    return settings.value("view.caret.line", true).toBool();
+}
+
+void Configuration::setCaretLineVisible(bool caretLineVisible) {
+    settings.setValue("view.caret.line", caretLineVisible);
+}
+
 Buffer::IndentationGuidesMode Configuration::indentationGuidesMode() {
     int examine = settings.value("view.indentation.examine", Buffer::LookBoth).toInt();
     switch(examine) {
@@ -254,3 +262,12 @@ QFont Configuration::font() const {
 void Configuration::setFont(const QFont &font) {
     settings.setValue("font.default", font.toString());
 }
+
+QString Configuration::colorScheme() const {
+    return settings.value("color.scheme", "Default").toString();
+}
+
+void Configuration::setColorScheme(const QString &name) {
+    settings.setValue("color.scheme", name);
+}
+

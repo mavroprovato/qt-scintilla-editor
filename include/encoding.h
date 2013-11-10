@@ -20,7 +20,7 @@ public:
      *
      * @return All encodings that are available.
      */
-    static QListIterator<Encoding> allEncodings();
+    static QListIterator<Encoding*> allEncodings();
 
     /**
      * Returns the encoding, given its system name.
@@ -29,6 +29,11 @@ public:
      * @return The encoding.
      */
     static const Encoding *fromName(const QByteArray& name);
+
+    /**
+     * Cleans up the static recources.
+     */
+    static void cleanup();
 
     /**
      * Returns the encoding language.
@@ -64,15 +69,16 @@ public:
      * @return The string represenatation for this encoding.
      */
     QString toString() const;
+
 private:
 
     /**
      * Initializes the available languages list
      */
-    static QList<Encoding> intializeEncodings();
+    static QList<Encoding*> intializeEncodings();
 
     /** Holds all the available languages. */
-    static QList<Encoding> availableEncodings;
+    static QList<Encoding*> availableEncodings;
 
     /**
      * Creates the encoding.
@@ -84,6 +90,20 @@ private:
      */
     Encoding(QString language, QString displayName, QByteArray name,
             EncodingCategory category);
+    /**
+     * Destructor for the encoding.
+     */
+    ~Encoding();
+
+    /**
+     * Private copy constructor, not implemented.
+     */
+    Encoding(Encoding const&);
+
+    /**
+     * Private assgnement operator, not implemented.
+     */
+    void operator=(Encoding const&);
 
     /** The encoding language. */
     QString m_language;

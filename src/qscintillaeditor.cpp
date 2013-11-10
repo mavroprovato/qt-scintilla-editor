@@ -297,6 +297,12 @@ void QScintillaEditor::on_actionIndentationGuides_triggered() {
             ui->actionIndentationGuides->isChecked());
 }
 
+void QScintillaEditor::on_actionHighlightCurrentLine_triggered() {
+    edit->setCaretLineVisible(ui->actionHighlightCurrentLine->isChecked());
+    Configuration::instance()->setCaretLineVisible(
+            ui->actionHighlightCurrentLine->isChecked());
+}
+
 void QScintillaEditor::on_actionLongLineIndicator_triggered() {
     edit->setLongLineIndicator(ui->actionLongLineIndicator->isChecked());
     Configuration::instance()->setLongLineIndicator(
@@ -542,6 +548,8 @@ void QScintillaEditor::setUpActions() {
     ui->actionWhitespace->setChecked(configuration->viewWhitespace());
     ui->actionIndentationGuides->setChecked(
                 configuration->viewIndentationGuides());
+    ui->actionHighlightCurrentLine->setChecked(
+                configuration->caretLineVisible());
     ui->actionLongLineIndicator->setChecked(configuration->longLineIndicator());
     ui->actionEndOfLine->setChecked(configuration->viewEndOfLine());
     ui->actionLineNumbers->setChecked(configuration->showLineMargin());
@@ -551,11 +559,11 @@ void QScintillaEditor::setUpActions() {
 }
 
 void QScintillaEditor::setUpMenuBar() {
-    QListIterator<Language> languages = Language::allLanguages();
+    QListIterator<Language*> languages = Language::allLanguages();
     while (languages.hasNext()) {
-        Language language = languages.next();
-        QAction* action = new QAction(language.name(), this);
-        action->setData(language.langId());
+        Language *language = languages.next();
+        QAction* action = new QAction(language->name(), this);
+        action->setData(language->langId());
         ui->menuLanguage->addAction(action);
         connect(action, SIGNAL(triggered()), this,
             SLOT(changeLanguage_triggered()));
@@ -587,12 +595,12 @@ void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
         new QMenu(tr("Unicode"), this),
     };
     // Add a menu for each encoding
-    QListIterator<Encoding> encodings = Encoding::allEncodings();
+    QListIterator<Encoding*> encodings = Encoding::allEncodings();
     while (encodings.hasNext()) {
-        Encoding encoding = encodings.next();
-        QAction* action = new QAction(encoding.toString(), this);
-        action->setData(encoding.name());
-        encodingCategories[encoding.category()]->addAction(action);
+        Encoding *encoding = encodings.next();
+        QAction* action = new QAction(encoding->toString(), this);
+        action->setData(encoding->name());
+        encodingCategories[encoding->category()]->addAction(action);
         connect(action, SIGNAL(triggered()), this, slot);
     }
     // Add all the categories to the encoding menu

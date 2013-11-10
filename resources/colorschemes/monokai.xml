@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colorscheme name="Monokai">
+    <colors>
+        <color type="foreground">#F8F8F2</color>
+        <color type="background">#272822</color>
+        <color type="caret">#F8F8F0</color>
+        <color type="caretLine">#49483E</color>
+        <color type="selection">#49483E</color>
+    </colors>
+</colorscheme>

@@ -337,6 +337,7 @@ void Buffer::loadConfiguration() {
     setStyleQFont(STYLE_DEFAULT, config->font());
     setViewWhitespace(config->viewWhitespace());
     setViewIndentationGuides(config->viewIndentationGuides());
+    setCaretLineVisible(config->caretLineVisible());
     setLongLineIndicator(config->longLineIndicator());
     setViewEOL(config->viewEndOfLine());
     setShowLineNumbers(config->showLineMargin());
@@ -349,6 +350,7 @@ void Buffer::loadConfiguration() {
     setScrollWidthTracking(config->scrollWidthTracking());
     setFoldSymbols(config->foldSymbols());
     setFoldLines(config->foldLines());
+    applyColorScheme(ColorScheme::getColorScheme(config->colorScheme()));
 }
 
 void Buffer::setFileInfo(const QFileInfo& fileInfo) {
@@ -406,12 +408,32 @@ void Buffer::setupMarginIcons() {
             image.rgbSwapped().bits()));
 }
 
-void Buffer::applyStyle(int styleNumber, const StyleInfo& style) {
-    if (style.foregroundColour() >= 0) {
-        styleSetFore(styleNumber, style.foregroundColour());
+void Buffer::applyColorScheme(ColorScheme *colorScheme) {
+    if (colorScheme->foreground() != -1) {
+        styleSetFore(STYLE_DEFAULT, colorScheme->foreground());
     }
-    if (style.backgroundColour() >=0) {
-        styleSetBack(styleNumber, style.backgroundColour());
+    if (colorScheme->background() != -1) {
+        styleSetBack(STYLE_DEFAULT, colorScheme->background());
+    }
+    if (colorScheme->caret() != -1) {
+        setCaretFore(colorScheme->caret());
+    }
+    if (colorScheme->caretLine() != -1) {
+        setCaretLineBack(colorScheme->caretLine());
+    }
+    if (colorScheme->selection() == -1) {
+        setSelBack(false, 0);
+    } else {
+        setSelBack(true, colorScheme->selection());
+    }
+}
+
+void Buffer::applyStyle(int styleNumber, const StyleInfo& style) {
+    if (style.foregroundColor() >= 0) {
+        styleSetFore(styleNumber, style.foregroundColor());
+    }
+    if (style.backgroundColor() >=0) {
+        styleSetBack(styleNumber, style.backgroundColor());
     }
     styleSetBold(styleNumber, style.bold());
     styleSetItalic(styleNumber, style.italic());

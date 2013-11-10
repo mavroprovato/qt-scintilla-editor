@@ -4,14 +4,14 @@
 #include <QFile>
 #include <QXmlStreamReader>
 
-QListIterator<Encoding> Encoding::allEncodings() {
-    return QListIterator<Encoding>(availableEncodings);
+QListIterator<Encoding*> Encoding::allEncodings() {
+    return QListIterator<Encoding*>(availableEncodings);
 }
 
 const Encoding *Encoding::fromName(const QByteArray& name) {
     for (int i = 0; i < availableEncodings.size(); i++) {
-        if (availableEncodings.at(i).name() == name) {
-            return &availableEncodings.at(i);
+        if (availableEncodings.at(i)->name() == name) {
+            return availableEncodings.at(i);
         }
     }
     // Encoding not found.
@@ -30,10 +30,10 @@ QByteArray Encoding::name() const {
     return m_name;
 }
 
-QList<Encoding> Encoding::availableEncodings = Encoding::intializeEncodings();
+QList<Encoding*> Encoding::availableEncodings = Encoding::intializeEncodings();
 
-QList<Encoding> Encoding::intializeEncodings(){
-    QList<Encoding> encodings;
+QList<Encoding*> Encoding::intializeEncodings(){
+    QList<Encoding*> encodings;
 
     // Make sure the resources are initialized
     Q_INIT_RESOURCE(qtscitntillaeditor);
@@ -43,7 +43,7 @@ QList<Encoding> Encoding::intializeEncodings(){
         QXmlStreamReader xml(&file);
         EncodingCategory currentCategory = WestEuropean;
         // Loop through the xml elements
-        while(!xml.atEnd() && !xml.hasError()) {
+        while (!xml.atEnd() && !xml.hasError()) {
             QXmlStreamReader::TokenType token = xml.readNext();
             if (token == QXmlStreamReader::StartElement) {
                 if (xml.name() == "category") {
@@ -60,8 +60,8 @@ QList<Encoding> Encoding::intializeEncodings(){
                     QString language = xml.attributes().value("language").toString();
                     QString displayName = xml.attributes().value("displayName").toString();
                     QByteArray name = xml.attributes().value("name").toLocal8Bit();
-                    encodings << Encoding(language, displayName, name,
-                                          currentCategory);
+                    encodings << new Encoding(language, displayName,
+                            name, currentCategory);
                 }
             }
         }
@@ -76,6 +76,12 @@ QList<Encoding> Encoding::intializeEncodings(){
     return encodings;
 }
 
+void Encoding::cleanup() {
+    for (int i = 0; i < availableEncodings.size(); ++i) {
+        delete availableEncodings.at(i);
+    }
+}
+
 Encoding::EncodingCategory Encoding::category() const {
     return m_category;
 }
@@ -88,5 +94,9 @@ Encoding::Encoding(QString language, QString displayName, QByteArray name,
         Encoding::EncodingCategory category) :
     m_language(language), m_displayName(displayName), m_name(name),
     m_category(category) {
+
+}
+
+Encoding::~Encoding() {
 
 }
