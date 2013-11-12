@@ -113,6 +113,16 @@ void Buffer::setColorScheme(const ColorScheme *colorScheme) {
     }
 
     styleClearAll();
+
+    if (m_language) {
+        QHash<int, StyleInfo> styles = colorScheme->stylesForLanguage(
+                m_language->langId());
+        QHashIterator<int, StyleInfo> styleIter(styles);
+        while (styleIter.hasNext()) {
+            styleIter.next();
+            applyStyle(styleIter.key(), styleIter.value());
+        }
+    }
 }
 
 const Encoding *Buffer::encoding() const {
@@ -390,9 +400,8 @@ const Language *Buffer::language() const {
 
 void Buffer::setLanguage(const Language *language) {
     if (m_language != language) {
-        // Set all styles to default
-        styleClearAll();
-        // Find the language from the filename
+        m_language = language;
+
         if (language) {
             setLexerLanguage(language->lexer().toLocal8Bit());
             for (int i = 0; i < language->keywords().size(); ++i) {
@@ -406,7 +415,9 @@ void Buffer::setLanguage(const Language *language) {
             setProperty("fold", "0");
         }
 
-        m_language = language;
+        Configuration *config = Configuration::instance();
+        setColorScheme(ColorScheme::getColorScheme(config->colorScheme()));
+
         emit languageChanged(language);
     }
 }
@@ -434,7 +445,7 @@ void Buffer::applyStyle(int styleNumber, const StyleInfo& style) {
     if (style.foregroundColor() >= 0) {
         styleSetFore(styleNumber, style.foregroundColor());
     }
-    if (style.backgroundColor() >=0) {
+    if (style.backgroundColor() >= 0) {
         styleSetBack(styleNumber, style.backgroundColor());
     }
     styleSetBold(styleNumber, style.bold());

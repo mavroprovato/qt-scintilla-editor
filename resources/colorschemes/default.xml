@@ -4,7 +4,48 @@
         <color type="foreground">#000000</color>
         <color type="background">#FFFFFF</color>
         <color type="caret">#000000</color>
-        <color type="caretLine">#EFE4B0</color>
-        <color type="selection">#00A2E8</color>
+        <color type="caretLine">#FFFFC0</color>
+        <color type="selection">#80C0FF</color>
     </colors>
+    <styles>
+        <style name="Comment" foreground="#008000" italic="true" />
+        <style name="DocComment" foreground="#008000" />
+        <style name="DocKeyword" foreground="#008000" bold="true" />
+        <style name="Number" foreground="#8080FF" />
+        <style name="String" foreground="#800000" />
+        <style name="Character" foreground="#800080" />
+        <style name="Keyword" foreground="#000080" bold="true" />
+    </styles>
+    <languages>
+        <language id="cpp">
+            <styleInfo id="1" styleRef="Comment" />
+            <styleInfo id="2" styleRef="Comment" />
+            <styleInfo id="3" styleRef="DocComment" />
+            <styleInfo id="4" styleRef="Number" />
+            <styleInfo id="5" styleRef="Keyword" />
+            <styleInfo id="6" styleRef="String" />
+            <styleInfo id="7" styleRef="Character" />
+            <styleInfo id="17" styleRef="DocKeyword" />
+        </language>
+        <language id="java">
+            <styleInfo id="1" styleRef="Comment" />
+            <styleInfo id="2" styleRef="Comment" />
+            <styleInfo id="3" styleRef="DocComment" />
+            <styleInfo id="4" styleRef="Number" />
+            <styleInfo id="5" styleRef="Keyword" />
+            <styleInfo id="6" styleRef="String" />
+            <styleInfo id="7" styleRef="Character" />
+            <styleInfo id="17" styleRef="DocKeyword" />
+        </language>
+        <language id="python">
+            <styleInfo id="1" styleRef="Comment" />
+            <styleInfo id="2" styleRef="Number" />
+            <styleInfo id="3" styleRef="String" />
+            <styleInfo id="4" styleRef="Character" />
+            <styleInfo id="5" styleRef="Keyword" />
+            <styleInfo id="6" styleRef="String" />
+            <styleInfo id="7" styleRef="DocComment" />
+            <styleInfo id="12" styleRef="Comment" />
+        </language>
+    </languages>
 </colorscheme>

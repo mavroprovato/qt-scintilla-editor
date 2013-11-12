@@ -361,6 +361,7 @@ void QScintillaEditor::changeColorScheme_triggered() {
     const ColorScheme *colorScheme = ColorScheme::getColorScheme(
             action->text());
     edit->setColorScheme(colorScheme);
+    Configuration::instance()->setColorScheme(action->text());
 }
 
 void QScintillaEditor::changeLanguage_triggered() {

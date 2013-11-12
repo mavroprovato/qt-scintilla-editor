@@ -1,8 +1,11 @@
 #ifndef COLORSCHEME_H
 #define COLORSCHEME_H
 
+#include "styleinfo.h"
+
 #include <QHash>
 #include <QStringList>
+#include <QXmlStreamReader>
 
 class ColorScheme {
 public:
@@ -63,6 +66,14 @@ public:
      */
     int selection() const;
 
+    /**
+     * Returns the styles for a language.
+     *
+     * @param lang The language identifier.
+     * @return The styles.
+     */
+    QHash<int, StyleInfo> stylesForLanguage(const QString& lang) const;
+
 private:
     /**
      * Constructor for the color scheme.
@@ -78,6 +89,9 @@ private:
      * Initializes the available color schemes.
      */
     static QHash<QString, ColorScheme*> initializeColorSchemes();
+
+    static void processColorSchemeXml(QXmlStreamReader &xml,
+            QHash<QString, ColorScheme *> &colorSchemes);
 
     /** Contains all the color chemes available. */
     static QHash<QString, ColorScheme*> colorSchemes;
@@ -96,6 +110,9 @@ private:
 
     /** The selection background color. */
     int m_selection;
+
+    /** The styles for all languages. */
+    QHash<QString, QHash<int, StyleInfo> > m_languagesStyles;
 };
 
 #endif // COLORSCHEME_H
