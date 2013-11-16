@@ -218,6 +218,41 @@ public:
     void setShowLineMargin(bool showLineMargin);
 
     /**
+     * Returns the width of the line margin, in number of characters that can
+     * be displayed.
+     *
+     * @return The width of the line margin, in number of characters that can
+     * be displayed.
+     */
+    int lineMarginWidth();
+
+    /**
+     * Sets the line margin width.
+     *
+     * @param lineMarginWidth The width of the line margin, in number of
+     * characters that can be displayed.
+     */
+    void setLineMarginWidth(int lineMarginWidth);
+
+    /**
+     * Returns whether the line margin width should be changed automatically in
+     * order to accomodate the biggest line number.
+     *
+     * @return true if the line margin width should be changed automatically in
+     * order to accomodate the biggest line number.
+     */
+    bool trackLineMarginWidth();
+
+    /**
+     * Sets whether the line margin width should be change automatically
+     * in order to accomodate the biggest line number or not.
+     *
+     * @param trackLineMarginWidth If true, the line margin width will be
+     * changed automatically in order to accomodate the biggest line number.
+     */
+    void setTrackLineMarginWidth(bool trackLineMarginWidth);
+
+    /**
      * Returns true if the icon margin should be shown.
      *
      * @return true if the icon margin should be shown.
@@ -232,6 +267,20 @@ public:
     void setShowIconMargin(bool showIconMargin);
 
     /**
+     * Returns the icon margin width in pixels.
+     *
+     * @return The icon margin width in pixels.
+     */
+    int iconMarginWidth();
+
+    /**
+     * Sets the icon margin width, in pixels.
+     *
+     * @param iconMarginWidth The icon margin width, in pixels.
+     */
+    void setIconMarginWidth(int iconMarginWidth);
+
+    /**
      * Returns true if the fold margin should be shown.
      *
      * @return true if the fold margin should be shown.
@@ -244,6 +293,20 @@ public:
      * @param showLineMargin Set to true if the fold margin should be shown.
      */
     void setShowFoldMargin(bool showFoldMargin);
+
+    /**
+     * Returns the fold margin width in pixels.
+     *
+     * @return The fold margin width in pixels.
+     */
+    int foldMarginWidth();
+
+    /**
+     * Sets the fold margin width, in pixels.
+     *
+     * @param foldMarginWidth The fold margin width, in pixels.
+     */
+    void setFoldMarginWidth(int foldMarginWidth);
 
     /**
      * Returns the type of the fold symbols.

@@ -197,7 +197,8 @@ bool Buffer::showIconMargin() const {
 }
 
 void Buffer::setShowIconMargin(bool showIconMargin) {
-    setMarginWidthN(Icon, showIconMargin ? 16 : 0);
+    Configuration *configuration = Configuration::instance();
+    setMarginWidthN(Icon, showIconMargin ? configuration->iconMarginWidth() : 0);
 }
 
 bool Buffer::showFoldMargin() const {
@@ -205,7 +206,8 @@ bool Buffer::showFoldMargin() const {
 }
 
 void Buffer::setShowFoldMargin(bool showFoldMargin) {
-    setMarginWidthN(Fold, showFoldMargin ? 16 : 0);
+    Configuration *configuration = Configuration::instance();
+    setMarginWidthN(Fold, showFoldMargin ? configuration->foldMarginWidth() : 0);
 }
 
 void Buffer::setFoldSymbols(Buffer::FoldSymbols foldSymbols) {
@@ -340,7 +342,7 @@ void Buffer::gotoBookmark(bool next) {
 
 
 void Buffer::onLinesAdded(int) {
-    if (showLineNumbers()) {
+    if (showLineNumbers() && m_trackLineWidth) {
         setMarginWidthN(Line, getLineMarginWidth());
     }
 }
@@ -366,6 +368,9 @@ void Buffer::dropEvent(QDropEvent *event) {
 
 void Buffer::loadConfiguration() {
     Configuration *config = Configuration::instance();
+
+    m_trackLineWidth = config->trackLineMarginWidth();
+
     setStyleQFont(STYLE_DEFAULT, config->font());
     setViewWhitespace(config->viewWhitespace());
     setViewIndentationGuides(config->viewIndentationGuides());
@@ -423,7 +428,10 @@ void Buffer::setLanguage(const Language *language) {
 }
 
 int Buffer::getLineMarginWidth() {
-    int width = ((int) std::log10(lineCount())) + 1;
+    Configuration *configuration = Configuration::instance();
+    int lineWidth = m_trackLineWidth ?
+                lineCount() : configuration->lineMarginWidth();
+    int width = ((int) std::log10(lineWidth)) + 1;
     QString text;
     text.fill('9', width).prepend('_');
 

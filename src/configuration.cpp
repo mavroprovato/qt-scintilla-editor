@@ -129,6 +129,22 @@ void Configuration::setShowLineMargin(bool showLineMargin) {
     settings.setValue("line.margin.visible", showLineMargin);
 }
 
+int Configuration::lineMarginWidth() {
+    return settings.value("line.margin.width", 1).toInt();
+}
+
+void Configuration::setLineMarginWidth(int lineMarginWidth) {
+    settings.setValue("line.margin.width", lineMarginWidth);
+}
+
+bool Configuration::trackLineMarginWidth() {
+    return settings.value("line.margin.track", true).toBool();
+}
+
+void Configuration::setTrackLineMarginWidth(bool trackLineMarginWidth) {
+    settings.setValue("line.margin.track", trackLineMarginWidth);
+}
+
 bool Configuration::showIconMargin() {
     return settings.value("margin", false).toBool();
 }
@@ -137,12 +153,28 @@ void Configuration::setShowIconMargin(bool showIconMargin) {
     settings.setValue("margin", showIconMargin);
 }
 
+int Configuration::iconMarginWidth() {
+    return settings.value("margin.width", 16).toInt();
+}
+
+void Configuration::setIconMarginWidth(int iconMarginWidth) {
+    settings.setValue("margin.width", iconMarginWidth);
+}
+
 bool Configuration::showFoldMargin() {
     return settings.value("fold", true).toBool();
 }
 
 void Configuration::setShowFoldMargin(bool showFoldMargin) {
     settings.setValue("fold", showFoldMargin);
+}
+
+int Configuration::foldMarginWidth() {
+    return settings.value("fold.width", 16).toInt();
+}
+
+void Configuration::setFoldMarginWidth(int foldMarginWidth) {
+    settings.setValue("fold.width", foldMarginWidth);
 }
 
 Buffer::FoldSymbols Configuration::foldSymbols() {

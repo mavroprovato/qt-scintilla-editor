@@ -372,6 +372,10 @@ private:
 
     /** The language for the buffer. */
     const Language *m_language;
+
+    /** If the the line margin width will be changed automatically in order to
+     * accomodate the biggest line number */
+    bool m_trackLineWidth;
 };
 
 #endif // BUFFER_H
