@@ -46,6 +46,10 @@ int ColorScheme::selection() const {
     return m_selection;
 }
 
+int ColorScheme::whitespaceForeground() const {
+    return m_whitespaceForeground;
+}
+
 QHash<int, StyleInfo> ColorScheme::stylesForLanguage(const QString& lang) const {
     return m_languagesStyles[lang];
 }
@@ -114,6 +118,8 @@ void ColorScheme::processColorSchemeXml(QXmlStreamReader &xml,
                     colorScheme->m_caretLine = convertColor(text);
                 } else if (type == "selection") {
                     colorScheme->m_selection = convertColor(text);
+                } else if (type == "whitespace") {
+                    colorScheme->m_whitespaceForeground = convertColor(text);
                 }
             } else if (xml.name() == "style") {
                 StyleInfo styleInfo;

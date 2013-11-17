@@ -94,6 +94,7 @@ QFileInfo Buffer::fileInfo() const {
 }
 
 void Buffer::setColorScheme(const ColorScheme *colorScheme) {
+    // Set the common features of all styles.
     if (colorScheme->foreground() != -1) {
         styleSetFore(STYLE_DEFAULT, colorScheme->foreground());
     }
@@ -112,8 +113,14 @@ void Buffer::setColorScheme(const ColorScheme *colorScheme) {
         setSelBack(true, colorScheme->selection());
     }
 
+    // Copy common features of all styles.
     styleClearAll();
 
+    // Set the foreground of whitespace when there is no style defined by the
+    // lexer.
+    styleSetFore(0, colorScheme->whitespaceForeground());
+
+    // Set styles for the furrent language.
     if (m_language) {
         QHash<int, StyleInfo> styles = colorScheme->stylesForLanguage(
                 m_language->langId());

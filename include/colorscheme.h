@@ -67,6 +67,13 @@ public:
     int selection() const;
 
     /**
+     * Returns the whitespace foreground color.
+     *
+     * @return The whitespace foreground color.
+     */
+    int whitespaceForeground() const;
+
+    /**
      * Returns the styles for a language.
      *
      * @param lang The language identifier.
@@ -110,6 +117,9 @@ private:
 
     /** The selection background color. */
     int m_selection;
+
+    /** The whitespace foreground color. */
+    int m_whitespaceForeground;
 
     /** The styles for all languages. */
     QHash<QString, QHash<int, StyleInfo> > m_languagesStyles;

@@ -6,6 +6,7 @@
         <color type="caret">#000000</color>
         <color type="caretLine">#FFFFC0</color>
         <color type="selection">#80C0FF</color>
+        <color type="whitespace">#C0C0C0</color>
     </colors>
     <styles>
         <style name="Comment" foreground="#008000" italic="true" />
