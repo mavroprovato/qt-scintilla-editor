@@ -121,12 +121,13 @@ void Buffer::setColorScheme(const ColorScheme *colorScheme) {
     // Copy common features of all styles.
     styleClearAll();
 
-    // Set the foreground of whitespace when there is no style defined by the
-    // lexer.
-    styleSetFore(0, colorScheme->whitespaceForeground());
-
-    // Set styles for the furrent language.
+    // Set styles for the current language.
     if (m_language) {
+        // Set the foreground of whitespace when there is no style defined by
+        // the lexer.
+        setWhitespaceFore(false, 0);
+        styleSetFore(0, colorScheme->whitespaceForeground());
+        // Set up the lexer styles
         QHash<int, StyleInfo> styles = colorScheme->stylesForLanguage(
                 m_language->langId());
         QHashIterator<int, StyleInfo> styleIter(styles);
@@ -134,6 +135,8 @@ void Buffer::setColorScheme(const ColorScheme *colorScheme) {
             styleIter.next();
             applyStyle(styleIter.key(), styleIter.value());
         }
+    } else {
+        setWhitespaceFore(true, colorScheme->whitespaceForeground());
     }
 }
 
