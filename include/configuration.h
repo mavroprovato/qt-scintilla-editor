@@ -127,6 +127,10 @@ public:
      */
     void setCaretLineVisible(bool caretLineVisible);
 
+    bool braceHighlight();
+
+    void setBraceHighlight(bool braceHighlight);
+
     /**
      * Returns the indentation guides mode.
      *

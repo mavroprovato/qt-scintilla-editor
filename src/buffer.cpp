@@ -31,6 +31,11 @@ Buffer::Buffer(QWidget *parent) :
     setMarginSensitiveN(Fold, true);
     setupMarginIcons();
 
+    // Set up the indicators
+    indicSetStyle(MatchBrace, INDIC_BOX);
+    braceHighlightIndicator(true, MatchBrace);
+
+    connect(this, SIGNAL(updateUi()), this, SLOT(onUpdateUi()));
     connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
     connect(this, SIGNAL(marginClicked(int,int,int)), this,
             SLOT(onMarginClicked(int,int,int)));
@@ -347,6 +352,31 @@ void Buffer::gotoBookmark(bool next) {
     }
 }
 
+void Buffer::onUpdateUi() {
+    if (m_braceHighlight && selectionEmpty()) {
+        sptr_t position = currentPos();
+        sptr_t braceStart = -1;
+        // Check previous character first.
+        if (position != 0 && isBrace(charAt(position - 1))) {
+            braceStart = position - 1;
+        } else if (isBrace(charAt(position))) { // Check next character.
+            braceStart = position;
+        }
+        if (braceStart != -1) {
+            // Brace found
+            sptr_t braceEnd = braceMatch(braceStart);
+            if (braceEnd > 0) {
+                braceHighlight(braceStart, braceEnd);
+            } else {
+                // Missing matching brace.
+                braceBadLight(braceStart);
+            }
+        } else {
+            // Not a brace, clear indicators.
+            braceBadLight(-1);
+        }
+    }
+}
 
 void Buffer::onLinesAdded(int) {
     if (showLineNumbers() && m_trackLineWidth) {
@@ -377,6 +407,7 @@ void Buffer::loadConfiguration() {
     Configuration *config = Configuration::instance();
 
     m_trackLineWidth = config->trackLineMarginWidth();
+    m_braceHighlight = config->braceHighlight();
 
     setStyleQFont(STYLE_DEFAULT, config->font());
     setViewWhitespace(config->viewWhitespace());
@@ -454,6 +485,16 @@ void Buffer::setupMarginIcons() {
     rGBAImageSetHeight(dim);
     markerDefineRGBAImage(Bookmark, reinterpret_cast<const char*>(
             image.rgbSwapped().bits()));
+}
+
+int Buffer::isBrace(sptr_t c) {
+    if (c == '{' || c == '(' || c == '[') {
+        return 1;
+    } else if (c == '}' || c == ')' || c == ']') {
+        return -1;
+    }
+
+    return 0;
 }
 
 void Buffer::applyStyle(int styleNumber, const StyleInfo& style) {

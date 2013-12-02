@@ -40,7 +40,7 @@ public:
     };
 
     /**
-     * The possible types of fold symbols.
+     * The possible types of fold lines.
      */
     enum FoldLines {
         NoLine, CircleLine, BoxLine
@@ -51,6 +51,10 @@ public:
      */
     enum IndentationGuidesMode {
         None, Real, LookForward, LookBoth
+    };
+
+    enum Indicators {
+        MatchBrace = INDIC_CONTAINER
     };
 
     /**
@@ -311,6 +315,13 @@ signals:
     void urlsDropped(const QList<QUrl>& urls);
 
 public slots:
+
+    /**
+     * Called when either the text or styling of the document has changed or
+     * the selection range or scroll position has changed.
+     */
+    void onUpdateUi();
+
     /**
      * Called when lines are added to the buffer.
      *
@@ -356,6 +367,8 @@ private:
      */
     void setupMarginIcons();
 
+    int isBrace(sptr_t character);
+
     /**
      * Applies the specified style to the buffer.
      *
@@ -376,6 +389,9 @@ private:
     /** If the the line margin width will be changed automatically in order to
      * accomodate the biggest line number */
     bool m_trackLineWidth;
+
+    /** True if the matching brace should be highighted. */
+    bool m_braceHighlight;
 };
 
 #endif // BUFFER_H

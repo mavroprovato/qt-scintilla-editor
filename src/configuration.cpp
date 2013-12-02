@@ -71,6 +71,14 @@ void Configuration::setCaretLineVisible(bool caretLineVisible) {
     settings.setValue("view.caret.line", caretLineVisible);
 }
 
+bool Configuration::braceHighlight() {
+    return settings.value("braces.check", true).toBool();
+}
+
+void Configuration::setBraceHighlight(bool braceHighlight) {
+    settings.setValue("braces.check", braceHighlight);
+}
+
 Buffer::IndentationGuidesMode Configuration::indentationGuidesMode() {
     int examine = settings.value("view.indentation.examine", Buffer::LookBoth).toInt();
     switch(examine) {
