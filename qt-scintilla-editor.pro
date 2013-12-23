@@ -18,7 +18,8 @@ INCLUDEPATH += include \
     ../scintilla-code/qt/ScintillaEditBase \
     ../scintilla-code/include
 
-win32: LIBS += -L$$PWD/../scintilla-code/bin/ -lScintillaEdit3
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../scintilla-code/bin/release/ -lScintillaEdit3
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../scintilla-code/bin/debug/ -lScintillaEdit3
 else:unix: LIBS += -L$$PWD/../scintilla-code/bin/ -lScintillaEdit
 
 SOURCES += src/main.cpp\
@@ -59,4 +60,3 @@ FORMS    += forms/qscintillaeditor.ui \
 
 RESOURCES += \
     resources/qtscitntillaeditor.qrc
-
