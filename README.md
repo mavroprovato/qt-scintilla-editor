@@ -1,22 +1,23 @@
 Overview
 ========
 
-An editor based on the scintilla editor compotnent, using the Qt framework.
+An editor based on the Scintilla editor compotnent, using the Qt framework.
 
 Installation
 ============
 
-In order to build the project, Scintilla needs to be built first. Clone the scintilla repository with:
+In order to build the project, Scintilla needs to be built first. Clone the
+Scintilla repository in a directory that is at the same level with the project
+directory, by running the following:
 
 ```
-clone http://hg.code.sf.net/p/scintilla/code scintilla-code
-cd scintilla-code
+hg clone http://hg.code.sf.net/p/scintilla/code scintilla-code
 ```
 
 Then build the release version with:
 
 ```
-cd qt/ScintillaEdit
+cd scintilla-code/qt/ScintillaEdit
 python WidgetGen.py
 qmake
 make
