@@ -23,10 +23,8 @@
 #include "util.h"
 
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::QScintillaEditor), workingDir(QDir::home()),
-    wasMaximized(false), findDlg(0), aboutDlg(0), encodingDlg(0),
-    languageDlg(0) {
-
+        QMainWindow(parent), ui(new Ui::QScintillaEditor), workingDir(QDir::home()), wasMaximized(false), findDlg(0),
+        aboutDlg(0), encodingDlg(0), languageDlg(0) {
     ui->setupUi(this);
     edit = new Buffer(parent);
     setCentralWidget(edit);
@@ -38,17 +36,12 @@ QScintillaEditor::QScintillaEditor(QWidget *parent) :
     setUpMenuBar();
     setUpStatusBar();
 
-    connect(edit, SIGNAL(savePointChanged(bool)), this,
-        SLOT(savePointChanged(bool)));
-    connect(edit, SIGNAL(updateUi()), this, SLOT(updateUi()));
-    connect(edit, SIGNAL(fileInfoChanged(QFileInfo)), this,
-        SLOT(onFileInfoChanged(QFileInfo)));
-    connect(edit, SIGNAL(encodingChanged(const Encoding *)), this,
-        SLOT(onEncodingChanged(const Encoding *)));
-    connect(edit, SIGNAL(languageChanged(const Language *)), this,
-        SLOT(onLanguageChanged(const Language *)));
-    connect(edit, SIGNAL(urlsDropped(QList<QUrl>)), this,
-        SLOT(onUrlsDropped(QList<QUrl>)));
+    connect(edit, SIGNAL(savePointChanged(bool)), this, SLOT(savePointChanged(bool)));
+    connect(edit, SIGNAL(updateUi(int)), this, SLOT(updateUi(int)));
+    connect(edit, SIGNAL(fileInfoChanged(QFileInfo)), this, SLOT(onFileInfoChanged(QFileInfo)));
+    connect(edit, SIGNAL(encodingChanged(const Encoding *)), this, SLOT(onEncodingChanged(const Encoding *)));
+    connect(edit, SIGNAL(languageChanged(const Language *)), this, SLOT(onLanguageChanged(const Language *)));
+    connect(edit, SIGNAL(urlsDropped(QList<QUrl>)), this, SLOT(onUrlsDropped(QList<QUrl>)));
 }
 
 QScintillaEditor::~QScintillaEditor() {
@@ -60,8 +53,8 @@ void QScintillaEditor::openFile(const QString& fileName) {
         QString openFileName;
         if (fileName.isEmpty()) {
             // Display the open file dialog
-            openFileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-                    workingDir.absolutePath(), Language::filterString());
+            openFileName = QFileDialog::getOpenFileName(
+                        this, tr("Open File"), workingDir.absolutePath(), Language::filterString());
         }
         else {
             openFileName = fileName;
@@ -70,8 +63,7 @@ void QScintillaEditor::openFile(const QString& fileName) {
             // Offer to create the file if it does not exist.
             QFileInfo fileInfo(openFileName);
             if (!fileInfo.exists()) {
-                QString message(tr("File '%1' does not exist").arg(
-                        fileInfo.absoluteFilePath()));
+                QString message(tr("File '%1' does not exist").arg(fileInfo.absoluteFilePath()));
                 QMessageBox msgBox;
                 msgBox.setText(message);
                 msgBox.setInformativeText(tr("Do you want to create it?"));
@@ -81,10 +73,9 @@ void QScintillaEditor::openFile(const QString& fileName) {
                 if (msgBox.exec() == QMessageBox::Yes) {
                     QFile file(openFileName);
                     if (!file.open(QIODevice::WriteOnly)) {
-                        QString message(tr("File '%1' cannot be created").arg(
-                                fileInfo.absoluteFilePath()));
-                        QMessageBox::critical(this, tr("Create File Error"),
-                            message);
+                        QString message(tr("File '%1' cannot be created").arg(fileInfo.absoluteFilePath()));
+                        QMessageBox::critical(this, tr("Create File Error"), message);
+
                         return;
                     }
                     file.close();
@@ -96,8 +87,7 @@ void QScintillaEditor::openFile(const QString& fileName) {
             workingDir = fileInfo.absoluteDir();
             // Open the selected file.
             if (!edit->open(openFileName)) {
-                QString message(tr("File '%1' cannot be opened").arg(
-                        fileInfo.absoluteFilePath()));
+                QString message(tr("File '%1' cannot be opened").arg(fileInfo.absoluteFilePath()));
                 QMessageBox::critical(this, tr("Open File Error"), message);
             }
         }
@@ -203,15 +193,13 @@ void QScintillaEditor::on_actionFind_triggered() {
 
 void QScintillaEditor::on_actionFindNext_triggered() {
     if (!lastFindParams.findText.isEmpty()) {
-        find(lastFindParams.findText, lastFindParams.flags, true,
-            lastFindParams.wrap);
+        find(lastFindParams.findText, lastFindParams.flags, true, lastFindParams.wrap);
     }
 }
 
 void QScintillaEditor::on_actionFindPrevious_triggered() {
     if (!lastFindParams.findText.isEmpty()) {
-        find(lastFindParams.findText, lastFindParams.flags, false,
-            lastFindParams.wrap);
+        find(lastFindParams.findText, lastFindParams.flags, false, lastFindParams.wrap);
     }
 }
 
@@ -227,8 +215,7 @@ void QScintillaEditor::on_actionReplace_triggered() {
 void QScintillaEditor::on_actionGoTo_triggered() {
     int lineCount = edit->lineCount();
     bool ok;
-    int line = QInputDialog::getInt(this, tr("Line number"), tr("Go to line"),
-        1, 1, lineCount + 1, 1, &ok);
+    int line = QInputDialog::getInt(this, tr("Line number"), tr("Go to line"), 1, 1, lineCount + 1, 1, &ok);
     if (ok) {
         edit->gotoLine(line - 1);
     }
@@ -245,8 +232,7 @@ void QScintillaEditor::on_actionToolBar_triggered() {
 
 void QScintillaEditor::on_actionStatusBar_triggered() {
     ui->statusBar->setVisible(ui->actionStatusBar->isChecked());
-    Configuration::instance()->setShowStatusBar(
-                ui->actionStatusBar->isChecked());
+    Configuration::instance()->setShowStatusBar(ui->actionStatusBar->isChecked());
 }
 
 void QScintillaEditor::on_actionFullscreen_triggered() {
@@ -287,50 +273,42 @@ void QScintillaEditor::on_actionResetZoom_triggered() {
 
 void QScintillaEditor::on_actionWhitespace_triggered() {
     edit->setViewWhitespace(ui->actionWhitespace->isChecked());
-    Configuration::instance()->setViewWhitespace(
-                ui->actionWhitespace->isChecked());
+    Configuration::instance()->setViewWhitespace(ui->actionWhitespace->isChecked());
 }
 
 void QScintillaEditor::on_actionIndentationGuides_triggered() {
     edit->setViewIndentationGuides(ui->actionIndentationGuides->isChecked());
-    Configuration::instance()->setViewIndentationGuides(
-            ui->actionIndentationGuides->isChecked());
+    Configuration::instance()->setViewIndentationGuides(ui->actionIndentationGuides->isChecked());
 }
 
 void QScintillaEditor::on_actionHighlightCurrentLine_triggered() {
     edit->setCaretLineVisible(ui->actionHighlightCurrentLine->isChecked());
-    Configuration::instance()->setCaretLineVisible(
-            ui->actionHighlightCurrentLine->isChecked());
+    Configuration::instance()->setCaretLineVisible(ui->actionHighlightCurrentLine->isChecked());
 }
 
 void QScintillaEditor::on_actionLongLineIndicator_triggered() {
     edit->setLongLineIndicator(ui->actionLongLineIndicator->isChecked());
-    Configuration::instance()->setLongLineIndicator(
-            ui->actionLongLineIndicator->isChecked());
+    Configuration::instance()->setLongLineIndicator(ui->actionLongLineIndicator->isChecked());
 }
 
 void QScintillaEditor::on_actionEndOfLine_triggered() {
     edit->setViewEOL(ui->actionEndOfLine->isChecked());
-    Configuration::instance()->setViewEndOfLine(
-            ui->actionEndOfLine->isChecked());
+    Configuration::instance()->setViewEndOfLine(ui->actionEndOfLine->isChecked());
 }
 
 void QScintillaEditor::on_actionLineNumbers_triggered() {
     edit->setShowLineNumbers(ui->actionLineNumbers->isChecked());
-    Configuration::instance()->setShowLineMargin(
-        ui->actionLineNumbers->isChecked());
+    Configuration::instance()->setShowLineMargin(ui->actionLineNumbers->isChecked());
 }
 
 void QScintillaEditor::on_actionIconMargin_triggered() {
     edit->setShowIconMargin(ui->actionIconMargin->isChecked());
-    Configuration::instance()->setShowIconMargin(
-        ui->actionIconMargin->isChecked());
+    Configuration::instance()->setShowIconMargin(ui->actionIconMargin->isChecked());
 }
 
 void QScintillaEditor::on_actionFoldMargin_triggered() {
     edit->setShowFoldMargin(ui->actionFoldMargin->isChecked());
-    Configuration::instance()->setShowFoldMargin(
-        ui->actionFoldMargin->isChecked());
+    Configuration::instance()->setShowFoldMargin(ui->actionFoldMargin->isChecked());
 }
 
 void QScintillaEditor::on_actionWordWrap_triggered() {
@@ -358,16 +336,14 @@ void QScintillaEditor::changeEncoding_triggered() {
 
 void QScintillaEditor::changeColorScheme_triggered() {
     QAction *action = qobject_cast<QAction*>(sender());
-    const ColorScheme *colorScheme = ColorScheme::getColorScheme(
-            action->text());
+    const ColorScheme *colorScheme = ColorScheme::getColorScheme(action->text());
     edit->setColorScheme(colorScheme);
     Configuration::instance()->setColorScheme(action->text());
 }
 
 void QScintillaEditor::changeLanguage_triggered() {
     QAction *action = qobject_cast<QAction*>(sender());
-    const Language *language = Language::fromLanguageId(
-        action->data().toString());
+    const Language *language = Language::fromLanguageId(action->data().toString());
     edit->setLanguage(language);
 }
 
@@ -433,8 +409,8 @@ void QScintillaEditor::find(const QString& findText, int flags, bool forward,
     lastFindParams.wrap = wrap;
 }
 
-void QScintillaEditor::replace(const QString& findText,
-        const QString& replaceText, int flags, bool forward, bool wrap) {
+void QScintillaEditor::replace(const QString& findText, const QString& replaceText, int flags, bool forward,
+                               bool wrap) {
     // Only replace if there is selected text
     if (edit->selectionStart() != edit->selectionEnd()) {
         QByteArray replaceArray = replaceText.toUtf8();
@@ -454,8 +430,7 @@ void QScintillaEditor::replace(const QString& findText,
     find(findText, flags, forward, wrap);
 }
 
-void QScintillaEditor::replaceAll(const QString& findText,
-        const QString& replaceText, int flags) {
+void QScintillaEditor::replaceAll(const QString& findText, const QString& replaceText, int flags) {
     edit->beginUndoAction();
     edit->setCurrentPos(0);
     edit->setAnchor(0);
@@ -476,14 +451,14 @@ void QScintillaEditor::savePointChanged(bool dirty) {
     setTitle();
 }
 
-void QScintillaEditor::updateUi() {
+void QScintillaEditor::updateUi(int updated) {
     // Set the actions that depend on the buffer state
     ui->actionCut->setEnabled(!edit->selectionEmpty());
     ui->actionCopy->setEnabled(!edit->selectionEmpty());
     // Set the postition indicator
     int position = edit->currentPos();
-    positionLabel->setText(QString(tr("Line %1, Col %2").arg(
-        edit->lineFromPosition(position) + 1).arg(edit->column(position) + 1)));
+    positionLabel->setText(QString(tr("Line %1, Col %2").arg(edit->lineFromPosition(position) + 1).arg(
+                                       edit->column(position) + 1)));
 }
 
 void QScintillaEditor::onFileInfoChanged(const QFileInfo& fileInfo) {
@@ -554,10 +529,8 @@ void QScintillaEditor::setUpActions() {
     ui->actionStatusBar->setChecked(configuration->showStatusBar());
     on_actionStatusBar_triggered();
     ui->actionWhitespace->setChecked(configuration->viewWhitespace());
-    ui->actionIndentationGuides->setChecked(
-                configuration->viewIndentationGuides());
-    ui->actionHighlightCurrentLine->setChecked(
-                configuration->caretLineVisible());
+    ui->actionIndentationGuides->setChecked(configuration->viewIndentationGuides());
+    ui->actionHighlightCurrentLine->setChecked(configuration->caretLineVisible());
     ui->actionLongLineIndicator->setChecked(configuration->longLineIndicator());
     ui->actionEndOfLine->setChecked(configuration->viewEndOfLine());
     ui->actionLineNumbers->setChecked(configuration->showLineMargin());
@@ -572,8 +545,7 @@ void QScintillaEditor::setUpMenuBar() {
     for (int i = 0; i < colorSchemeNames.size(); ++i) {
         QAction* action = new QAction(colorSchemeNames.at(i), this);
         ui->menuColorScheme->addAction(action);
-        connect(action, SIGNAL(triggered()), this,
-            SLOT(changeColorScheme_triggered()));
+        connect(action, SIGNAL(triggered()), this, SLOT(changeColorScheme_triggered()));
     }
     // Add all languages to the menu
     QListIterator<Language*> languages = Language::allLanguages();
@@ -582,23 +554,21 @@ void QScintillaEditor::setUpMenuBar() {
         QAction* action = new QAction(language->name(), this);
         action->setData(language->langId());
         ui->menuLanguage->addAction(action);
-        connect(action, SIGNAL(triggered()), this,
-            SLOT(changeLanguage_triggered()));
+        connect(action, SIGNAL(triggered()), this, SLOT(changeLanguage_triggered()));
     }
     // Add all encodings to the menu.
     setUpEncodingMenu(ui->menuEncoding, SLOT(changeEncoding_triggered()));
-    setUpEncodingMenu(ui->menuReopenWithEncoding,
-        SLOT(reopenWithEncoding_triggered()));
+    setUpEncodingMenu(ui->menuReopenWithEncoding, SLOT(reopenWithEncoding_triggered()));
     // Set up the end of line menu.
     QActionGroup* group = new QActionGroup(this);
     ui->actionEndOfLineWindows->setActionGroup(group);
     ui->actionEndOfLineUnix->setActionGroup(group);
     ui->actionEndOfLineMacintosh->setActionGroup(group);
-    #ifdef Q_OS_WIN
-        ui->actionEndOfLineWindows->setChecked(true);
-    #else
-        ui->actionEndOfLineUnix->setChecked(true);
-    #endif
+#ifdef Q_OS_WIN
+    ui->actionEndOfLineWindows->setChecked(true);
+#else
+    ui->actionEndOfLineUnix->setChecked(true);
+#endif
 }
 
 void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
@@ -628,8 +598,7 @@ void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
 
 void QScintillaEditor::setUpStatusBar() {
     messageLabel = new QLabel(this);
-    languageLabel = new QLabel(edit->language() ?
-            edit->language()->name() : tr("Default text"), this);
+    languageLabel = new QLabel(edit->language() ? edit->language()->name() : tr("Default text"), this);
     languageLabel->installEventFilter(this);
     encodingLabel = new QLabel(edit->encoding()->toString(), this);
     encodingLabel->installEventFilter(this);
@@ -643,27 +612,23 @@ void QScintillaEditor::setUpStatusBar() {
 
 void QScintillaEditor::setTitle() {
     QFileInfo fileInfo = edit->fileInfo();
-    QString name = fileInfo.fileName().isEmpty() ? tr("Untitled") :
-                                                   fileInfo.fileName();
-    QString title = QString("%1 - %2").arg(name).arg(qApp->applicationName())
-        .append(edit->modify() ? " *" : "");
+    QString name = fileInfo.fileName().isEmpty() ? tr("Untitled") : fileInfo.fileName();
+    QString title = QString("%1 - %2").arg(name).arg(qApp->applicationName()).append(edit->modify() ? " *" : "");
     setWindowTitle(title);
 }
 
 bool QScintillaEditor::checkModifiedAndSave() {
-    // If the file has been modified, promt the user to save the changes
+    // If the file has been modified, prompt the user to save the changes
     if (edit->modify()) {
         // Ask the user if the file should be saved
         QFileInfo fileInfo = edit->fileInfo();
-        QString message = QString(tr("File '%1' has been modified"))
-                .arg(fileInfo.filePath().isEmpty() ? tr("Untitled") :
-                                                     fileInfo.fileName());
+        QString message = QString(tr("File '%1' has been modified")).arg(
+                    fileInfo.filePath().isEmpty() ? tr("Untitled") : fileInfo.fileName());
         QMessageBox msgBox;
         msgBox.setText(message);
         msgBox.setInformativeText(tr("Do you want to save your changes?"));
         msgBox.setIcon(QMessageBox::Information);
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
-            QMessageBox::Cancel);
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Save);
         // Get the user response
         int ret = msgBox.exec();
@@ -695,8 +660,7 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
         newFileName = edit->fileInfo().filePath();
 
         if (newFileName.isEmpty()) {
-            QString selectedFileName = QFileDialog::getSaveFileName(this,
-                tr("Save File"));
+            QString selectedFileName = QFileDialog::getSaveFileName(this, tr("Save File"));
             if (selectedFileName.isEmpty()) {
                 return false;
             }
@@ -706,8 +670,8 @@ bool QScintillaEditor::saveFile(const QString &fileName) {
 
     if (!edit->save(newFileName)) {
         // Cannot write file, display an error message
-        QMessageBox::critical(this, tr("Save File Error"),
-            tr("The file cannot be saved"));
+        QMessageBox::critical(this, tr("Save File Error"), tr("The file cannot be saved"));
+
         return false;
     }
 
@@ -718,11 +682,11 @@ void QScintillaEditor::initFindDialog() {
     if (!findDlg) {
         findDlg = new FindReplaceDialog(this);
         connect(findDlg, SIGNAL(find(const QString&, int, bool, bool)), this,
-            SLOT(find(const QString&, int, bool, bool)));
-        connect(findDlg, SIGNAL(replace(const QString&, const QString&, int, bool, bool)),
-            this, SLOT(replace(const QString&, const QString&, int, bool, bool)));
-        connect(findDlg, SIGNAL(replaceAll(const QString&, const QString&, int)),
-            this, SLOT(replaceAll(const QString&, const QString&, int)));
+                SLOT(find(const QString&, int, bool, bool)));
+        connect(findDlg, SIGNAL(replace(const QString&, const QString&, int, bool, bool)), this,
+                SLOT(replace(const QString&, const QString&, int, bool, bool)));
+        connect(findDlg, SIGNAL(replaceAll(const QString&, const QString&, int)), this,
+                SLOT(replaceAll(const QString&, const QString&, int)));
     }
 }
 

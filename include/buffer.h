@@ -93,8 +93,7 @@ public:
     /**
      * Returns the path of the file.
      *
-     * @return The path of the file, or a null string if the buffer has not been
-     * saved yet.
+     * @return The path of the file, or a null string if the buffer has not been saved yet.
      */
     QFileInfo fileInfo() const;
 
@@ -157,7 +156,7 @@ public:
     /**
      * Sets whether the indentation guides should be shown or not.
      *
-     * @param viewIndentationGuides true if the indentation guides should be
+     * @param viewIndentationGuides true if the indentation guides should be.
      * shown.
      */
     void setViewIndentationGuides(bool viewIndentationGuides);
@@ -254,12 +253,10 @@ public:
      * @param flags The search flags.
      * @param forward If true, perform the search with forward direction.
      * @param wrap If true, wrap the search.
-     * @param searchWrapped Input parameter, which is set to true if the search
-     * is wrapped.
+     * @param searchWrapped Input parameter, which is set to true if the search is wrapped.
      * @return true if a match was found.
      */
-    bool find(const QString& findText, int flags, bool forward, bool wrap,
-        bool *searchWrapped);
+    bool find(const QString& findText, int flags, bool forward, bool wrap, bool *searchWrapped);
 
     /**
      * Toggles a bookmark. If the line number is less than zero, then the
@@ -272,14 +269,12 @@ public:
     /**
      * Navigates to the next or previous bookmark.
      *
-     * @param next true to navigate to the previous bookmark, false to navigate
-     * to the next.
+     * @param next true to navigate to the previous bookmark, false to navigate to the next.
      */
     void gotoBookmark(bool next);
 
     /**
-     * Overriden in order to customize the default implementation in the case
-     * when urls are dropped into the editor.
+     * Overriden in order to customize the default implementation in the case when urls are dropped into the editor.
      *
      * @param event The drop event.
      */
@@ -317,10 +312,10 @@ signals:
 public slots:
 
     /**
-     * Called when either the text or styling of the document has changed or
-     * the selection range or scroll position has changed.
+     * Called when either the text or styling of the document has changed or the selection range or scroll position has
+     * changed.
      */
-    void onUpdateUi();
+    void onUpdateUi(int updated);
 
     /**
      * Called when lines are added to the buffer.
@@ -332,11 +327,9 @@ public slots:
     /**
      * Called when a margin is clicked.
      *
-     * @param position The position of the start of the line in the document
-     * that corresponds to the margin click.
-     * @param modifiers The appropriate combination of SCI_SHIFT, SCI_CTRL and
-     * SCI_ALT to indicate the keys that were held down at the time of the
-     * margin click.
+     * @param position The position of the start of the line in the document that corresponds to the margin click.
+     * @param modifiers The appropriate combination of SCI_SHIFT, SCI_CTRL and SCI_ALT to indicate the keys that were
+     * held down at the time of the margin click.
      * @param margin The margin number that was clicked.
      */
     void onMarginClicked(int position, int modifiers, int margin);
@@ -355,8 +348,7 @@ private:
     void setFileInfo(const QFileInfo& fileInfo);
 
     /**
-     * Calculates the width of the line margin, in order to accomodate the
-     * largest line number.
+     * Calculates the width of the line margin, in order to accomodate the largest line number.
      *
      * @return The line width.
      */
@@ -367,6 +359,12 @@ private:
      */
     void setupMarginIcons();
 
+    /**
+     * Check if a character is a brance.
+     *
+     * @param character The character.
+     * @return 1 if the character is an opening brace, -1 if it is a closing brace, 0 if it is neither.
+     */
     int isBrace(sptr_t character);
 
     /**
@@ -386,8 +384,7 @@ private:
     /** The language for the buffer. */
     const Language *m_language;
 
-    /** If the the line margin width will be changed automatically in order to
-     * accomodate the biggest line number */
+    /** If the the line margin width will be changed automatically in order to accomodate the biggest line number */
     bool m_trackLineWidth;
 
     /** True if the matching brace should be highighted. */

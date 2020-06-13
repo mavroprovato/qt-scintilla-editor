@@ -303,8 +303,7 @@ private slots:
      *
      * @param findText The text to search for.
      * @param flags The search flags.
-     * @param forward true if the search must be performed towards the end of
-     * the document.
+     * @param forward true if the search must be performed towards the end of the document.
      * @param wrap true if the search should wrap.
      */
     void find(const QString& findText, int flags, bool forward, bool wrap);
@@ -315,12 +314,10 @@ private slots:
      * @param findText The text to search for.
      * @param replaceText The text to replace the found text with.
      * @param flags The search flags.
-     * @param forward true if the search must be performed towards the end of
-     * the document.
+     * @param forward true if the search must be performed towards the end of the document.
      * @param wrap true if the search should wrap.
      */
-    void replace(const QString& findText, const QString& replaceText, int flags,
-        bool forward, bool wrap);
+    void replace(const QString& findText, const QString& replaceText, int flags, bool forward, bool wrap);
 
     /**
      * Called when the user wants to replace all occurences of the text.
@@ -340,10 +337,10 @@ private slots:
     void savePointChanged(bool dirty);
 
     /**
-     * Triggered when either the text or styling of the document has changed
-     * or the selection range or scroll position has changed.
+     * Triggered when either the text or styling of the document has changed or the selection range or scroll position
+     * has changed.
      */
-    void updateUi();
+    void updateUi(int updated);
 
     /**
      * Triggered when the opened file in the editor has changed.
@@ -387,8 +384,7 @@ private:
     /**
      * Sets up the encoding menu.
      *
-     * @param parent The parent menu to which the menus and actions will be
-     * added.
+     * @param parent The parent menu to which the menus and actions will be added.
      * @param slot The slot to call when an action is triggered.
      */
     void setUpEncodingMenu(QMenu *parent, const char* slot);
@@ -406,8 +402,7 @@ private:
     /**
      * Checks if the current editor is modified and saves it if necessary.
      *
-     * @return true if the file was saved or if the user did not want to save the
-     * file, false otherwise.
+     * @return true if the file was saved or if the user did not want to save the file, false otherwise.
      */
     bool checkModifiedAndSave();
 
@@ -440,19 +435,19 @@ private:
     /** The working directory. */
     QDir workingDir;
 
-    /** The status bar label that displays messages */
+    /** The status bar label that displays messages. */
     QLabel *messageLabel;
 
-    /** The status bar label that displays the current language*/
+    /** The status bar label that displays the current language. */
     QLabel *languageLabel;
 
-    /** The status bar label that displays the current encoding */
+    /** The status bar label that displays the current encoding. */
     QLabel *encodingLabel;
 
-    /** The status bar label that displays the current position */
+    /** The status bar label that displays the current position. */
     QLabel *positionLabel;
 
-    /** true if the window was maximized before foing full screen. */
+    /** true if the window was maximized before going full screen. */
     bool wasMaximized;
 
     /** The find/replace dialog. */

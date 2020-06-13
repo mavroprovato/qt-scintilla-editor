@@ -34,7 +34,7 @@ Buffer::Buffer(QWidget *parent) : ScintillaEdit(parent), m_language(0) {
     indicSetStyle(MatchBrace, INDIC_BOX);
     braceHighlightIndicator(true, MatchBrace);
 
-    connect(this, SIGNAL(updateUi()), this, SLOT(onUpdateUi()));
+    connect(this, SIGNAL(updateUi(int)), this, SLOT(onUpdateUi(int)));
     connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
     connect(this, SIGNAL(marginClicked(int,int,int)), this, SLOT(onMarginClicked(int,int,int)));
 }
@@ -121,8 +121,7 @@ void Buffer::setColorScheme(const ColorScheme *colorScheme) {
 
     // Set styles for the current language.
     if (m_language) {
-        // Set the foreground of whitespace when there is no style defined by
-        // the lexer.
+        // Set the foreground of whitespace when there is no style defined by the lexer.
         setWhitespaceFore(false, 0);
         styleSetFore(0, colorScheme->whitespaceForeground());
         // Set up the lexer styles
@@ -271,8 +270,8 @@ void Buffer::setFoldLines(FoldLines foldLines) {
 }
 
 QFont Buffer::styleQFont(int style) const {
-    QFont font(styleFont(style), styleSize(style),
-            styleBold(style) ? QFont::Bold :QFont::Normal, styleItalic(style));
+    QFont font(styleFont(style), styleSize(style), styleBold(style) ? QFont::Bold :QFont::Normal, styleItalic(style));
+
     return font;
 }
 
@@ -283,8 +282,7 @@ void Buffer::setStyleQFont(int style, const QFont& font) {
     styleSetItalic(style, font.italic());
 }
 
-bool Buffer::find(const QString& findText, int flags, bool forward,
-                  bool wrap, bool *searchWrapped) {
+bool Buffer::find(const QString& findText, int flags, bool forward, bool wrap, bool *searchWrapped) {
     if (findText.isEmpty()) {
         return false;
     }
@@ -310,6 +308,7 @@ bool Buffer::find(const QString& findText, int flags, bool forward,
         setSel(targetStart(), targetEnd());
         scrollRange(targetStart(), targetEnd());
     }
+
     return findPos != -1;
 }
 
@@ -351,7 +350,7 @@ void Buffer::gotoBookmark(bool next) {
     }
 }
 
-void Buffer::onUpdateUi() {
+void Buffer::onUpdateUi(int updated) {
     if (m_braceHighlight && selectionEmpty()) {
         sptr_t position = currentPos();
         sptr_t braceStart = -1;
