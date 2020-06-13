@@ -16,8 +16,7 @@
 #include <algorithm>
 #include <cmath>
 
-Buffer::Buffer(QWidget *parent) :
-        ScintillaEdit(parent), m_language(0) {
+Buffer::Buffer(QWidget *parent) : ScintillaEdit(parent), m_language(0) {
     // Use Unicode code page
     m_encoding = Encoding::fromName("UTF-8");
     setCodePage(SC_CP_UTF8);
@@ -37,8 +36,7 @@ Buffer::Buffer(QWidget *parent) :
 
     connect(this, SIGNAL(updateUi()), this, SLOT(onUpdateUi()));
     connect(this, SIGNAL(linesAdded(int)), this, SLOT(onLinesAdded(int)));
-    connect(this, SIGNAL(marginClicked(int,int,int)), this,
-            SLOT(onMarginClicked(int,int,int)));
+    connect(this, SIGNAL(marginClicked(int,int,int)), this, SLOT(onMarginClicked(int,int,int)));
 }
 
 Buffer::~Buffer() {
@@ -128,8 +126,7 @@ void Buffer::setColorScheme(const ColorScheme *colorScheme) {
         setWhitespaceFore(false, 0);
         styleSetFore(0, colorScheme->whitespaceForeground());
         // Set up the lexer styles
-        QHash<int, StyleInfo> styles = colorScheme->stylesForLanguage(
-                m_language->langId());
+        QHash<int, StyleInfo> styles = colorScheme->stylesForLanguage(m_language->langId());
         QHashIterator<int, StyleInfo> styleIter(styles);
         while (styleIter.hasNext()) {
             styleIter.next();
@@ -174,8 +171,7 @@ bool Buffer::viewIndentationGuides() const {
 
 void Buffer::setViewIndentationGuides(bool viewIndentationGuides) {
     if (viewIndentationGuides) {
-        setIndentationGuides(
-                Configuration::instance()->indentationGuidesMode());
+        setIndentationGuides(Configuration::instance()->indentationGuidesMode());
     } else {
         setIndentationGuides(SC_IV_NONE);
     }
@@ -367,7 +363,7 @@ void Buffer::onUpdateUi() {
         }
         if (braceStart != -1) {
             // Brace found
-            sptr_t braceEnd = braceMatch(braceStart);
+            sptr_t braceEnd = braceMatch(braceStart, 0);
             if (braceEnd > 0) {
                 braceHighlight(braceStart, braceEnd);
             } else {

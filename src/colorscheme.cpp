@@ -78,8 +78,7 @@ QHash<QString, ColorScheme*> ColorScheme::initializeColorSchemes() {
             QXmlStreamReader xml(&file);
             processColorSchemeXml(xml, colorSchemes);
             if (xml.hasError()) {
-                qCritical("Color scheme file %s cannot be parsed, error: %s",
-                        qPrintable(file.fileName()), qPrintable(xml.error()));
+                qCritical("Color scheme file %s cannot be parsed", qUtf8Printable(file.fileName()));
             }
         } else {
             qCritical("Cannot open color scheme file %s.",
