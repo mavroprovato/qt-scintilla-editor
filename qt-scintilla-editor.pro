@@ -21,8 +21,8 @@ INCLUDEPATH += include \
 CONFIG += c++17
 LIBS += -L$$PWD/../scintilla-code/bin/ -lScintillaEdit
 
-SOURCES += src/main.cpp\
-        src/qscintillaeditor.cpp \
+SOURCES += src/main.cpp \
+    src/qscintillaeditor.cpp \
     src/findreplacedialog.cpp \
     src/buffer.cpp \
     src/util.cpp \

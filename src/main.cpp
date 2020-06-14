@@ -24,24 +24,20 @@ int main(int argc, char *argv[]) {
     a.setApplicationName(APPLICATION_NAME);
     a.setApplicationVersion(APPLICATION_VERSION);
 
-    // Check the command line arguments
-    bool fileOpened = false;
-    for (int i = 1; i < argc; i++) {
+    // Open file names provided as command line arguments
+    if (argc == 1) {
         QScintillaEditor *w = new QScintillaEditor;
         w->show();
-        w->openFile(argv[i]);
-        fileOpened = true;
+    } else {
+        for (int i = 1; i < argc; i++) {
+            QScintillaEditor *w = new QScintillaEditor;
+            w->show();
+            w->openFile(argv[i]);
+        }
     }
-
-    // If no window has been opened, open one.
-    if (!fileOpened) {
-        QScintillaEditor *w = new QScintillaEditor;
-        w->show();
-    }
-
-    int exitCode = a.exec();
 
     // Exiting, clean-up static resources
+    int exitCode = a.exec();
     Encoding::cleanup();
     Language::cleanup();
     ColorScheme::cleanup();
