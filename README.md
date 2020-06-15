@@ -27,14 +27,14 @@ Now you are ready to build the project. Change to the project directory and crea
 ```shell script
 mkdir build-release
 cd build-release
-qmake ../qt-scintilla-editor.pro # use qmake CONFIG+=debug to build the debug version
+cmake ..
 make
 ```
 
 Now you can run the editor like this:
 
 ```shell script
-LD_LIBRARY_PATH=../../scintilla-code/bin/ ./qt-scintilla-editor
+./qt-scintilla-editor
 ```
 
 License
