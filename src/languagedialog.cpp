@@ -20,7 +20,7 @@ LanguageDialog::LanguageDialog(QWidget *parent) :
     QListIterator<Language*> languages = Language::allLanguages();
     while (languages.hasNext()) {
         Language *language = languages.next();
-        QStandardItem *item = new QStandardItem(language->name());
+        auto *item = new QStandardItem(language->name());
         item->setData(language->langId());
         parentItem->appendRow(item);
     }
@@ -43,14 +43,13 @@ LanguageDialog::~LanguageDialog() {
 const Language *LanguageDialog::selectedLanguage() const {
     QModelIndexList selectedIndexes = ui->languageListView->selectionModel()->selectedIndexes();
     if (!selectedIndexes.empty()) {
-        QModelIndex sourceIndex = m_proxyModel->mapToSource(
-            selectedIndexes.at(0));
+        QModelIndex sourceIndex = m_proxyModel->mapToSource(selectedIndexes.at(0));
         QStandardItem *item = m_model->itemFromIndex(sourceIndex);
 
         return Language::fromLanguageId(item->data().toString());
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void LanguageDialog::setSelectedLanguage(const Language *language) {
@@ -61,16 +60,14 @@ void LanguageDialog::setSelectedLanguage(const Language *language) {
     for (int i = 0; i < m_model->rowCount(); i++) {
         QStandardItem *item = m_model->item(i);
         if (item->data() == language->langId()) {
-            QModelIndex proxyIndex = m_proxyModel->mapFromSource(
-                        m_model->index(i, 0));
+            QModelIndex proxyIndex = m_proxyModel->mapFromSource(m_model->index(i, 0));
             if (!proxyIndex.isValid()) {
                 // The index is not valid, because the value is filtered, so
                 // clear the filter first.
                 ui->languageFilterEdit->clear();
                 proxyIndex = m_proxyModel->mapFromSource(m_model->index(i, 0));
             }
-            ui->languageListView->selectionModel()->setCurrentIndex(
-                    proxyIndex, QItemSelectionModel::SelectCurrent);
+            ui->languageListView->selectionModel()->setCurrentIndex(proxyIndex, QItemSelectionModel::SelectCurrent);
         }
     }
 }
@@ -82,11 +79,9 @@ void LanguageDialog::showEvent(QShowEvent *e) {
 }
 
 void LanguageDialog::on_languageFilterEdit_textChanged(const QString &text) {
-    m_proxyModel->setFilterRegExp(QRegExp(text, Qt::CaseInsensitive,
-            QRegExp::FixedString));
+    m_proxyModel->setFilterRegExp(QRegExp(text, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
-void LanguageDialog::selectionChanged(const QItemSelection& selected,
-        const QItemSelection&) {
+void LanguageDialog::selectionChanged(const QItemSelection& selected, const QItemSelection&) {
     ui->selectButton->setEnabled(!selected.isEmpty());
 }

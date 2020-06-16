@@ -100,26 +100,26 @@ private:
     static void processColorSchemeXml(QXmlStreamReader &xml,
             QHash<QString, ColorScheme *> &colorSchemes);
 
-    /** Contains all the color chemes available. */
+    /** Contains all the color schemes available. */
     static QHash<QString, ColorScheme*> colorSchemes;
 
     /** The foreground color. */
-    int m_foreground;
+    int m_foreground{};
 
     /** The background color. */
-    int m_background;
+    int m_background{};
 
     /** The caret color. */
-    int m_caret;
+    int m_caret{};
 
     /** The current caret line color. */
-    int m_caretLine;
+    int m_caretLine{};
 
     /** The selection background color. */
-    int m_selection;
+    int m_selection{};
 
     /** The whitespace foreground color. */
-    int m_whitespaceForeground;
+    int m_whitespaceForeground{};
 
     /** The styles for all languages. */
     QHash<QString, QHash<int, StyleInfo> > m_languagesStyles;

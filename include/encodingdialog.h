@@ -22,12 +22,12 @@ public:
      *
      * @param parent The parent widget.
      */
-    explicit EncodingDialog(QWidget *parent = 0);
+    explicit EncodingDialog(QWidget *parent = nullptr);
 
     /**
      * Destroys the dialog.
      */
-    ~EncodingDialog();
+    ~EncodingDialog() override;
 
     /**
      * Returns the selected encoding.
@@ -44,30 +44,26 @@ public:
     void setSelectedEncoding(const Encoding *encoding);
 
     /**
-     * Returns true, if the user selected to reopen the dialog with the
-     * selected encoding.
+     * Returns true, if the user selected to reopen the dialog with the selected encoding.
      *
-     * @return true, if the user selected to reopen the dialog with the
-     * selected encoding.
+     * @return true, if the user selected to reopen the dialog with the selected encoding.
      */
     bool reopen() const;
 
     /**
      * Sets whether the reopen action should be enabled in the dialog or not.
      *
-     * @param canReopen Should be set to true in order to enable the reopen
-     * action.
+     * @param canReopen Should be set to true in order to enable the reopen action.
      */
     void setCanReopen(bool canReopen);
 
 protected:
     /**
-     * Overriden, in order to make sure that filter text is cleared when the
-     * dialog is shown.
+     * Overridden, in order to make sure that filter text is cleared when the dialog is shown.
      *
      * @param e The show event.
      */
-    virtual void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private slots:
     /**
@@ -78,14 +74,13 @@ private slots:
     void on_encodingFilter_textChanged(const QString &text);
 
     /**
-     * Called when the selection in the list changes. If there is no selection,
-     * the select and reopen buttons are disabled.
+     * Called when the selection in the list changes. If there is no selection, the select and reopen buttons are
+     * disabled.
      *
      * @param selected The selected items.
      * @param deselected The deselected items.
      */
-    void selectionChanged(const QItemSelection& selected,
-            const QItemSelection& deselected);
+    void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
     /**
      * Called when the select button has been clicked.

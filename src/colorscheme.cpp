@@ -58,9 +58,7 @@ ColorScheme::ColorScheme() {
 
 }
 
-ColorScheme::~ColorScheme() {
-
-}
+ColorScheme::~ColorScheme() = default;
 
 QHash<QString, ColorScheme*> ColorScheme::colorSchemes = ColorScheme::initializeColorSchemes();
 
@@ -81,18 +79,16 @@ QHash<QString, ColorScheme*> ColorScheme::initializeColorSchemes() {
                 qCritical("Color scheme file %s cannot be parsed", qUtf8Printable(file.fileName()));
             }
         } else {
-            qCritical("Cannot open color scheme file %s.",
-                    qPrintable(file.fileName()));
+            qCritical("Cannot open color scheme file %s.", qPrintable(file.fileName()));
         }
     }
 
     return colorSchemes;
 }
 
-void ColorScheme::processColorSchemeXml(QXmlStreamReader &xml,
-        QHash<QString, ColorScheme *> &colorSchemes) {
+void ColorScheme::processColorSchemeXml(QXmlStreamReader &xml, QHash<QString, ColorScheme *> &colorSchemes) {
     // The color scheme
-    ColorScheme *colorScheme = new ColorScheme;
+    auto *colorScheme = new ColorScheme;
     // The styles defined
     QHash<QString, StyleInfo> definedStyles;
 

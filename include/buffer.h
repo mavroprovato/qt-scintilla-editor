@@ -62,12 +62,7 @@ public:
      *
      * @param parent The parent window.
      */
-    explicit Buffer(QWidget *parent = 0);
-
-    /**
-     * Destructor for the buffer.
-     */
-    virtual ~Buffer();
+    explicit Buffer(QWidget *parent = nullptr);
 
     /**
      * Clears the contents of the editor.
@@ -274,11 +269,11 @@ public:
     void gotoBookmark(bool next);
 
     /**
-     * Overriden in order to customize the default implementation in the case when urls are dropped into the editor.
+     * Overridden in order to customize the default implementation in the case when urls are dropped into the editor.
      *
      * @param event The drop event.
      */
-    virtual void dropEvent(QDropEvent *event);
+    void dropEvent(QDropEvent *event) override;
 
 signals:
     /**
@@ -385,10 +380,10 @@ private:
     const Language *m_language;
 
     /** If the the line margin width will be changed automatically in order to accomodate the biggest line number */
-    bool m_trackLineWidth;
+    bool m_trackLineWidth{};
 
     /** True if the matching brace should be highighted. */
-    bool m_braceHighlight;
+    bool m_braceHighlight{};
 };
 
 #endif // BUFFER_H

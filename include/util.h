@@ -4,10 +4,9 @@
 #include <QColor>
 
 /**
- * Converts a hexademical representation of a color to the color format
- * understood by Scintilla.
+ * Converts a hexadecimal representation of a color to the color format* understood by Scintilla.
  *
- * @param color The hexademical representation of the color.
+ * @param color The hexadecimal representation of the color.
  * @return The color value understood by Scintilla.
  */
 int convertColor(const QString& colorStr) ;

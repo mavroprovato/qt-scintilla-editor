@@ -28,20 +28,16 @@ public:
     /**
      * Creates the style information.
      *
-     * @param foregroundColor The foreground color. Set to less than zero to use
-     * the default.
-     * @param backgroundColor The backgroung color. Set to less that zero to use
-     * the default.
+     * @param foregroundColor The foreground color. Set to less than zero to use the default.
+     * @param backgroundColor The background color. Set to less that zero to use the default.
      * @param bold True in order to set the style to bold.
      * @param italic True in order to set the style to italic.
      * @param underline True in order to set the style to underline.
-     * @param eolFilled True in order for the remainder of the line up to the
-     * right edge of the window to be filled with the background color set for
-     * the last character.
+     * @param eolFilled True in order for the remainder of the line up to the right edge of the window to be filled with
+     * the background color set for the last character.
      */
-    StyleInfo(int foregroundColor = -1, int backgroundColor = -1,
-              bool bold = false, bool italic = false, bool underline = false,
-              bool eolFilled = false);
+    explicit StyleInfo(int foregroundColor = -1, int backgroundColor = -1, bool bold = false, bool italic = false,
+                       bool underline = false, bool eolFilled = false);
 
     /**
      * Returns the foreground color in the format expected by Scintilla. If the
@@ -118,20 +114,20 @@ public:
     void setUnderline(bool underline);
 
     /**
-     * Returns true if the remainder of the line up to the right edge of the
-     * window is filled with the background color set for the last character.
+     * Returns true if the remainder of the line up to the right edge of the window is filled with the background color
+     * set for the last character.
      *
-     * @return true if the remainder of the line up to the right edge of the
-     * window is filled with the background color set for the last character.
+     * @return true if the remainder of the line up to the right edge of the window is filled with the background color
+     * set for the last character.
      */
     bool eolFilled() const;
 
     /**
-     * Sets the remainder of the line up to the right edge of the window is
-     * filled with the background color set for the last character or not.
+     * Sets the remainder of the line up to the right edge of the window is filled with the background color set for the
+     * last character or not.
      *
-     * @param bold true if the remainder of the line up to the right edge of the
-     * window is filled with the background color set for the last character.
+     * @param bold true if the remainder of the line up to the right edge of the window is filled with the background
+     * color set for the last character.
      */
     void setEolFilled(bool eolFilled);
 
@@ -146,8 +142,8 @@ private:
     bool m_italic;
     /** true for underline style. */
     bool m_underline;
-    /** true if the remainder of the line up to the right edge of the window is
-     * filled with the background color set for the last character. */
+    /** true if the remainder of the line up to the right edge of the window is filled with the background color set for
+     * the last character. */
     bool m_eolFilled;
 };
 

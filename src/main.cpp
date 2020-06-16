@@ -19,25 +19,25 @@ int main(int argc, char *argv[]) {
     // Initialize the application
     QApplication a(argc, argv);
 
-    a.setOrganizationName(ORGANIZATION_NAME);
-    a.setOrganizationDomain(ORGANIZATION_DOMAIN);
-    a.setApplicationName(APPLICATION_NAME);
-    a.setApplicationVersion(APPLICATION_VERSION);
+    QApplication::setOrganizationName(ORGANIZATION_NAME);
+    QApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
+    QApplication::setApplicationName(APPLICATION_NAME);
+    QApplication::setApplicationVersion(APPLICATION_VERSION);
 
     // Open file names provided as command line arguments
     if (argc == 1) {
-        QScintillaEditor *w = new QScintillaEditor;
+        auto *w = new QScintillaEditor;
         w->show();
     } else {
         for (int i = 1; i < argc; i++) {
-            QScintillaEditor *w = new QScintillaEditor;
+            auto *w = new QScintillaEditor;
             w->show();
             w->openFile(argv[i]);
         }
     }
 
     // Exiting, clean-up static resources
-    int exitCode = a.exec();
+    int exitCode = QApplication::exec();
     Encoding::cleanup();
     Language::cleanup();
     ColorScheme::cleanup();

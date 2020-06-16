@@ -3,19 +3,21 @@
 #include <QDebug>
 #include <QFile>
 #include <QXmlStreamReader>
+#include <utility>
 
 QListIterator<Encoding*> Encoding::allEncodings() {
     return QListIterator<Encoding*>(availableEncodings);
 }
 
 const Encoding *Encoding::fromName(const QByteArray& name) {
-    for (int i = 0; i < availableEncodings.size(); i++) {
-        if (availableEncodings.at(i)->name() == name) {
-            return availableEncodings.at(i);
+    for (auto availableEncoding : availableEncodings) {
+        if (availableEncoding->name() == name) {
+            return availableEncoding;
         }
     }
+
     // Encoding not found.
-    return NULL;
+    return nullptr;
 }
 
 QString Encoding::language() const {
@@ -30,9 +32,9 @@ QByteArray Encoding::name() const {
     return m_name;
 }
 
-QList<Encoding*> Encoding::availableEncodings = Encoding::intializeEncodings();
+QList<Encoding*> Encoding::availableEncodings = Encoding::initializeEncodings();
 
-QList<Encoding*> Encoding::intializeEncodings(){
+QList<Encoding*> Encoding::initializeEncodings(){
     QList<Encoding*> encodings;
 
     // Make sure the resources are initialized
@@ -60,8 +62,7 @@ QList<Encoding*> Encoding::intializeEncodings(){
                     QString language = xml.attributes().value("language").toString();
                     QString displayName = xml.attributes().value("displayName").toString();
                     QByteArray name = xml.attributes().value("name").toLocal8Bit();
-                    encodings << new Encoding(language, displayName,
-                            name, currentCategory);
+                    encodings << new Encoding(language, displayName, name, currentCategory);
                 }
             }
         }
@@ -77,8 +78,8 @@ QList<Encoding*> Encoding::intializeEncodings(){
 }
 
 void Encoding::cleanup() {
-    for (int i = 0; i < availableEncodings.size(); ++i) {
-        delete availableEncodings.at(i);
+    for (auto availableEncoding : availableEncodings) {
+        delete availableEncoding;
     }
 }
 
@@ -90,13 +91,10 @@ QString Encoding::toString() const {
     return QString("%1 (%2)").arg(m_language, m_displayName);
 }
 
-Encoding::Encoding(QString language, QString displayName, QByteArray name,
-        Encoding::EncodingCategory category) :
-    m_language(language), m_displayName(displayName), m_name(name),
+Encoding::Encoding(QString language, QString displayName, QByteArray name, Encoding::EncodingCategory category) :
+    m_language(std::move(language)), m_displayName(std::move(displayName)), m_name(std::move(name)),
     m_category(category) {
 
 }
 
-Encoding::~Encoding() {
-
-}
+Encoding::~Encoding() = default;

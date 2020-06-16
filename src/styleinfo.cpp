@@ -1,16 +1,15 @@
 #include "styleinfo.h"
-#include "util.h"
 
-#include <QDebug>
+#include <utility>
+
 #include <QStringList>
 
 StyleDescription::StyleDescription(unsigned char stl, QString desc)
-    : style(stl), description(desc) {
+    : style(stl), description(std::move(desc)) {
 
 }
 
-StyleInfo::StyleInfo(int foregroundColor, int backgroundColor, bool bold,
-                     bool italic, bool underline, bool eolFilled) :
+StyleInfo::StyleInfo(int foregroundColor, int backgroundColor, bool bold, bool italic, bool underline, bool eolFilled) :
     m_foregroundColor(foregroundColor), m_backgroundColor(backgroundColor),
     m_bold(bold), m_italic(italic), m_underline(underline),
     m_eolFilled(eolFilled) {

@@ -14,19 +14,19 @@ class LanguageDialog;
 
 class LanguageDialog : public QDialog {
     Q_OBJECT
-    
+
 public:
     /**
      * Creates the dialog.
      *
      * @param parent The parent widget.
      */
-    explicit LanguageDialog(QWidget *parent = 0);
+    explicit LanguageDialog(QWidget *parent = nullptr);
 
     /**
      * Destroys the dialog.
      */
-    ~LanguageDialog();
+    ~LanguageDialog() override;
 
     /**
      * Returns the selected language.
@@ -45,12 +45,11 @@ public:
 protected:
 
     /**
-     * Overriden, in order to make sure that filter text is cleared when the
-     * dialog is shown.
+     * Overridden, in order to make sure that filter text is cleared when the dialog is shown.
      *
      * @param e The show event.
      */
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private slots:
 
@@ -68,8 +67,7 @@ private slots:
      * @param selected The selected items.
      * @param deselected The deselected items.
      */
-    void selectionChanged(const QItemSelection& selected,
-                          const QItemSelection& deselected);
+    void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
 private:
 

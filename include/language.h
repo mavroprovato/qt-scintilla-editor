@@ -8,14 +8,12 @@
 #include "styleinfo.h"
 
 /**
- * Holds information about the available languages that are supported by the
- * editor.
+ * Holds information about the available languages that are supported by the editor.
  */
 class Language {
 public:
     /**
-     * Returns a filter string, created from all the available languages, that
-     * can be used in a file dialog.
+     * Returns a filter string, created from all the available languages, that can be used in a file dialog.
      *
      * @return The filter string.
      */
@@ -45,7 +43,7 @@ public:
     static const Language* fromFilename(const QString& fileName);
 
     /**
-     * Cleans up the static recources.
+     * Cleans up the static resources.
      */
     static void cleanup();
 

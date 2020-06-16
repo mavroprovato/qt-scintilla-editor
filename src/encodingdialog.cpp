@@ -7,9 +7,8 @@
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 
-EncodingDialog::EncodingDialog(QWidget *parent) :
-        QDialog(parent), ui(new Ui::EncodingDialog), m_canReopen(true),
-        m_reopen(false) {
+EncodingDialog::EncodingDialog(QWidget *parent) : QDialog(parent), ui(new Ui::EncodingDialog), m_canReopen(true),
+                                                  m_reopen(false) {
     ui->setupUi(this);
 
     IconDb *iconDb = IconDb::instance();
@@ -22,7 +21,7 @@ EncodingDialog::EncodingDialog(QWidget *parent) :
     QListIterator<Encoding*> encodings = Encoding::allEncodings();
     while (encodings.hasNext()) {
         Encoding *encoding = encodings.next();
-        QStandardItem *item = new QStandardItem(encoding->toString());
+        auto *item = new QStandardItem(encoding->toString());
         item->setData(encoding->name());
         parentItem->appendRow(item);
     }
@@ -43,14 +42,13 @@ EncodingDialog::~EncodingDialog() {
 const Encoding *EncodingDialog::selectedEncoding() const {
     QModelIndexList selectedIndexes = ui->encodingListView->selectionModel()->selectedIndexes();
     if (!selectedIndexes.empty()) {
-        QModelIndex sourceIndex = m_proxyModel->mapToSource(
-            selectedIndexes.at(0));
+        QModelIndex sourceIndex = m_proxyModel->mapToSource(selectedIndexes.at(0));
         QStandardItem *item = m_model->itemFromIndex(sourceIndex);
 
         return Encoding::fromName(item->data().toByteArray());
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void EncodingDialog::setSelectedEncoding(const Encoding *encoding) {
@@ -58,23 +56,20 @@ void EncodingDialog::setSelectedEncoding(const Encoding *encoding) {
     for (int i = 0; i < m_model->rowCount(); i++) {
         QStandardItem *item = m_model->item(i);
         if (item->data() == encoding->name()) {
-            QModelIndex proxyIndex = m_proxyModel->mapFromSource(
-                        m_model->index(i, 0));
+            QModelIndex proxyIndex = m_proxyModel->mapFromSource(m_model->index(i, 0));
             if (!proxyIndex.isValid()) {
                 // The index is not valid, because the value is filtered, so
                 // clear the filter first.
                 ui->encodingFilter->clear();
                 proxyIndex = m_proxyModel->mapFromSource(m_model->index(i, 0));
             }
-            ui->encodingListView->selectionModel()->setCurrentIndex(
-                    proxyIndex, QItemSelectionModel::SelectCurrent);
+            ui->encodingListView->selectionModel()->setCurrentIndex(proxyIndex, QItemSelectionModel::SelectCurrent);
         }
     }
 }
 
 void EncodingDialog::on_encodingFilter_textChanged(const QString &text) {
-    m_proxyModel->setFilterRegExp(QRegExp(text, Qt::CaseInsensitive,
-            QRegExp::FixedString));
+    m_proxyModel->setFilterRegExp(QRegExp(text, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 bool EncodingDialog::reopen() const {
@@ -95,8 +90,7 @@ void EncodingDialog::showEvent(QShowEvent *e) {
     ui->encodingFilter->clear();
 }
 
-void EncodingDialog::selectionChanged(const QItemSelection& selected,
-        const QItemSelection&) {
+void EncodingDialog::selectionChanged(const QItemSelection& selected, const QItemSelection&) {
     ui->selectButton->setEnabled(!selected.isEmpty());
     ui->reopenButton->setEnabled(m_canReopen && !selected.isEmpty());
 }

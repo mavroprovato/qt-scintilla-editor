@@ -23,8 +23,8 @@
 #include "util.h"
 
 QScintillaEditor::QScintillaEditor(QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::QScintillaEditor), workingDir(QDir::home()), wasMaximized(false), findDlg(0),
-        aboutDlg(0), encodingDlg(0), languageDlg(0) {
+        QMainWindow(parent), ui(new Ui::QScintillaEditor), workingDir(QDir::home()), wasMaximized(false),
+        findDlg(nullptr), aboutDlg(nullptr), encodingDlg(nullptr), languageDlg(nullptr) {
     ui->setupUi(this);
     edit = new Buffer(parent);
     setCentralWidget(edit);
@@ -73,8 +73,8 @@ void QScintillaEditor::openFile(const QString& fileName) {
                 if (msgBox.exec() == QMessageBox::Yes) {
                     QFile file(openFileName);
                     if (!file.open(QIODevice::WriteOnly)) {
-                        QString message(tr("File '%1' cannot be created").arg(fileInfo.absoluteFilePath()));
-                        QMessageBox::critical(this, tr("Create File Error"), message);
+                        QString errMessage(tr("File '%1' cannot be created").arg(fileInfo.absoluteFilePath()));
+                        QMessageBox::critical(this, tr("Create File Error"), errMessage);
 
                         return;
                     }
@@ -124,7 +124,7 @@ bool QScintillaEditor::eventFilter(QObject *obj, QEvent *event) {
 
 
 void QScintillaEditor::on_actionNew_triggered() {
-    QScintillaEditor *w = new QScintillaEditor;
+    auto *w = new QScintillaEditor;
     w->show();
 }
 
@@ -329,20 +329,20 @@ void QScintillaEditor::on_actionFont_triggered() {
 }
 
 void QScintillaEditor::changeEncoding_triggered() {
-    QAction *action = qobject_cast<QAction*>(sender());
+    auto *action = qobject_cast<QAction*>(sender());
     const Encoding *encoding = Encoding::fromName(action->data().toByteArray());
     edit->setEncoding(encoding);
 }
 
 void QScintillaEditor::changeColorScheme_triggered() {
-    QAction *action = qobject_cast<QAction*>(sender());
+    auto *action = qobject_cast<QAction*>(sender());
     const ColorScheme *colorScheme = ColorScheme::getColorScheme(action->text());
     edit->setColorScheme(colorScheme);
     Configuration::instance()->setColorScheme(action->text());
 }
 
 void QScintillaEditor::changeLanguage_triggered() {
-    QAction *action = qobject_cast<QAction*>(sender());
+    auto *action = qobject_cast<QAction*>(sender());
     const Language *language = Language::fromLanguageId(action->data().toString());
     edit->setLanguage(language);
 }
@@ -434,7 +434,7 @@ void QScintillaEditor::replaceAll(const QString& findText, const QString& replac
     edit->beginUndoAction();
     edit->setCurrentPos(0);
     edit->setAnchor(0);
-    while (edit->find(findText, flags, true, false, NULL)) {
+    while (edit->find(findText, flags, true, false, nullptr)) {
         QByteArray replaceArray = replaceText.toUtf8();
         if (flags & SCFIND_REGEXP) {
             edit->replaceTargetRE(replaceArray.length(), replaceArray);
@@ -455,7 +455,7 @@ void QScintillaEditor::updateUi(int updated) {
     // Set the actions that depend on the buffer state
     ui->actionCut->setEnabled(!edit->selectionEmpty());
     ui->actionCopy->setEnabled(!edit->selectionEmpty());
-    // Set the postition indicator
+    // Set the position indicator
     int position = edit->currentPos();
     positionLabel->setText(QString(tr("Line %1, Col %2").arg(edit->lineFromPosition(position) + 1).arg(
                                        edit->column(position) + 1)));
@@ -478,7 +478,7 @@ void QScintillaEditor::onLanguageChanged(const Language *language) {
 
 void QScintillaEditor::onUrlsDropped(const QList<QUrl>& urls) {
     for (int i = 0; i < urls.size(); ++i) {
-        QUrl url = urls.at(i);
+        const QUrl& url = urls.at(i);
         if (url.isLocalFile()) {
             if (i == 0) {
                 // Reuse the same window for the first file
@@ -487,7 +487,7 @@ void QScintillaEditor::onUrlsDropped(const QList<QUrl>& urls) {
                 }
             } else {
                 // For multiple files, open a new window
-                QScintillaEditor *w = new QScintillaEditor;
+                auto *w = new QScintillaEditor;
                 w->show();
                 w->edit->open(url.toLocalFile());
             }
@@ -543,7 +543,7 @@ void QScintillaEditor::setUpMenuBar() {
     // Add all color schemes to the menu
     QStringList colorSchemeNames = ColorScheme::allColorSchemes();
     for (int i = 0; i < colorSchemeNames.size(); ++i) {
-        QAction* action = new QAction(colorSchemeNames.at(i), this);
+        auto* action = new QAction(colorSchemeNames.at(i), this);
         ui->menuColorScheme->addAction(action);
         connect(action, SIGNAL(triggered()), this, SLOT(changeColorScheme_triggered()));
     }
@@ -551,7 +551,7 @@ void QScintillaEditor::setUpMenuBar() {
     QListIterator<Language*> languages = Language::allLanguages();
     while (languages.hasNext()) {
         Language *language = languages.next();
-        QAction* action = new QAction(language->name(), this);
+        auto* action = new QAction(language->name(), this);
         action->setData(language->langId());
         ui->menuLanguage->addAction(action);
         connect(action, SIGNAL(triggered()), this, SLOT(changeLanguage_triggered()));
@@ -560,7 +560,7 @@ void QScintillaEditor::setUpMenuBar() {
     setUpEncodingMenu(ui->menuEncoding, SLOT(changeEncoding_triggered()));
     setUpEncodingMenu(ui->menuReopenWithEncoding, SLOT(reopenWithEncoding_triggered()));
     // Set up the end of line menu.
-    QActionGroup* group = new QActionGroup(this);
+    auto* group = new QActionGroup(this);
     ui->actionEndOfLineWindows->setActionGroup(group);
     ui->actionEndOfLineUnix->setActionGroup(group);
     ui->actionEndOfLineMacintosh->setActionGroup(group);
@@ -585,14 +585,14 @@ void QScintillaEditor::setUpEncodingMenu(QMenu *parent, const char* slot) {
     QListIterator<Encoding*> encodings = Encoding::allEncodings();
     while (encodings.hasNext()) {
         Encoding *encoding = encodings.next();
-        QAction* action = new QAction(encoding->toString(), this);
+        auto* action = new QAction(encoding->toString(), this);
         action->setData(encoding->name());
         encodingCategories[encoding->category()]->addAction(action);
         connect(action, SIGNAL(triggered()), this, slot);
     }
     // Add all the categories to the encoding menu
-    for (size_t i = 0; i < sizeof(encodingCategories) / sizeof(QMenu*); i++) {
-        parent->addMenu(encodingCategories[i]);
+    for (auto & encodingCategory : encodingCategories) {
+        parent->addMenu(encodingCategory);
     }
 }
 

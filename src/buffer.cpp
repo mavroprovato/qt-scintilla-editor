@@ -2,7 +2,6 @@
 #include "configuration.h"
 #include "icondb.h"
 #include "language.h"
-#include "util.h"
 
 #include <SciLexer.h>
 
@@ -13,10 +12,9 @@
 #include <QTextStream>
 #include <QUrl>
 
-#include <algorithm>
 #include <cmath>
 
-Buffer::Buffer(QWidget *parent) : ScintillaEdit(parent), m_language(0) {
+Buffer::Buffer(QWidget *parent) : ScintillaEdit(parent), m_language(nullptr) {
     // Use Unicode code page
     m_encoding = Encoding::fromName("UTF-8");
     setCodePage(SC_CP_UTF8);
@@ -39,10 +37,6 @@ Buffer::Buffer(QWidget *parent) : ScintillaEdit(parent), m_language(0) {
     connect(this, SIGNAL(marginClicked(int,int,int)), this, SLOT(onMarginClicked(int,int,int)));
 }
 
-Buffer::~Buffer() {
-
-}
-
 void Buffer::clear() {
     // Clear the file name and the editor
     clearAll();
@@ -62,7 +56,7 @@ bool Buffer::open(const QString &fileName) {
     setText(content.toUtf8());
     file.close();
 
-    // File opened succesfully
+    // File opened successfully
     setFileInfo(QFileInfo(fileName));
     emptyUndoBuffer();
     setSavePoint();
@@ -251,7 +245,7 @@ void Buffer::setFoldSymbols(Buffer::FoldSymbols foldSymbols) {
 
 void Buffer::setFoldLines(FoldLines foldLines) {
     switch(foldLines) {
-    case None:
+    case NoLine:
         markerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_EMPTY);
         markerDefine(SC_MARKNUM_FOLDERTAIL, SC_MARK_EMPTY);
         markerDefine(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY);
@@ -465,8 +459,7 @@ void Buffer::setLanguage(const Language *language) {
 
 int Buffer::getLineMarginWidth() {
     Configuration *configuration = Configuration::instance();
-    int lineWidth = m_trackLineWidth ?
-                lineCount() : configuration->lineMarginWidth();
+    int lineWidth = m_trackLineWidth ? lineCount() : configuration->lineMarginWidth();
     int width = ((int) std::log10(lineWidth)) + 1;
     QString text;
     text.fill('9', width).prepend('_');
@@ -481,8 +474,7 @@ void Buffer::setupMarginIcons() {
     image = image.scaled(dim, dim);
     rGBAImageSetWidth(dim);
     rGBAImageSetHeight(dim);
-    markerDefineRGBAImage(Bookmark, reinterpret_cast<const char*>(
-            image.rgbSwapped().bits()));
+    markerDefineRGBAImage(Bookmark, reinterpret_cast<const char*>(image.rgbSwapped().bits()));
 }
 
 int Buffer::isBrace(sptr_t c) {

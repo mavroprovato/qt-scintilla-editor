@@ -19,14 +19,13 @@ public:
      *
      * @param parent The dialog parent.
      */
-    explicit AboutDialog(QWidget *parent = 0);
+    explicit AboutDialog(QWidget *parent = nullptr);
 
-    /**
-     * Destructor for the dialog.
-     */
-    ~AboutDialog();
+    /** Destructor for the dialog. */
+    ~AboutDialog() override;
     
 private slots:
+    /** Called when the close button is pushed */
     void on_pushButtonClose_clicked();
 
 private:

@@ -40,12 +40,12 @@ public:
      *
      * @param parent The parent widget for the editor.
      */
-    explicit QScintillaEditor(QWidget *parent = 0);
+    explicit QScintillaEditor(QWidget *parent = nullptr);
 
     /**
      * Destructor for the editor.
      */
-    ~QScintillaEditor();
+    ~QScintillaEditor() override;
 
     /**
      * Open a file with the provided file name.
@@ -55,7 +55,7 @@ public:
     void openFile(const QString& fileName);
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 private slots:
     /**
@@ -320,7 +320,7 @@ private slots:
     void replace(const QString& findText, const QString& replaceText, int flags, bool forward, bool wrap);
 
     /**
-     * Called when the user wants to replace all occurences of the text.
+     * Called when the user wants to replace all occurrences of the text.
      *
      * @param findText The text to search for.
      * @param replaceText The text to replace the found text with.
@@ -424,7 +424,7 @@ private:
      *
      * @param event The close event.
      */
-    void closeEvent(QCloseEvent* event);
+    void closeEvent(QCloseEvent* event) override;
 
     /** The window UI. */
     Ui::QScintillaEditor *ui;
@@ -436,16 +436,16 @@ private:
     QDir workingDir;
 
     /** The status bar label that displays messages. */
-    QLabel *messageLabel;
+    QLabel *messageLabel{};
 
     /** The status bar label that displays the current language. */
-    QLabel *languageLabel;
+    QLabel *languageLabel{};
 
     /** The status bar label that displays the current encoding. */
-    QLabel *encodingLabel;
+    QLabel *encodingLabel{};
 
     /** The status bar label that displays the current position. */
-    QLabel *positionLabel;
+    QLabel *positionLabel{};
 
     /** true if the window was maximized before going full screen. */
     bool wasMaximized;

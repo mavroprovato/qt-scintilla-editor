@@ -8,11 +8,9 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog) {
     ui->setupUi(this);
 
-    ui->labelApplication->setText(QString("%1 v%2").arg(APPLICATION_NAME,
-        APPLICATION_VERSION));
-    ui->labelQt->setText(tr("<html><head/><body><p>Built with <a href=\""
-        "http://qt.digia.com\">Qt Framework</a> version " QT_VERSION_STR
-        "</p></body></html>"));
+    ui->labelApplication->setText(QString("%1 v%2").arg(APPLICATION_NAME, APPLICATION_VERSION));
+    ui->labelQt->setText(tr("<html><head/><body><p>Built with <a href=\"""https://www.qt.io/product/framework\">"
+                            "Qt Framework</a> version " QT_VERSION_STR "</p></body></html>"));
 }
 
 AboutDialog::~AboutDialog() {

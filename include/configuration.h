@@ -58,8 +58,7 @@ public:
     /**
      * Sets whether the window should be initially displayed full screen.
      *
-     * @param fullscreen Boolean flag to control whether the window should be
-     *initially displayed full screen.
+     * @param fullscreen Boolean flag to control whether the window should be initially displayed full screen.
      */
     void setFullscreen(bool fullscreen);
 
@@ -73,8 +72,7 @@ public:
     /**
      * Sets whether the whitespace characters should be displayed or not.
      *
-     * @param viewWhitespace Boolean flag to control whether the whitespace
-     * characters should be displayed or not.
+     * @param viewWhitespace Boolean flag to control whether the whitespace characters should be displayed or not.
      */
     void setViewWhitespace(bool viewWhitespace);
 
@@ -90,8 +88,8 @@ public:
      * Sets whether visible whitespace inside indentation should be shown
      * or not.
      *
-     * @param viewIndentationWhitespace Boolean flag to control whether visible
-     * whitespace inside indentation should be shown or not.
+     * @param viewIndentationWhitespace Boolean flag to control whether visible whitespace inside indentation should be
+     * shown or not.
      */
     void setViewIndentationWhitespace(bool viewIndentationWhitespace);
 
@@ -110,20 +108,17 @@ public:
     void setViewIndentationGuides(bool viewIndentationGuides);
 
     /**
-     * Returns true if the background color of the line containing the caret
-     * should have a different background.
+     * Returns true if the background color of the line containing the caret should have a different background.
      *
-     * @return true if the background color of the line containing the caret
-     * should have a different background.
+     * @return true if the background color of the line containing the caret should have a different background.
      */
     bool caretLineVisible();
 
     /**
-     * Sets whether the background color of the line containing the caret
-     * should have a different background.
+     * Sets whether the background color of the line containing the caret should have a different background.
      *
-     * @param caretLineVisible whether the background color of the line
-     * containing the caret should have a different background.
+     * @param caretLineVisible whether the background color of the line containing the caret should have a different
+     * background.
      */
     void setCaretLineVisible(bool caretLineVisible);
 
@@ -161,18 +156,16 @@ public:
     void setLongLineIndicator(bool longLineIndicator);
 
     /**
-     * If this method returns true, then the long line indicator should be
-     * displayed as a horizontal line. If false, the background color changes
-     * after the limit.
+     * If this method returns true, then the long line indicator should be displayed as a horizontal line. If false,
+     * the background color changes after the limit.
      *
      * @return The type of the long line indicator.
      */
     bool longLineIndicatorLine();
 
     /**
-     * Sets the long line indicator type. If this true, then the long line
-     * indicator should be displayed as a horizontal line. If false,
-     * the background color changes after the limit.
+     * Sets the long line indicator type. If this true, then the long line indicator should be displayed as a horizontal
+     * line. If false, the background color changes after the limit.
      *
      * @param longLineIndicatorLine The new type of the long line indicator.
      */
@@ -222,37 +215,34 @@ public:
     void setShowLineMargin(bool showLineMargin);
 
     /**
-     * Returns the width of the line margin, in number of characters that can
-     * be displayed.
+     * Returns the width of the line margin, in number of characters that can be displayed.
      *
-     * @return The width of the line margin, in number of characters that can
-     * be displayed.
+     * @return The width of the line margin, in number of characters that can be displayed.
      */
     int lineMarginWidth();
 
     /**
      * Sets the line margin width.
      *
-     * @param lineMarginWidth The width of the line margin, in number of
-     * characters that can be displayed.
+     * @param lineMarginWidth The width of the line margin, in number of characters that can be displayed.
      */
     void setLineMarginWidth(int lineMarginWidth);
 
     /**
-     * Returns whether the line margin width should be changed automatically in
-     * order to accomodate the biggest line number.
+     * Returns whether the line margin width should be changed automatically in order to accommodate the biggest line
+     * number.
      *
-     * @return true if the line margin width should be changed automatically in
-     * order to accomodate the biggest line number.
+     * @return true if the line margin width should be changed automatically in order to accommodate the biggest line
+     * number.
      */
     bool trackLineMarginWidth();
 
     /**
-     * Sets whether the line margin width should be change automatically
-     * in order to accomodate the biggest line number or not.
+     * Sets whether the line margin width should be change automatically in order to accommodate the biggest line number
+     * or not.
      *
-     * @param trackLineMarginWidth If true, the line margin width will be
-     * changed automatically in order to accomodate the biggest line number.
+     * @param trackLineMarginWidth If true, the line margin width will be changed automatically in order to accommodate
+     * the biggest line number.
      */
     void setTrackLineMarginWidth(bool trackLineMarginWidth);
 
@@ -355,9 +345,9 @@ public:
     void setWrap(bool wrap);
 
     /**
-     * Returns the width of the tab charachter.
+     * Returns the width of the tab character.
      *
-     * @return The width of the tab charachter.
+     * @return The width of the tab character.
      */
     int tabWidth() const;
 
@@ -369,34 +359,30 @@ public:
     void setTabWidth(int tabWidth);
 
     /**
-     * Returns the identation width.
+     * Returns the indentation width.
      *
-     * @return The identation width.
+     * @return The indentation width.
      */
     int indentationWidth() const;
 
     /**
-     * Sets the width of the identation character.
+     * Sets the width of the indentation character.
      *
-     * @param indentationWidth The width of the identation character.
+     * @param indentationWidth The width of the indentation character.
      */
     void setIndentationWidth(int indentationWidth);
 
     /**
-     * Returns true if tabs should be used for identation, false if spaces
-     * should be used.
+     * Returns true if tabs should be used for indentation, false if spaces should be used.
      *
-     * @return true if tabs should be used for identation, false if spaces
-     * should be used.
+     * @return true if tabs should be used for indentation, false if spaces should be used.
      */
     bool useTabs() const;
 
     /**
-     * Set to true if tabs should be used for identation. Set to false if
-     * spaces should be used for identation.
+     * Set to true if tabs should be used for indentation. Set to false if spaces should be used for indentation.
      *
-     * @param useTabs true, if tabs should be used for identation, false if
-     * spaces should be used for identation.
+     * @param useTabs true, if tabs should be used for indentation, false if spaces should be used for indentation.
      */
     void setUseTabs(bool useTabs);
 
@@ -415,18 +401,16 @@ public:
     void setScrollWidth(int scrollWidth);
 
     /**
-     * Returns whether the horizontal size of the scollable area should be
-     * tracked or not.
-     * @return Whether the horizontal size of the scollable area should be
-     * tracked or not.
+     * Returns whether the horizontal size of the scrollable area should be tracked or not.
+     *
+     * @return Whether the horizontal size of the scrollable area should be tracked or not.
      */
     bool scrollWidthTracking() const;
 
     /**
-     * Sets whether the horizontal size of the scollable area should be tracked
-     *or not.
-     * @param scrollWidthTracking true to track the horizontal size of the
-     * scrollable area, false otherwise.
+     * Sets whether the horizontal size of the scrollable area should be tracked or not.
+     *
+     * @param scrollWidthTracking true to track the horizontal size of the scrollable area, false otherwise.
      */
     void setScrollWidthTracking(bool scrollWidthTracking);
 
@@ -452,9 +436,9 @@ public:
     QString colorScheme() const;
 
     /**
-     * Sets the initialy selected color scheme by name.
+     * Sets the initially selected color scheme by name.
      *
-     * @param name The name of the initialy selected color scheme.
+     * @param name The name of the initially selected color scheme.
      */
     void setColorScheme(const QString &name);
 

@@ -28,31 +28,33 @@ QListIterator<Language *> Language::allLanguages() {
 }
 
 const Language* Language::fromLanguageId(const QString& languageId) {
-    for (int i = 0; i < availableLangs.size(); ++i) {
-        if (availableLangs.at(i)->langId() == languageId) {
-            return availableLangs.at(i);
+    for (auto availableLang : availableLangs) {
+        if (availableLang->langId() == languageId) {
+            return availableLang;
         }
     }
+
     // Not found
-    return NULL;
+    return nullptr;
 }
 
 const Language* Language::fromFilename(const QString& fileName) {
     // Search for all available languages.
-    for (int i = 0; i < availableLangs.size(); ++i) {
-        Language *currentLang = availableLangs.at(i);
+    for (auto availableLang : availableLangs) {
+        Language *currentLang = availableLang;
         QStringList extensions = currentLang->patterns().split(' ');
         // Search for all extensions.
         for (int j = 0; j < extensions.size(); ++j) {
             QRegExp re(extensions.at(j));
             re.setPatternSyntax(QRegExp::Wildcard);
             if (re.exactMatch(fileName)) {
-                return availableLangs.at(i);
+                return availableLang;
             }
         }
     }
+
     // Not found
-    return NULL;
+    return nullptr;
 }
 
 QList<Language*> Language::availableLangs = Language::intializeLangs();
@@ -67,7 +69,7 @@ QList<Language*> Language::intializeLangs() {
     if (file.open(QFile::ReadOnly | QIODevice::Text)) {
         QXmlStreamReader xml(&file);
         // Loop through the xml elements
-        Language *currentLang = NULL;
+        Language *currentLang = nullptr;
         QStringList keywords;
         QList<StyleDescription> styles;
         while (!xml.atEnd() && !xml.hasError()) {
@@ -80,8 +82,7 @@ QList<Language*> Language::intializeLangs() {
                     currentLang->m_name = attrs.value("name").toString();
                     currentLang->m_lexer = attrs.value("lexer").toString();
                 } else if (xml.name() == "patterns") {
-                    currentLang->m_patterns = xml.readElementText(
-                                QXmlStreamReader::ErrorOnUnexpectedElement);
+                    currentLang->m_patterns = xml.readElementText(QXmlStreamReader::ErrorOnUnexpectedElement);
                 } else if (xml.name() == "keywordSet") {
                     bool ok;
                     int id = xml.attributes().value("id").toString().toInt(&ok);
@@ -92,8 +93,7 @@ QList<Language*> Language::intializeLangs() {
                         keywords << xml.readElementText(
                             QXmlStreamReader::ErrorOnUnexpectedElement);
                     } else {
-                        qWarning("id attribute of keywordSet element is "
-                                 "invalid");
+                        qWarning("id attribute of keywordSet element is invalid");
                     }
                 } else if (xml.name() == "styleDescription") {
                     QXmlStreamAttributes attrs = xml.attributes();
@@ -103,14 +103,12 @@ QList<Language*> Language::intializeLangs() {
                     if (ok && style <= UCHAR_MAX) {
                         styles << StyleDescription((uchar) style, description);
                     } else {
-                        qWarning("id attribute of styleDescription element is "
-                                 "invalid");
+                        qWarning("id attribute of styleDescription element is invalid");
                     }
                 }
             } else if (token == QXmlStreamReader::EndElement) {
                 if (xml.name() == "keywordSets") {
-                    currentLang->m_keywords = keywords.replaceInStrings(
-                            QRegExp("\\s+"), " ");;
+                    currentLang->m_keywords = keywords.replaceInStrings(QRegExp("\\s+"), " ");;
                     keywords.clear();
                 } else if (xml.name() == "styleDescriptions") {
                     currentLang->m_styles = styles;
@@ -132,16 +130,14 @@ QList<Language*> Language::intializeLangs() {
 }
 
 void Language::cleanup() {
-    for (int i = 0; i < availableLangs.size(); ++i) {
-        delete availableLangs.at(i);
+    for (auto availableLang : availableLangs) {
+        delete availableLang;
     }
 }
 
-Language::Language() {
-}
+Language::Language() = default;
 
-Language::~Language() {
-}
+Language::~Language() = default;
 
 QString Language::langId() const {
     return m_langId;

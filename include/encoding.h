@@ -8,11 +8,10 @@
 class Encoding {
 public:
     /**
-     * The differenct categories for the encodings.
+     * The different categories for the encodings.
      */
     enum EncodingCategory {
-        WestEuropean = 0, EastEuropean = 1, EastAsian = 2, SouthAsian = 3,
-        MiddleEastern = 4, Unicode = 5
+        WestEuropean = 0, EastEuropean = 1, EastAsian = 2, SouthAsian = 3, MiddleEastern = 4, Unicode = 5
     };
 
     /**
@@ -31,7 +30,7 @@ public:
     static const Encoding *fromName(const QByteArray& name);
 
     /**
-     * Cleans up the static recources.
+     * Cleans up the static resources.
      */
     static void cleanup();
 
@@ -71,11 +70,10 @@ public:
     QString toString() const;
 
 private:
-
     /**
      * Initializes the available languages list
      */
-    static QList<Encoding*> intializeEncodings();
+    static QList<Encoding*> initializeEncodings();
 
     /** Holds all the available languages. */
     static QList<Encoding*> availableEncodings;
@@ -88,11 +86,9 @@ private:
      * @param name The encoding system name.
      * @param category The encoding category.
      */
-    Encoding(QString language, QString displayName, QByteArray name,
-            EncodingCategory category);
-    /**
-     * Destructor for the encoding.
-     */
+    Encoding(QString language, QString displayName, QByteArray name, EncodingCategory category);
+
+    /** Destructor for the encoding. */
     ~Encoding();
 
     /**
@@ -101,7 +97,7 @@ private:
     Encoding(Encoding const&);
 
     /**
-     * Private assgnement operator, not implemented.
+     * Private assignment operator, not implemented.
      */
     void operator=(Encoding const&);
 

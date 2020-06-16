@@ -12,8 +12,7 @@ class FindReplaceDialog : public QDialog {
     
 public:
     /**
-     * Enumeration for the dialog type, either a find or a find/replace
-     * dialog.
+     * Enumeration for the dialog type, either a find or a find/replace dialog.
      */
     enum Type {
         Find = 0,
@@ -25,12 +24,12 @@ public:
      *
      * @param parent The parent widget.
      */
-    explicit FindReplaceDialog(QWidget *parent = 0);
+    explicit FindReplaceDialog(QWidget *parent = nullptr);
 
     /**
      * Destructor for the dialog.
      */
-    ~FindReplaceDialog();
+    ~FindReplaceDialog() override;
 
     /**
      * Sets the type for the dialog.
@@ -45,8 +44,7 @@ signals:
      *
      * @param findText The text to search for.
      * @param flags The search flags.
-     * @param forward true if the search must be performed towards the end of
-     * the document.
+     * @param forward true if the search must be performed towards the end of the document.
      * @param wrap true if the search should wrap.
      */
     void find(const QString& findText, int flags, bool forward, bool wrap);
@@ -57,12 +55,10 @@ signals:
      * @param findText The text to search for.
      * @param replaceText The text to replace the matched text with.
      * @param flags The search flags.
-     * @param forward true if the search must be performed towards the end of
-     * the document.
+     * @param forward true if the search must be performed towards the end of the document.
      * @param wrap true if the search should wrap.
      */
-    void replace(const QString& findText, const QString& replaceText, int flags,
-        bool forward, bool wrap);
+    void replace(const QString& findText, const QString& replaceText, int flags, bool forward, bool wrap);
 
     /**
      * This signal is emitted when the replace all button is pressed.
@@ -71,17 +67,15 @@ signals:
      * @param replaceText The text to replace the matched text with.
      * @param flags The search flags.
      */
-    void replaceAll(const QString& findText, const QString& replaceText,
-        int flags);
+    void replaceAll(const QString& findText, const QString& replaceText, int flags);
 
 protected:
     /**
-     * Overriden, in order to make sure that the find line edit always takes
-     * focus when the dialog is shown.
+     * Overridden, in order to make sure that the find line edit always takes focus when the dialog is shown.
      *
      * @param e The show event.
      */
-    virtual void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) override;
 
 private slots:
     /**

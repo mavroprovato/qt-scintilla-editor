@@ -14,7 +14,7 @@ FindReplaceDialog::~FindReplaceDialog() {
 }
 
 void FindReplaceDialog::setType(Type type) {
-    // Set the visiblility of the replace controlls
+    // Set the visibility of the replace controls
     ui->replaceLabel->setVisible(type == FindReplace);
     ui->replaceLineEdit->setVisible(type == FindReplace);
     ui->replacePushButton->setVisible(type == FindReplace);
@@ -41,9 +41,8 @@ void FindReplaceDialog::on_replacePushButton_clicked() {
     QString replaceText = ui->replaceLineEdit->text();
     if (!findText.isEmpty()) {
         // Emit the signal
-        emit replace(findText, replaceText, searchFlags(),
-            ui->forwardRadioButton->isChecked(),
-            ui->wrapSearchCheckBox->isChecked());
+        emit replace(findText, replaceText, searchFlags(), ui->forwardRadioButton->isChecked(),
+                     ui->wrapSearchCheckBox->isChecked());
     }
 }
 
@@ -72,5 +71,6 @@ int FindReplaceDialog::searchFlags() {
     if (ui->regularExpressionCheckBox->isChecked()) {
         flags |= SCFIND_REGEXP;
     }
+
     return flags;
 }
